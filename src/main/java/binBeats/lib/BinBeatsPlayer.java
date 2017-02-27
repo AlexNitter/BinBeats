@@ -8,19 +8,20 @@ import javax.sound.sampled.LineUnavailableException;
  * @author alex
  */
 public class BinBeatsPlayer {
-	private FrequencyPlayer playerLinks;
-	private FrequencyPlayer playerRechts;
+	private StereoFrequencyPlayer playerLinks;
+	private StereoFrequencyPlayer playerRechts;
 
 	public BinBeatsPlayer() throws LineUnavailableException {
-		playerLinks = new FrequencyPlayer();
-		playerRechts = new FrequencyPlayer();
+		playerLinks = new StereoFrequencyPlayer();
+		playerRechts = new StereoFrequencyPlayer();
 	}
 
-	public void play(int frequenzLinks, int frequenzRechts) {
+	public void play(int frequenzLinks, int frequenzRechts) throws LineUnavailableException {
 		//TODO fachliche Prüfung der Frequenzen (Schwellwerte, Differenz etc.), ggf. in eigene Klasse auslagern
 		
-		playerLinks.play(frequenzLinks, Channel.left);
+		
 		playerRechts.play(frequenzRechts, Channel.right);
+		playerLinks.play(frequenzLinks, Channel.left);
 	}
 
 	public void stop() {

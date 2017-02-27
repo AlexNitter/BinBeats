@@ -1,6 +1,6 @@
 package main.java.binBeats;
 
-import main.java.binBeats.ui.ApplicationLauncher;
+import main.java.binBeats.ui.*;
 
 public class Application {
 
