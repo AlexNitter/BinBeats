@@ -7,86 +7,35 @@ import javax.sound.sampled.*;
  * 
  * @author alex
  */
-public class StereoFrequencyPlayer {
-	private Boolean isPlaying = false;
-
-	private int sampleRate = 16000;
-	private int sampleSizeInBits = 8;
-
-	private AudioFormat audioFormat;
-	private SourceDataLine sdl;
-
-	public StereoFrequencyPlayer() throws LineUnavailableException {
+public class StereoFrequencyPlayer extends FrequencyPlayer {
+	private Channel kanal;
+	
+	public StereoFrequencyPlayer(Channel kanal) throws LineUnavailableException {
+		sampleRate = 16 * 1024;
+		sampleSizeInBits = 8;
 		int channels = 2;
 		boolean signed = true;
 		boolean bigEndian = false;
 
+		this.kanal = kanal;
+		
 		audioFormat = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
 		sdl = AudioSystem.getSourceDataLine(audioFormat);
 	}
 
-	/**
-	 * Spielt die Frequenz auf dem Kanal ab
-	 * 
-	 * @param frequency
-	 *            Die abzuspielende Frequenz
-	 * @param channel
-	 *            Der Kanal (links oder rechts), auf dem die Frequenz abgespielt
-	 *            werden soll
-	 * @throws LineUnavailableException
-	 */
-	public void play(int frequenz, Channel kanal) throws LineUnavailableException {
-		sdl.open();
-		sdl.start();
-		isPlaying = true;
+	@Override
+	protected void setChannel() {
+		if (sdl.isControlSupported(FloatControl.Type.PAN)) {
+			FloatControl pan = (FloatControl) sdl.getControl(FloatControl.Type.PAN);
 
-		new Thread() {
-			public void run() {
-				while (isPlaying) {
-					if (sdl.isControlSupported(FloatControl.Type.PAN)) {
-						FloatControl pan = (FloatControl) sdl.getControl(FloatControl.Type.PAN);
-
-						switch (kanal) {
-						case left:
-							pan.setValue(-1.0f);
-							break;
-						case right:
-							pan.setValue(1.0f);
-							break;
-						}
-					}
-
-					byte[] buffer = createSinWaveBuffer(frequenz, 50);
-					sdl.write(buffer, 0, buffer.length);
-				}
+			switch (kanal) {
+			case left:
+				pan.setValue(-1.0f);
+				break;
+			case right:
+				pan.setValue(1.0f);
+				break;
 			}
-		}.start();
-	}
-
-	/**
-	 * Stoppt die Audioausgabe
-	 */
-	public void stop() {
-		isPlaying = false;
-
-		if (sdl.isOpen()) {
-			// sdl.drain();
-			sdl.close();
 		}
-	}
-
-	private byte[] createSinWaveBuffer(double frequenz, int ms) {
-		int samples = (int) ((ms * sampleRate) / 1000);
-		byte[] output = new byte[samples];
-		
-		double periode = (double) sampleRate / frequenz;
-		int amplitude = 100;
-		
-		for (int i = 0; i < output.length; i++) {
-			double winkelfrequenz = 2.0 * Math.PI * i / periode;
-			output[i] = (byte) (Math.sin(winkelfrequenz) * amplitude);
-		}
-
-		return output;
 	}
 }

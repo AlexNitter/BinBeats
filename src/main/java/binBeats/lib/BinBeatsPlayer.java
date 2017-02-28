@@ -12,16 +12,16 @@ public class BinBeatsPlayer {
 	private StereoFrequencyPlayer playerRechts;
 
 	public BinBeatsPlayer() throws LineUnavailableException {
-		playerLinks = new StereoFrequencyPlayer();
-		playerRechts = new StereoFrequencyPlayer();
+		playerLinks = new StereoFrequencyPlayer(Channel.left);
+		playerRechts = new StereoFrequencyPlayer(Channel.right);
 	}
 
 	public void play(int frequenzLinks, int frequenzRechts) throws LineUnavailableException {
 		//TODO fachliche Prüfung der Frequenzen (Schwellwerte, Differenz etc.), ggf. in eigene Klasse auslagern
 		
 		
-		playerRechts.play(frequenzRechts, Channel.right);
-		playerLinks.play(frequenzLinks, Channel.left);
+		playerRechts.play(frequenzRechts);
+		playerLinks.play(frequenzLinks);
 	}
 
 	public void stop() {
