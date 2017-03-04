@@ -10,8 +10,16 @@ public class BinBeatsPlayerTest {
 	@Test
 	public void PlayStopTest() throws LineUnavailableException, InterruptedException {
 		BinBeatsPlayer player = new BinBeatsPlayer();
-		player.play(145, 150);
-		Thread.sleep(5000);
+		player.setTraegerFrequenz(145);
+		player.setDifferenzFrequenz(145);
+		player.play();
+		Thread.sleep(500);
+		player.setDifferenzFrequenz(150);
+		Thread.sleep(500);
+		player.setDifferenzFrequenz(155);
+		Thread.sleep(500);
+		player.setDifferenzFrequenz(160);
+		Thread.sleep(500);
 		player.stop();
 	}
 }

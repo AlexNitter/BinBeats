@@ -8,6 +8,9 @@ import javax.sound.sampled.LineUnavailableException;
  * @author alex
  */
 public class BinBeatsPlayer {
+	private int traegerFrequenz;
+	private int differenzFrequenz;
+	
 	private StereoFrequencyPlayer playerLinks;
 	private StereoFrequencyPlayer playerRechts;
 
@@ -16,12 +19,33 @@ public class BinBeatsPlayer {
 		playerRechts = new StereoFrequencyPlayer(Channel.right);
 	}
 
-	public void play(int frequenzLinks, int frequenzRechts) throws LineUnavailableException {
+	public void setTraegerFrequenz(int traegerFrequenz) {
 		//TODO fachliche Prüfung der Frequenzen (Schwellwerte, Differenz etc.), ggf. in eigene Klasse auslagern
 		
+		this.traegerFrequenz = traegerFrequenz;
+		this.playerLinks.setFrequenz(traegerFrequenz);
+	}
+	
+	public int getTraegerFrequenz() {
+		return traegerFrequenz;
+	}
+	
+	public void setDifferenzFrequenz(int differenzFrequenz) {
+		//TODO fachliche Prüfung der Frequenzen (Schwellwerte, Differenz etc.), ggf. in eigene Klasse auslagern
 		
-		playerRechts.play(frequenzRechts);
-		playerLinks.play(frequenzLinks);
+		this.differenzFrequenz = differenzFrequenz;
+		this.playerRechts.setFrequenz(differenzFrequenz);
+	}
+	
+	public int getDifferenzFrequenz() {
+		return differenzFrequenz;	
+	}
+	
+	public void play() throws LineUnavailableException {
+		//TODO fachliche Prüfung der Frequenzen (Schwellwerte, Differenz etc.), ggf. in eigene Klasse auslagern
+		
+		playerRechts.play();
+		playerLinks.play();
 	}
 
 	public void stop() {

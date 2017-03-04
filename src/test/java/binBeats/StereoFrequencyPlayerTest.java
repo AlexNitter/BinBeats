@@ -13,8 +13,11 @@ public class StereoFrequencyPlayerTest {
 	@Test
 	public void PlayStopTest() throws LineUnavailableException, InterruptedException {
 		StereoFrequencyPlayer player = new StereoFrequencyPlayer(Channel.right);
-		player.play(440);
-		Thread.sleep(2000);
+		player.setFrequenz(440);
+		player.play();
+		Thread.sleep(1000);
+		player.setFrequenz(450);
+		Thread.sleep(1000);
 		player.stop();
 	}
 }

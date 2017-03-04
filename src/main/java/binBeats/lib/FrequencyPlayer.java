@@ -7,14 +7,24 @@ import javax.sound.sampled.SourceDataLine;
 public abstract class FrequencyPlayer {
 	protected int sampleRate;
 	protected int sampleSizeInBits;
-
+	protected int frequenz;
+	
 	protected AudioFormat audioFormat;
 	protected SourceDataLine sdl;
 
 	protected boolean isPlaying = false;
 
+	public void setFrequenz(int frequenz) {
+		this.frequenz = frequenz;
+	}
 	
-	public void play(int frequenz) throws LineUnavailableException {
+	public int getFrequenz() {
+		return frequenz;
+	}
+	
+	public void play() throws LineUnavailableException {
+		this.frequenz = frequenz;
+		
 		sdl.open(audioFormat, sampleRate);
 		sdl.start();
 
@@ -26,7 +36,7 @@ public abstract class FrequencyPlayer {
 			public void run() {
 				while (isPlaying) {
 					byte[] buffer;
-					buffer = createSinWaveBuffer(frequenz, 1000);
+					buffer = createSinWaveBuffer(1000);
 					//buffer = generateSineWavefreq(frequenz, 1);
 					sdl.write(buffer, 0, buffer.length);
 				}
@@ -47,7 +57,7 @@ public abstract class FrequencyPlayer {
 		// Wird im StereoFrequencyPlayer überschrieben
 	}
 
-	private byte[] generateSineWavefreq(int frequenz, int seconds) {
+	private byte[] generateSineWavefreq(int seconds) {
 		int samples = seconds * sampleRate;
 		byte[] output = new byte[samples];
 
@@ -63,7 +73,7 @@ public abstract class FrequencyPlayer {
 		return output;
 	}
 
-	private byte[] createSinWaveBuffer(double frequenz, int ms) {
+	private byte[] createSinWaveBuffer(int ms) {
 		int samples = (int) ((ms * sampleRate) / 1000);
 		byte[] output = new byte[samples];
 
