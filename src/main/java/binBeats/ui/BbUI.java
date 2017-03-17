@@ -41,6 +41,15 @@ public class BbUI {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		// Set System look and feel, hide from windowbuilder parser
+		// hide>>$
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			System.err.println("Error setting native system look and feel " + e);
+		}
+		// $hide<<
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
