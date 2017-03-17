@@ -22,9 +22,7 @@ public abstract class FrequencyPlayer {
 		return frequenz;
 	}
 	
-	public void play() throws LineUnavailableException {
-		this.frequenz = frequenz;
-		
+	public void play() throws LineUnavailableException {		
 		sdl.open(audioFormat, sampleRate);
 		sdl.start();
 
