@@ -17,7 +17,7 @@ public class MonoFrequencyPlayerTest {
 		MonoFrequencyPlayer player = new MonoFrequencyPlayer();
 		player.setFrequenz(440);
 		player.play();
-		Thread.sleep(2000);
+		Thread.sleep(10000);
 		player.stop();
 	}
 }

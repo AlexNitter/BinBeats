@@ -30,13 +30,21 @@ public abstract class FrequencyPlayer {
 
 		isPlaying = true;
 
+		// play the sound in a seperate thread to non-block the main(-gui)-thread
 		new Thread() {
 			public void run() {
 				while (isPlaying) {
-					byte[] buffer;
-					buffer = createSinWaveBuffer(1000);
-					//buffer = generateSineWavefreq(frequenz, 1);
+					
+					// Buffer with sound-data for 1 second
+					byte[] buffer = createBuffer();
+					
+					// Write data to sourceDataLine
 					sdl.write(buffer, 0, buffer.length);
+					
+					try {
+						// Wait some time to empty the buffer - TODO: Find the best time
+						Thread.sleep(800);
+					} catch (InterruptedException e) {}
 				}
 			}
 		}.start();
@@ -55,24 +63,14 @@ public abstract class FrequencyPlayer {
 		// Wird im StereoFrequencyPlayer überschrieben
 	}
 
-	private byte[] generateSineWavefreq(int seconds) {
-		int samples = seconds * sampleRate;
-		byte[] output = new byte[samples];
 
-		double periode = (double) (sampleRate / frequenz);
-		int amplitude = 100;
-
-		for (int i = 0; i < output.length; i++) {
-			double winkelfrequenz = (2.0 * Math.PI * i) / periode;
-			double wert = (Math.sin(winkelfrequenz) * amplitude);
-			output[i] = (byte) wert;
-		}
-
-		return output;
-	}
-
-	private byte[] createSinWaveBuffer(int ms) {
-		int samples = (int) ((ms * sampleRate) / 1000);
+	/**
+	 * Generates a byte-array which contains the sin-wave-sound-data for 1 second
+	 * @return 
+	 * 	
+	 */
+	private byte[] createBuffer() {
+		int samples = sampleRate; 
 		byte[] output = new byte[samples];
 
 		double periode = (double) sampleRate / frequenz;
