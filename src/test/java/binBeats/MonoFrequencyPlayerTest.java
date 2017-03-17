@@ -13,13 +13,11 @@ import main.java.binBeats.lib.MonoFrequencyPlayer;
 public class MonoFrequencyPlayerTest {
 
 	@Test
-	public void PlayStopTest() throws LineUnavailableException, InterruptedException, FileNotFoundException, UnsupportedEncodingException {
+	public void LinearTest() throws LineUnavailableException, InterruptedException, FileNotFoundException, UnsupportedEncodingException {
 		MonoFrequencyPlayer player = new MonoFrequencyPlayer();
 		player.setFrequenz(440);
 		player.play();
-		Thread.sleep(1000);
-		player.setFrequenz(450);
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		player.stop();
 	}
 }
