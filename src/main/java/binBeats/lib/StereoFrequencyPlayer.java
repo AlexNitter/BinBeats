@@ -1,6 +1,7 @@
 package main.java.binBeats.lib;
 
 import javax.sound.sampled.*;
+import javax.sound.sampled.AudioFormat.Encoding;
 
 /**
  * Für die tatsächliche Ausgabe einer Frequenz auf der Audioausgabe des PCs
@@ -11,7 +12,7 @@ public class StereoFrequencyPlayer extends FrequencyPlayer {
 	private Channel kanal;
 	
 	public StereoFrequencyPlayer(Channel kanal) throws LineUnavailableException {
-		sampleRate = 16 * 1024;
+		sampleRate = 44100; //16 * 1024;
 		sampleSizeInBits = 8;
 		int channels = 2;
 		boolean signed = true;
@@ -19,10 +20,15 @@ public class StereoFrequencyPlayer extends FrequencyPlayer {
 
 		this.kanal = kanal;
 		
-		audioFormat = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
+		audioFormat = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);		
 		sdl = AudioSystem.getSourceDataLine(audioFormat);
 	}
 
+	@Override
+	public void setFrequenz(int frequenz) {
+		this.frequenz = frequenz / 2;
+	}
+	
 	@Override
 	protected void setChannel() {
 		if (sdl.isControlSupported(FloatControl.Type.PAN)) {
