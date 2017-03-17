@@ -13,7 +13,7 @@ import javax.sound.sampled.*;
  */
 public class MonoFrequencyPlayer extends FrequencyPlayer {
 	public MonoFrequencyPlayer() throws LineUnavailableException, FileNotFoundException, UnsupportedEncodingException {
-		sampleRate = 41000;
+		sampleRate = 44100;
 		sampleSizeInBits = 8;
 		int channels = 1;
 		boolean signed = true;

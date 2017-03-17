@@ -15,7 +15,7 @@ public class StereoFrequencyPlayerTest {
 		StereoFrequencyPlayer player = new StereoFrequencyPlayer(Channel.right);
 		player.setFrequenz(440);
 		player.play();
-		Thread.sleep(300000);
+		Thread.sleep(10000);
 		player.stop();
 	}
 }
