@@ -7,15 +7,13 @@ import java.io.UnsupportedEncodingException;
 import javax.sound.sampled.*;
 
 /**
- * Für die tatsächliche Ausgabe einer Frequenz auf der Audioausgabe des PCs
- * 
- * @author alex
+ * Modul to play a given frequency in mono-mode
  */
 public class MonoFrequencyPlayer extends FrequencyPlayer {
 	public MonoFrequencyPlayer() throws LineUnavailableException, FileNotFoundException, UnsupportedEncodingException {
 		sampleRate = 44100;
 		sampleSizeInBits = 8;
-		int channels = 1;
+		channels = 1;
 		boolean signed = true;
 		boolean bigEndian = true;
 

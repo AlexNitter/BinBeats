@@ -4,24 +4,47 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
+/**
+ * Base-Class for playing frequencies via javax.sound-API
+ */
 public abstract class FrequencyPlayer {
+	
+	// Max size of the sourceDataLine-buffer before cleanup (100MByte)
+	private final int maxBytesInBuffer = 1 * 1024 * 1024;
+	private int bytesInBuffer = 0;
+	
+	private Thread playThread;
+	
 	protected int sampleRate;
 	protected int sampleSizeInBits;
-	protected int frequenz;
+	protected float frequency;
+	protected int channels;
 	
 	protected AudioFormat audioFormat;
 	protected SourceDataLine sdl;
-
+	
 	protected boolean isPlaying = false;
 
-	public void setFrequenz(int frequenz) {
-		this.frequenz = frequenz;
+	/**
+	 * Sets the frequency
+	 * @param frequency to play 
+	 */
+	public void setFrequency(float frequency) {
+		this.frequency = frequency;
 	}
 	
-	public int getFrequenz() {
-		return frequenz;
+	/**
+	 * returns the frequency
+	 * @return current frquency
+	 */
+	public float getFrequency() {
+		return frequency;
 	}
 	
+	/**
+	 * Creates a new thread and starts to play the frquency until the stop-method gets called
+	 * @throws LineUnavailableException
+	 */
 	public void play() throws LineUnavailableException {		
 		sdl.open(audioFormat, sampleRate);
 		sdl.start();
@@ -31,25 +54,31 @@ public abstract class FrequencyPlayer {
 		isPlaying = true;
 
 		// play the sound in a seperate thread to non-block the main(-gui)-thread
-		new Thread() {
+		playThread = new Thread() {
 			public void run() {
 				while (isPlaying) {
 					
 					// Buffer with sound-data for 1 second
 					byte[] buffer = createBuffer();
 					
-					// Write data to sourceDataLine
-					sdl.write(buffer, 0, buffer.length);
+					// clear the buffer when it reaches a given size (causes a unobtrusive click)
+					if(bytesInBuffer >= maxBytesInBuffer) {
+						sdl.flush();
+						bytesInBuffer = 0;
+					}
 					
-					try {
-						// Wait some time to empty the buffer - TODO: Find the best time
-						Thread.sleep(800);
-					} catch (InterruptedException e) {}
+					// Write data to sourceDataLine
+					bytesInBuffer += sdl.write(buffer, 0, buffer.length);
 				}
 			}
-		}.start();
+		};
+		
+		playThread.start();
 	}
 
+	/**
+	 * Stops the playing and clears the sourceDataLine-buffer
+	 */
 	public void stop() {
 		isPlaying = false;
 
@@ -59,21 +88,46 @@ public abstract class FrequencyPlayer {
 		}
 	}
 
-	protected void setChannel() {
-		// Wird im StereoFrequencyPlayer überschrieben
-	}
-
-
 	/**
-	 * Generates a byte-array which contains the sin-wave-sound-data for 1 second
-	 * @return 
-	 * 	
+	 * Plays the frequency for the given amount of seconds
+	 * @param seconds amount of the seconds the sound should be played
+	 * @throws LineUnavailableException
 	 */
-	private byte[] createBuffer() {
-		int samples = sampleRate; 
+	public void playForSeconds(int seconds) throws LineUnavailableException {
+		sdl.open(audioFormat, sampleRate);
+		sdl.start();
+
+		setChannel();
+
+		isPlaying = true;
+		
+		// Buffer with sound-data for 1 second
+		byte[] buffer = createBuffer(seconds);
+		
+		// Write data to sourceDataLine
+		sdl.write(buffer, 0, buffer.length);
+		sdl.drain();
+		sdl.close();
+		
+		isPlaying = false;
+	}
+	
+	/**
+	 * Sets the channel to pan the sound to the left or right audio-channel
+	 */
+	protected void setChannel() {
+		// possiblity for subclasses to override and pan to left or right
+	}
+	
+	/**
+	 * Generates a byte-array which contains the sin-wave-sound-data for a given amount of seconds
+	 * @return 
+	 */
+	private byte[] createBuffer(int seconds) {
+		int samples = sampleRate * seconds * channels; 
 		byte[] output = new byte[samples];
 
-		double periode = (double) sampleRate / frequenz;
+		double periode = (double) sampleRate / (frequency / channels);
 		int amplitude = 100;
 
 		for (int i = 0; i < output.length; i++) {
@@ -83,5 +137,13 @@ public abstract class FrequencyPlayer {
 		}
 
 		return output;
+	}
+	
+	/**
+	 * Generates a byte-array which contains the sin-wave-sound-data for 1 second
+	 * @return 
+	 */
+	private byte[] createBuffer() {
+		return createBuffer(1);
 	}
 }

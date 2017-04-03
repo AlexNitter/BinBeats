@@ -4,29 +4,22 @@ import javax.sound.sampled.*;
 import javax.sound.sampled.AudioFormat.Encoding;
 
 /**
- * Für die tatsächliche Ausgabe einer Frequenz auf der Audioausgabe des PCs
- * 
- * @author alex
+ * Modul to play a given frequency in stereo-mode
  */
 public class StereoFrequencyPlayer extends FrequencyPlayer {
-	private Channel kanal;
+	private Channel channel;
 	
-	public StereoFrequencyPlayer(Channel kanal) throws LineUnavailableException {
-		sampleRate = 44100; //16 * 1024;
+	public StereoFrequencyPlayer(Channel channel) throws LineUnavailableException {
+		sampleRate = 44100; 
 		sampleSizeInBits = 8;
-		int channels = 2;
+		channels = 2;
 		boolean signed = true;
 		boolean bigEndian = false;
 
-		this.kanal = kanal;
+		this.channel = channel;
 		
 		audioFormat = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);		
 		sdl = AudioSystem.getSourceDataLine(audioFormat);
-	}
-
-	@Override
-	public void setFrequenz(int frequenz) {
-		this.frequenz = frequenz / 2;
 	}
 	
 	@Override
@@ -34,7 +27,7 @@ public class StereoFrequencyPlayer extends FrequencyPlayer {
 		if (sdl.isControlSupported(FloatControl.Type.PAN)) {
 			FloatControl pan = (FloatControl) sdl.getControl(FloatControl.Type.PAN);
 
-			switch (kanal) {
+			switch (channel) {
 			case left:
 				pan.setValue(-1.0f);
 				break;
