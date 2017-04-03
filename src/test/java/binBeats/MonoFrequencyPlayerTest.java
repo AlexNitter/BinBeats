@@ -25,6 +25,7 @@ public class MonoFrequencyPlayerTest {
 	public void monoFrequencyPlayer_playForSeconds_test() throws LineUnavailableException, InterruptedException, FileNotFoundException, UnsupportedEncodingException {
 		MonoFrequencyPlayer player = new MonoFrequencyPlayer();
 		player.setFrequency(400);
-		player.playForSeconds(60);
+		player.setVolume(0f);
+		player.playForSeconds(2);
 	}
 }

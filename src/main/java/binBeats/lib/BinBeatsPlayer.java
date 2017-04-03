@@ -22,7 +22,7 @@ public class BinBeatsPlayer {
 	 * @throws IllegalArgumentException
 	 */
 	public void setBinBeat(BinBeat binBeat) throws IllegalArgumentException {		
-		ValidationResult result = validator.Validate(binBeat);
+		ValidationResult result = validator.validate(binBeat);
 		
 		if(!result.isValid()) {
 			throw new IllegalArgumentException(result.getMessage());

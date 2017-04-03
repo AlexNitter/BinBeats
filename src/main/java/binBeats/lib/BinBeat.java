@@ -6,12 +6,20 @@ package main.java.binBeats.lib;
 public class BinBeat {
 	private float carrierFrequency;
 	private float beatFrquency;
+	private float carrierVolume;
+	private float beatVolume;
 	
 	public BinBeat() {}
 
-	public BinBeat(float carrierFrequency, float beatFrequency) {
+	public BinBeat(float carrierFrequency, float beatFrequency){
+		this(carrierFrequency, beatFrequency, 127, 127);
+	}
+	
+	public BinBeat(float carrierFrequency, float beatFrequency, float carrierVolume, float beatVolume) {
 		this.carrierFrequency = carrierFrequency;
 		this.beatFrquency = beatFrequency;
+		this.carrierVolume = carrierVolume;
+		this.beatVolume = beatVolume;
 	}
 	
 	/**
@@ -40,5 +48,21 @@ public class BinBeat {
 	 */
 	public void setBeatFrquency(float beatFrquency) {
 		this.beatFrquency = beatFrquency;
+	}
+
+	public float getCarrierVolume() {
+		return carrierVolume;
+	}
+
+	public void setCarrierVolume(float carrierVolume) {
+		this.carrierVolume = carrierVolume;
+	}
+
+	public float getBeatVolume() {
+		return beatVolume;
+	}
+
+	public void setBeatVolume(float beatVolume) {
+		this.beatVolume = beatVolume;
 	}	
 }

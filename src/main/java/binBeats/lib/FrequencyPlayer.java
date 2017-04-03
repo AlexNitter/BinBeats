@@ -1,6 +1,7 @@
 package main.java.binBeats.lib;
 
 import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
@@ -18,6 +19,7 @@ public abstract class FrequencyPlayer {
 	protected int sampleRate;
 	protected int sampleSizeInBits;
 	protected float frequency;
+	protected float volume;
 	protected int channels;
 	
 	protected AudioFormat audioFormat;
@@ -25,20 +27,20 @@ public abstract class FrequencyPlayer {
 	
 	protected boolean isPlaying = false;
 
-	/**
-	 * Sets the frequency
-	 * @param frequency to play 
-	 */
 	public void setFrequency(float frequency) {
 		this.frequency = frequency;
 	}
 	
-	/**
-	 * returns the frequency
-	 * @return current frquency
-	 */
 	public float getFrequency() {
 		return frequency;
+	}
+	
+	public void setVolume(float volume) {
+		this.volume = volume;
+	}
+	
+	public float getVolume() {
+		return this.volume;
 	}
 	
 	/**
@@ -46,10 +48,7 @@ public abstract class FrequencyPlayer {
 	 * @throws LineUnavailableException
 	 */
 	public void play() throws LineUnavailableException {		
-		sdl.open(audioFormat, sampleRate);
-		sdl.start();
-
-		setChannel();
+		sdlStart();
 
 		isPlaying = true;
 
@@ -94,10 +93,7 @@ public abstract class FrequencyPlayer {
 	 * @throws LineUnavailableException
 	 */
 	public void playForSeconds(int seconds) throws LineUnavailableException {
-		sdl.open(audioFormat, sampleRate);
-		sdl.start();
-
-		setChannel();
+		sdlStart();
 
 		isPlaying = true;
 		
@@ -119,6 +115,22 @@ public abstract class FrequencyPlayer {
 		// possiblity for subclasses to override and pan to left or right
 	}
 	
+	private void sdlStart() throws LineUnavailableException {
+		sdl.open(audioFormat, sampleRate);
+		sdl.start();
+		
+		setChannel();
+		setVolume();
+	}
+
+	private void setVolume() {
+		if (sdl.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+			FloatControl gain = (FloatControl) sdl.getControl(FloatControl.Type.MASTER_GAIN);
+
+			gain.setValue(volume);
+		}
+	}
+	
 	/**
 	 * Generates a byte-array which contains the sin-wave-sound-data for a given amount of seconds
 	 * @return 
@@ -128,11 +140,10 @@ public abstract class FrequencyPlayer {
 		byte[] output = new byte[samples];
 
 		double periode = (double) sampleRate / (frequency / channels);
-		int amplitude = 100;
 
 		for (int i = 0; i < output.length; i++) {
 			double winkelfrequenz = 2.0 * Math.PI * i / periode;
-			double wert = (Math.sin(winkelfrequenz) * amplitude);
+			double wert = (Math.sin(winkelfrequenz) * 100f);
 			output[i] = (byte) wert;
 		}
 
