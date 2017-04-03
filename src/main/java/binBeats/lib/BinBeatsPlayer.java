@@ -3,51 +3,54 @@ package main.java.binBeats.lib;
 import javax.sound.sampled.LineUnavailableException;
 
 /**
- * Für das aufbereiten und Ausgeben von binauralen Beats zuständig
- * 
- * @author alex
+ * Plays a BinBeat
  */
 public class BinBeatsPlayer {
-	private int traegerFrequenz;
-	private int differenzFrequenz;
-	
+	private BinBeat binBeat;
 	private StereoFrequencyPlayer playerLinks;
 	private StereoFrequencyPlayer playerRechts;
-
+	private BinBeatValidator validator;
+	
 	public BinBeatsPlayer() throws LineUnavailableException {
 		playerLinks = new StereoFrequencyPlayer(Channel.left);
 		playerRechts = new StereoFrequencyPlayer(Channel.right);
+		validator = new BinBeatValidator();
 	}
 
-	public void setTraegerFrequenz(int traegerFrequenz) {
-		//TODO fachliche Prüfung der Frequenzen (Schwellwerte, Differenz etc.), ggf. in eigene Klasse auslagern
+	/**
+	 * Validates the given BinBeat and sets it
+	 * @throws IllegalArgumentException
+	 */
+	public void setBinBeat(BinBeat binBeat) throws IllegalArgumentException {		
+		ValidationResult result = validator.Validate(binBeat);
 		
-		this.traegerFrequenz = traegerFrequenz;
-		this.playerLinks.setFrequenz(traegerFrequenz);
-	}
-	
-	public int getTraegerFrequenz() {
-		return traegerFrequenz;
-	}
-	
-	public void setDifferenzFrequenz(int differenzFrequenz) {
-		//TODO fachliche Prüfung der Frequenzen (Schwellwerte, Differenz etc.), ggf. in eigene Klasse auslagern
+		if(!result.isValid()) {
+			throw new IllegalArgumentException(result.getMessage());
+		}
 		
-		this.differenzFrequenz = differenzFrequenz;
-		this.playerRechts.setFrequenz(differenzFrequenz);
+		this.binBeat = binBeat;
+		this.playerLinks.setFrequency(binBeat.getCarrierFrequency());
+		this.playerRechts.setFrequency(binBeat.getBeatFrquency());
 	}
 	
-	public int getDifferenzFrequenz() {
-		return differenzFrequenz;	
+	/**
+	 * Returns the given BinBeat
+	 */
+	public BinBeat getBinBeat() {
+		return this.binBeat;
 	}
 	
-	public void play() throws LineUnavailableException {
-		//TODO fachliche Prüfung der Frequenzen (Schwellwerte, Differenz etc.), ggf. in eigene Klasse auslagern
-		
+	/**
+	 * Plays the given BinBeat until the stop-method gets called
+	 */
+	public void play() throws LineUnavailableException {		
 		playerRechts.play();
 		playerLinks.play();
 	}
 
+	/**
+	 * Stops the playing
+	 */
 	public void stop() {
 		playerLinks.stop();
 		playerRechts.stop();
