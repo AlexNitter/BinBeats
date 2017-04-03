@@ -7,13 +7,13 @@ import javax.sound.sampled.LineUnavailableException;
  */
 public class BinBeatsPlayer {
 	private BinBeat binBeat;
-	private StereoFrequencyPlayer playerLinks;
-	private StereoFrequencyPlayer playerRechts;
+	private StereoFrequencyPlayer playerLeft;
+	private StereoFrequencyPlayer playerRight;
 	private BinBeatValidator validator;
 	
 	public BinBeatsPlayer() throws LineUnavailableException {
-		playerLinks = new StereoFrequencyPlayer(Channel.left);
-		playerRechts = new StereoFrequencyPlayer(Channel.right);
+		playerLeft = new StereoFrequencyPlayer(Channel.left);
+		playerRight = new StereoFrequencyPlayer(Channel.right);
 		validator = new BinBeatValidator();
 	}
 
@@ -29,8 +29,8 @@ public class BinBeatsPlayer {
 		}
 		
 		this.binBeat = binBeat;
-		this.playerLinks.setFrequency(binBeat.getCarrierFrequency());
-		this.playerRechts.setFrequency(binBeat.getBeatFrquency());
+		this.playerLeft.setFrequency(binBeat.getCarrierFrequency());
+		this.playerRight.setFrequency(binBeat.getBeatFrquency());
 	}
 	
 	/**
@@ -44,15 +44,15 @@ public class BinBeatsPlayer {
 	 * Plays the given BinBeat until the stop-method gets called
 	 */
 	public void play() throws LineUnavailableException {		
-		playerRechts.play();
-		playerLinks.play();
+		playerLeft.play();
+		playerRight.play();
 	}
 
 	/**
 	 * Stops the playing
 	 */
 	public void stop() {
-		playerLinks.stop();
-		playerRechts.stop();
+		playerLeft.stop();
+		playerRight.stop();
 	}
 }

@@ -42,7 +42,7 @@ public class BinBeatValidator {
 	/**
 	 * Indicates whether the given BinBeat is valid or not
 	 */
-	public ValidationResult Validate(BinBeat binBeat) {
+	public ValidationResult validate(BinBeat binBeat) {
 		Boolean isValid = false;
 		String message = "";
 		
