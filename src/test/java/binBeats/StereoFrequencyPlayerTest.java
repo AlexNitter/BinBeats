@@ -11,11 +11,18 @@ import main.java.binBeats.lib.StereoFrequencyPlayer;
 public class StereoFrequencyPlayerTest {
 
 	@Test
-	public void LinearTest() throws LineUnavailableException, InterruptedException {
+	public void stereoFrequencyPlayer_playStop_test() throws LineUnavailableException, InterruptedException {
 		StereoFrequencyPlayer player = new StereoFrequencyPlayer(Channel.right);
-		player.setFrequenz(440);
+		player.setFrequency(460);
 		player.play();
-		Thread.sleep(10000);
+		Thread.sleep(60000);
 		player.stop();
+	}
+	
+	@Test
+	public void stereoFrequencyPlayer_playForSeconds_test() throws LineUnavailableException, InterruptedException {
+		StereoFrequencyPlayer player = new StereoFrequencyPlayer(Channel.right);
+		player.setFrequency(440);
+		player.playForSeconds(2);
 	}
 }
