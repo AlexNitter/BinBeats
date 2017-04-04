@@ -30,7 +30,15 @@ public class BinBeatsPlayer {
 		
 		this.binBeat = binBeat;
 		this.playerLeft.setFrequency(binBeat.getCarrierFrequency());
-		this.playerRight.setFrequency(binBeat.getBeatFrquency());
+		/* Frequency for the right-side player is calculated from
+		 * CarrierFrequency + BeatFrequency
+		 * unless it exceeds the upper bound of 1500 Hz
+		 */
+		if(binBeat.getCarrierFrequency() + binBeat.getBeatFrequency() <= 1500) {
+			this.playerRight.setFrequency(binBeat.getCarrierFrequency() + binBeat.getBeatFrequency());
+		} else {
+			this.playerRight.setFrequency(binBeat.getCarrierFrequency() - binBeat.getBeatFrequency());
+		}
 	}
 	
 	/**

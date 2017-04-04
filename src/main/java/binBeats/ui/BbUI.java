@@ -1,41 +1,47 @@
 package main.java.binBeats.ui;
 
 import java.awt.EventQueue;
-
+import java.awt.Color;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
-import java.awt.BorderLayout;
 import javax.swing.JPanel;
-import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
-import java.awt.Component;
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.JSlider;
-import javax.swing.JSeparator;
-import java.awt.Color;
 import javax.swing.SwingConstants;
-import javax.swing.JInternalFrame;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.MatteBorder;
-import javax.swing.border.EtchedBorder;
 import javax.swing.JScrollPane;
-import java.awt.Button;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
-import javax.swing.border.CompoundBorder;
 
+import net.miginfocom.swing.MigLayout;
+
+import main.java.binBeats.lib.BinBeat;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.ActionListener;
+
+/**
+ * Displays the UI for BinBeat Player and -Session Manager
+ * @author Magnus
+ *
+ */
 public class BbUI {
 
 	private JFrame frmBinbeats;
+	
+	private BinBeat playerBinBeat;
 
 	/**
 	 * Launch the application.
@@ -73,6 +79,9 @@ public class BbUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		// TODO: Demo BinBeat
+		playerBinBeat = new BinBeat(432, 7);
+		
 		frmBinbeats = new JFrame();
 		frmBinbeats.setTitle("BinBeats");
 		frmBinbeats.setBounds(100, 100, 476, 307);
@@ -80,6 +89,10 @@ public class BbUI {
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frmBinbeats.getContentPane().add(tabbedPane, BorderLayout.CENTER);
+		
+		
+		// _____________________ Player View _____________________
+		// TODO: connect volume fields with sliders, fix international display of decimal values (0,1 should be displayed as 0.1)
 		
 		JPanel panelPlayer = new JPanel();
 		tabbedPane.addTab("Simple Player", null, panelPlayer, null);
@@ -92,225 +105,286 @@ public class BbUI {
 		JComboBox comboBoxPlayerPresetSelection = new JComboBox(mockupPlayerAtmosphereSelection);
 		panelPlayer.add(comboBoxPlayerPresetSelection, "flowx,cell 2 0,growx");
 		
-		JButton btnSave_2 = new JButton("Save");
-		panelPlayer.add(btnSave_2, "flowx,cell 3 0");
+		JButton btnPlayerSave = new JButton("Save");
+		panelPlayer.add(btnPlayerSave, "flowx,cell 3 0");
 		
-		JButton btnPlay_1 = new JButton("Play");
-		panelPlayer.add(btnPlay_1, "cell 3 0");
+		JButton btnPlayerPlay = new JButton("Play");
+		panelPlayer.add(btnPlayerPlay, "cell 3 0");
 		
-		JLabel lblBackground_1 = new JLabel("Background");
-		panelPlayer.add(lblBackground_1, "cell 1 1,alignx trailing");
+		JLabel lblPlayerBackground = new JLabel("Background");
+		panelPlayer.add(lblPlayerBackground, "cell 1 1,alignx trailing");
 		
 		// TODO: Parse from Background Audio List
 		String[] bgSelectionMockup = {"(none)", "Pink Noise", "White Noise", "Stream", "Rain"};
 		JComboBox comboBoxPlayerBgSelection = new JComboBox(bgSelectionMockup);
 		panelPlayer.add(comboBoxPlayerBgSelection, "cell 2 1,growx");
 		
-		JLabel lblCarrierFrequency = new JLabel("Carrier Frequency");
-		panelPlayer.add(lblCarrierFrequency, "cell 1 2,alignx trailing");
+		JLabel lblPlayerCarrierFrequency = new JLabel("Carrier Frequency");
+		panelPlayer.add(lblPlayerCarrierFrequency, "cell 1 2,alignx trailing");
 		
 		JFormattedTextField formattedTextFieldPlayerCarrier = new JFormattedTextField();
+		JSlider sliderPlayerCarrier = new JSlider();
+		
+		// Link carrier slider and text field
+		formattedTextFieldPlayerCarrier.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String typedCarrierFreq = formattedTextFieldPlayerCarrier.getText();
+				//sliderPlayerCarrier.setValue(20);
+				// Check if typed value is a valid number
+				if(!typedCarrierFreq.matches("\\d+") || typedCarrierFreq.length() > 4) {
+					return;
+				}
+				int value = Integer.parseInt(typedCarrierFreq);
+				// Check for correct BinBeat specifications and change if necessary
+				if (value < 20) {
+					value = 20;
+				} else if (value > 1500) {
+					value = 1500;
+				}
+				formattedTextFieldPlayerCarrier.setValue(value);
+				sliderPlayerCarrier.setValue(value);
+			}
+		});
+		sliderPlayerCarrier.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				formattedTextFieldPlayerCarrier.setValue(sliderPlayerCarrier.getValue());
+			}
+		});
+		
 		formattedTextFieldPlayerCarrier.setColumns(4);
 		panelPlayer.add(formattedTextFieldPlayerCarrier, "flowx,cell 2 2,alignx left");
 		
-		JLabel lblHz_2 = new JLabel("Hz");
-		panelPlayer.add(lblHz_2, "cell 2 2");
+		sliderPlayerCarrier.setMinimum(20);
+		sliderPlayerCarrier.setMaximum(1500);
+		sliderPlayerCarrier.setMinorTickSpacing(1);
+		sliderPlayerCarrier.setMajorTickSpacing(10);
+		sliderPlayerCarrier.setValue((int)this.playerBinBeat.getCarrierFrequency());
+		panelPlayer.add(sliderPlayerCarrier, "cell 1 3 3 1,growx");
 		
-		JLabel label_1 = new JLabel("20");
-		panelPlayer.add(label_1, "cell 0 3,alignx right");
+		JLabel lblPlayerCarrierHz = new JLabel("Hz");
+		panelPlayer.add(lblPlayerCarrierHz, "cell 2 2");
 		
-		JSlider slider = new JSlider();
-		slider.setMaximum(1500);
-		slider.setMinorTickSpacing(1);
-		slider.setMajorTickSpacing(10);
-		slider.setValue(300);
-		slider.setMinimum(20);
-		panelPlayer.add(slider, "cell 1 3 3 1,growx");
+		JLabel labelPlayerCarrier_20 = new JLabel("20");
+		panelPlayer.add(labelPlayerCarrier_20, "cell 0 3,alignx right");
 		
-		JLabel label_2 = new JLabel("1500");
-		panelPlayer.add(label_2, "cell 4 3,alignx left");
+		JLabel labelPlayerCarrier_1500 = new JLabel("1500");
+		panelPlayer.add(labelPlayerCarrier_1500, "cell 4 3,alignx left");
 		
-		JLabel lblBeatFrequency = new JLabel("Beat Frequency");
-		panelPlayer.add(lblBeatFrequency, "cell 1 4,alignx trailing");
+		JLabel lblPlayerBeatFrequency = new JLabel("Beat Frequency");
+		panelPlayer.add(lblPlayerBeatFrequency, "cell 1 4,alignx trailing");
 		
-		JFormattedTextField formattedTextField_2 = new JFormattedTextField();
-		formattedTextField_2.setColumns(4);
-		panelPlayer.add(formattedTextField_2, "flowx,cell 2 4,alignx left");
+		JFormattedTextField formattedTextFieldPlayerBeatFreq = new JFormattedTextField();
+		formattedTextFieldPlayerBeatFreq.setColumns(4);
+		panelPlayer.add(formattedTextFieldPlayerBeatFreq, "flowx,cell 2 4,alignx left");
 		
-		JLabel lblHz_3 = new JLabel("Hz");
-		panelPlayer.add(lblHz_3, "cell 2 4");
+		JLabel lblPlayerBeatFreqHz = new JLabel("Hz");
+		panelPlayer.add(lblPlayerBeatFreqHz, "cell 2 4");
 		
-		JLabel label_3 = new JLabel("0.5");
-		panelPlayer.add(label_3, "cell 0 5,alignx right");
+		JLabel labelPlayerBeatFreq_05 = new JLabel("0.5");
+		panelPlayer.add(labelPlayerBeatFreq_05, "cell 0 5,alignx right");
 		
-		JSlider slider_1 = new JSlider();
-		slider_1.setMajorTickSpacing(10);
-		slider_1.setMinorTickSpacing(1);
-		slider_1.setMaximum(300);
-		slider_1.setMinimum(5);
-		panelPlayer.add(slider_1, "cell 1 5 3 1,growx");
+		JSlider sliderPlayerBeatFreq = new JSlider();
+		panelPlayer.add(sliderPlayerBeatFreq, "cell 1 5 3 1,growx");
 		
-		JLabel label_4 = new JLabel("30");
-		panelPlayer.add(label_4, "cell 4 5,alignx left");
+		JLabel labelPlayerBeatFreq_30 = new JLabel("30");
+		panelPlayer.add(labelPlayerBeatFreq_30, "cell 4 5,alignx left");
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(null);
-		panelPlayer.add(panel, "cell 0 6 5 1,grow");
-		panel.setLayout(new MigLayout("", "[][grow][][][grow]", "[][]"));
+		/* Link beat slider and text field
+		 * Note: JSlider works with integers.
+		 * As we want to be able to change values by .1 we divide by 10.
+		 */
+		formattedTextFieldPlayerBeatFreq.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String typedBeatFreq = formattedTextFieldPlayerBeatFreq.getText();
+				if(!typedBeatFreq.matches("\\d+(\\.\\d?)?")) {
+					return;
+				}
+				float fieldValue = Float.parseFloat(typedBeatFreq);
+				int sliderValue = (int)(fieldValue*10);
+				// Check for correct BinBeat specifications and change if necessary
+				if (sliderValue < 5) {
+					sliderValue = 5;
+					fieldValue = 0.5f;
+				} else if (sliderValue > 300) {
+					sliderValue = 300;
+					fieldValue = 30;
+				}
+				formattedTextFieldPlayerBeatFreq.setValue(fieldValue);
+				sliderPlayerBeatFreq.setValue(sliderValue);
+			}
+		});
+		sliderPlayerBeatFreq.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				formattedTextFieldPlayerBeatFreq.setValue((float)sliderPlayerBeatFreq.getValue()/10);
+			}
+		});
 		
-		JLabel lblBackgroundVolume_1 = new JLabel("Background Volume");
-		panel.add(lblBackgroundVolume_1, "cell 0 0,alignx trailing");
+		sliderPlayerBeatFreq.setMajorTickSpacing(10);
+		sliderPlayerBeatFreq.setMinorTickSpacing(1);
+		sliderPlayerBeatFreq.setMaximum(300);
+		sliderPlayerBeatFreq.setMinimum(5);
+		sliderPlayerBeatFreq.setValue((int)this.playerBinBeat.getBeatFrequency()*10);
+		
+		JPanel panelPlayerVolumeControl = new JPanel();
+		panelPlayerVolumeControl.setBorder(null);
+		panelPlayer.add(panelPlayerVolumeControl, "cell 0 6 5 1,grow");
+		panelPlayerVolumeControl.setLayout(new MigLayout("", "[][grow][][][grow]", "[][]"));
+		
+		JLabel lblPlayerBackgroundVolume = new JLabel("Background Volume");
+		panelPlayerVolumeControl.add(lblPlayerBackgroundVolume, "cell 0 0,alignx trailing");
 		
 		JFormattedTextField formattedTextFieldPlayerBgVol = new JFormattedTextField();
 		formattedTextFieldPlayerBgVol.setColumns(4);
-		panel.add(formattedTextFieldPlayerBgVol, "flowx,cell 1 0,alignx left");
+		panelPlayerVolumeControl.add(formattedTextFieldPlayerBgVol, "flowx,cell 1 0,alignx left");
 		
-		JLabel label_5 = new JLabel("%");
-		panel.add(label_5, "cell 1 0");
+		JLabel labelPlayerBgvolPercent = new JLabel("%");
+		panelPlayerVolumeControl.add(labelPlayerBgvolPercent, "cell 1 0");
 		
-		JLabel lblBeatVolume_1 = new JLabel("Beat Volume");
-		panel.add(lblBeatVolume_1, "cell 3 0,alignx trailing");
+		JLabel lblPlayerBeatVolume = new JLabel("Beat Volume");
+		panelPlayerVolumeControl.add(lblPlayerBeatVolume, "cell 3 0,alignx trailing");
 		
 		JFormattedTextField formattedTextFieldPlayerBeatVol = new JFormattedTextField();
 		formattedTextFieldPlayerBeatVol.setColumns(4);
-		panel.add(formattedTextFieldPlayerBeatVol, "flowx,cell 4 0,alignx left");
+		panelPlayerVolumeControl.add(formattedTextFieldPlayerBeatVol, "flowx,cell 4 0,alignx left");
 		
-		JLabel label_6 = new JLabel("%");
-		panel.add(label_6, "cell 4 0");
+		JLabel labelPlayerBeatVolPercent = new JLabel("%");
+		panelPlayerVolumeControl.add(labelPlayerBeatVolPercent, "cell 4 0");
 		
 		JSlider sliderPlayerBgVol = new JSlider();
 		sliderPlayerBgVol.setMajorTickSpacing(10);
 		sliderPlayerBgVol.setMinorTickSpacing(1);
-		panel.add(sliderPlayerBgVol, "cell 0 1 2 1,growx");
+		panelPlayerVolumeControl.add(sliderPlayerBgVol, "cell 0 1 2 1,growx");
 		
 		JSlider sliderPlayerBeatVol = new JSlider();
-		panel.add(sliderPlayerBeatVol, "cell 3 1 2 1,growx");
+		panelPlayerVolumeControl.add(sliderPlayerBeatVol, "cell 3 1 2 1,growx");
+		
+		
+		// _____________________ Session View _____________________
 		
 		JPanel panelSession = new JPanel();
 		tabbedPane.addTab("Session", null, panelSession, null);
 		panelSession.setLayout(new MigLayout("", "[][grow][][][][]", "[][][][][grow]"));
 		
-		JLabel lblSession = new JLabel("Session");
-		panelSession.add(lblSession, "cell 0 0,alignx trailing");
+		JLabel lblSessionPreset = new JLabel("Preset");
+		panelSession.add(lblSessionPreset, "cell 0 0,alignx trailing");
 		
 		// TODO: Parse from sessions
 		String[] sessionMockup = {"<new>", "Meditation", "Sleep Aid", "Wakeup"};
-		JComboBox comboBoxSessionSelection = new JComboBox(sessionMockup);
-		panelSession.add(comboBoxSessionSelection, "cell 1 0,growx");
+		JComboBox comboBoxSessionPresetSelection = new JComboBox(sessionMockup);
+		panelSession.add(comboBoxSessionPresetSelection, "cell 1 0,growx");
 		
-		JButton btnSave = new JButton("Save");
-		panelSession.add(btnSave, "cell 2 0,alignx right");
+		JButton btnSessionSave = new JButton("Save");
+		panelSession.add(btnSessionSave, "cell 2 0,alignx right");
 		
-		JButton btnPlay = new JButton("Play");
-		panelSession.add(btnPlay, "cell 3 0,alignx center");
+		JButton btnSessionPlay = new JButton("Play");
+		panelSession.add(btnSessionPlay, "cell 3 0,alignx center");
 		
-		JButton btnExport = new JButton("Export");
-		panelSession.add(btnExport, "cell 4 0,alignx left");
+		JButton btnSessionExport = new JButton("Export");
+		panelSession.add(btnSessionExport, "cell 4 0,alignx left");
 		
-		JLabel lblBackground = new JLabel("Background");
-		panelSession.add(lblBackground, "cell 0 1,alignx trailing");
+		JLabel lblSessionBackground = new JLabel("Background");
+		panelSession.add(lblSessionBackground, "cell 0 1,alignx trailing");
 		
-		JComboBox comboBoxBgSelection = new JComboBox(bgSelectionMockup);
-		panelSession.add(comboBoxBgSelection, "cell 1 1,growx");
+		JComboBox comboBoxSessionBgSelection = new JComboBox(bgSelectionMockup);
+		panelSession.add(comboBoxSessionBgSelection, "cell 1 1,growx");
 		
-		JLabel lblBackgroundVolume = new JLabel("Background Volume");
-		panelSession.add(lblBackgroundVolume, "cell 0 2,alignx trailing");
+		JLabel lblSessionBackgroundVolume = new JLabel("Background Volume");
+		panelSession.add(lblSessionBackgroundVolume, "cell 0 2,alignx trailing");
 		
-		JFormattedTextField bogVolField = new JFormattedTextField();
-		bogVolField.setHorizontalAlignment(SwingConstants.LEFT);
-		lblBackgroundVolume.setLabelFor(bogVolField);
-		bogVolField.setText("50");
-		bogVolField.setColumns(3);
-		panelSession.add(bogVolField, "flowx,cell 1 2,alignx left");
+		JFormattedTextField formattedTextFieldSessionBgVol = new JFormattedTextField();
+		formattedTextFieldSessionBgVol.setHorizontalAlignment(SwingConstants.LEFT);
+		lblSessionBackgroundVolume.setLabelFor(formattedTextFieldSessionBgVol);
+		formattedTextFieldSessionBgVol.setText("50");
+		formattedTextFieldSessionBgVol.setColumns(3);
+		panelSession.add(formattedTextFieldSessionBgVol, "flowx,cell 1 2,alignx left");
 		
 		Component horizontalGlue = Box.createHorizontalGlue();
 		panelSession.add(horizontalGlue, "cell 4 2");
 		
-		JLabel lblBeatVolume = new JLabel("Beat Volume");
-		panelSession.add(lblBeatVolume, "cell 3 2,alignx trailing");
+		JLabel lblSessionBeatVolume = new JLabel("Beat Volume");
+		panelSession.add(lblSessionBeatVolume, "cell 3 2,alignx trailing");
 		
-		JFormattedTextField beatVolField = new JFormattedTextField();
-		beatVolField.setHorizontalAlignment(SwingConstants.LEFT);
-		lblBeatVolume.setLabelFor(beatVolField);
-		beatVolField.setText("50");
-		beatVolField.setColumns(3);
-		panelSession.add(beatVolField, "flowx,cell 4 2,alignx left");
+		JFormattedTextField formattedTextFieldSessionBeatVol = new JFormattedTextField();
+		formattedTextFieldSessionBeatVol.setHorizontalAlignment(SwingConstants.LEFT);
+		lblSessionBeatVolume.setLabelFor(formattedTextFieldSessionBeatVol);
+		formattedTextFieldSessionBeatVol.setText("50");
+		formattedTextFieldSessionBeatVol.setColumns(3);
+		panelSession.add(formattedTextFieldSessionBeatVol, "flowx,cell 4 2,alignx left");
 		
-		JLabel label = new JLabel("%");
-		panelSession.add(label, "cell 4 2");
+		JLabel lblSessionBeatVolPercent = new JLabel("%");
+		panelSession.add(lblSessionBeatVolPercent, "cell 4 2");
 		
-		JSlider bgVolSlider = new JSlider();
-		panelSession.add(bgVolSlider, "cell 0 3 2 1");
+		JSlider sliderSessionBgVol = new JSlider();
+		panelSession.add(sliderSessionBgVol, "cell 0 3 2 1");
 		
-		JSlider beatVolSlider = new JSlider();
-		panelSession.add(beatVolSlider, "cell 3 3 2 1");
+		JSlider sliderSessionBeatVol = new JSlider();
+		panelSession.add(sliderSessionBeatVol, "cell 3 3 2 1");
 		
-		JLabel lblPercent = new JLabel("%");
-		panelSession.add(lblPercent, "cell 1 2");
+		JLabel lblSessionBgVolPercent = new JLabel("%");
+		panelSession.add(lblSessionBgVolPercent, "cell 1 2");
 		
-		JPanel panelDatapoints = new JPanel();
-		panelDatapoints.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Datapoints", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panelSession.add(panelDatapoints, "cell 0 4 5 1,grow");
-		panelDatapoints.setLayout(new MigLayout("", "[][][][][][][]", "[][grow]"));
+		JPanel panelSessionDatapoints = new JPanel();
+		panelSessionDatapoints.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Datapoints", TitledBorder.LEFT, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelSession.add(panelSessionDatapoints, "cell 0 4 5 1,grow");
+		panelSessionDatapoints.setLayout(new MigLayout("", "[][][][][][][]", "[][grow]"));
 		
-		JLabel lblCarrier = new JLabel("Carrier");
-		panelDatapoints.add(lblCarrier, "cell 0 0,alignx left");
+		JLabel lblSessionCarrier = new JLabel("Carrier");
+		panelSessionDatapoints.add(lblSessionCarrier, "cell 0 0,alignx left");
 		
-		JFormattedTextField formattedTextField = new JFormattedTextField();
-		formattedTextField.setHorizontalAlignment(SwingConstants.LEFT);
-		formattedTextField.setColumns(5);
-		panelDatapoints.add(formattedTextField, "flowx,cell 1 0");
+		JFormattedTextField formattedTextFieldSessionCarrierFreq = new JFormattedTextField();
+		formattedTextFieldSessionCarrierFreq.setHorizontalAlignment(SwingConstants.LEFT);
+		formattedTextFieldSessionCarrierFreq.setColumns(5);
+		panelSessionDatapoints.add(formattedTextFieldSessionCarrierFreq, "flowx,cell 1 0");
 		
-		JLabel lblHz = new JLabel("Hz");
-		panelDatapoints.add(lblHz, "cell 1 0");
+		JLabel lblSessionCarrierHz = new JLabel("Hz");
+		panelSessionDatapoints.add(lblSessionCarrierHz, "cell 1 0");
 		
 		// TODO: parse from real datapoint list
 		String[] mockupDatapointsList = {"P1 - C 150 - B 12 - D 300", "P2 - C 150 - B 7 - D 300", "P3 - C 130 - B 0.5 - D 300", "P4 - C 130 - B 0.5 - D 300", "<new>"};
 		
 		Component horizontalStrut = Box.createHorizontalStrut(20);
-		panelDatapoints.add(horizontalStrut, "flowx,cell 2 0");
+		panelSessionDatapoints.add(horizontalStrut, "flowx,cell 2 0");
 		
-		JLabel lblBeat = new JLabel("Beat");
-		panelDatapoints.add(lblBeat, "cell 2 0,alignx right");
+		JLabel lblSessionBeat = new JLabel("Beat");
+		panelSessionDatapoints.add(lblSessionBeat, "cell 2 0,alignx right");
 		
-		JFormattedTextField formattedTextField_1 = new JFormattedTextField();
-		formattedTextField_1.setHorizontalAlignment(SwingConstants.LEFT);
-		formattedTextField_1.setColumns(5);
-		panelDatapoints.add(formattedTextField_1, "flowx,cell 3 0");
+		JFormattedTextField formattedTextFieldSessionBeatFreq = new JFormattedTextField();
+		formattedTextFieldSessionBeatFreq.setHorizontalAlignment(SwingConstants.LEFT);
+		formattedTextFieldSessionBeatFreq.setColumns(5);
+		panelSessionDatapoints.add(formattedTextFieldSessionBeatFreq, "flowx,cell 3 0");
 		
-		JLabel lblDuration = new JLabel("Duration");
-		panelDatapoints.add(lblDuration, "cell 4 0,alignx trailing");
+		JLabel lblSessionDuration = new JLabel("Duration");
+		panelSessionDatapoints.add(lblSessionDuration, "cell 4 0,alignx trailing");
 		
-		JFormattedTextField formattedTextFieldDuration = new JFormattedTextField();
-		formattedTextFieldDuration.setColumns(5);
-		formattedTextFieldDuration.setHorizontalAlignment(SwingConstants.LEFT);
-		panelDatapoints.add(formattedTextFieldDuration, "flowx,cell 5 0");
+		JFormattedTextField formattedTextFieldSessionBeatDuration = new JFormattedTextField();
+		formattedTextFieldSessionBeatDuration.setColumns(5);
+		formattedTextFieldSessionBeatDuration.setHorizontalAlignment(SwingConstants.LEFT);
+		panelSessionDatapoints.add(formattedTextFieldSessionBeatDuration, "flowx,cell 5 0");
 		
-		JScrollPane scrollPane = new JScrollPane();
-		panelDatapoints.add(scrollPane, "cell 0 1 3 1,grow");
-		JList list = new JList(mockupDatapointsList);
-		scrollPane.setViewportView(list);
-		list.setValueIsAdjusting(true);
-		list.setSelectedIndex(4);
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setBorder(null);
-		list.setVisibleRowCount(4);
+		JScrollPane scrollPaneSessionDatapoints = new JScrollPane();
+		panelSessionDatapoints.add(scrollPaneSessionDatapoints, "cell 0 1 3 1,grow");
+		JList listSessionDatapoints = new JList(mockupDatapointsList);
+		scrollPaneSessionDatapoints.setViewportView(listSessionDatapoints);
+		listSessionDatapoints.setValueIsAdjusting(true);
+		listSessionDatapoints.setSelectedIndex(4);
+		listSessionDatapoints.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listSessionDatapoints.setBorder(null);
+		listSessionDatapoints.setVisibleRowCount(4);
 		
-		JButton btnSave_1 = new JButton("Save");
-		panelDatapoints.add(btnSave_1, "cell 3 1,alignx center,aligny bottom");
+		JButton btnSessionDatapointsSave = new JButton("Save");
+		panelSessionDatapoints.add(btnSessionDatapointsSave, "cell 3 1,alignx center,aligny bottom");
 		
-		JButton btnDelete = new JButton("Delete");
-		panelDatapoints.add(btnDelete, "cell 4 1,alignx center,aligny bottom");
+		JButton btnSessionDatapointsDelete = new JButton("Delete");
+		panelSessionDatapoints.add(btnSessionDatapointsDelete, "cell 4 1,alignx center,aligny bottom");
 		
-		JLabel lblHz_1 = new JLabel("Hz");
-		panelDatapoints.add(lblHz_1, "cell 3 0");
+		JLabel lblSessionBeatHz = new JLabel("Hz");
+		panelSessionDatapoints.add(lblSessionBeatHz, "cell 3 0");
 		
-	
-		JLabel lblS = new JLabel("s");
-		panelDatapoints.add(lblS, "cell 5 0");
-		
-		
-		
+		JLabel lblSessionDurationS = new JLabel("s");
+		panelSessionDatapoints.add(lblSessionDurationS, "cell 5 0");
+				
 	}
 
 }

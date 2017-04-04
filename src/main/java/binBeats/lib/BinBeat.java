@@ -5,7 +5,7 @@ package main.java.binBeats.lib;
  */
 public class BinBeat {
 	private float carrierFrequency;
-	private float beatFrquency;
+	private float beatFrequency;
 	private float carrierVolume;
 	private float beatVolume;
 	
@@ -17,7 +17,7 @@ public class BinBeat {
 	
 	public BinBeat(float carrierFrequency, float beatFrequency, float carrierVolume, float beatVolume) {
 		this.carrierFrequency = carrierFrequency;
-		this.beatFrquency = beatFrequency;
+		this.beatFrequency = beatFrequency;
 		this.carrierVolume = carrierVolume;
 		this.beatVolume = beatVolume;
 	}
@@ -30,7 +30,8 @@ public class BinBeat {
 	}
 
 	/**
-	 * Sets the base-frequency of the BinBeat
+	 * Sets the base-frequency of the BinBeat,
+	 * range: 20 - 1500 Hz
 	 */
 	public void setCarrierFrequency(float carrierFrequency) {
 		this.carrierFrequency = carrierFrequency;
@@ -39,15 +40,16 @@ public class BinBeat {
 	/**
 	 * Returns the difference-frequency of the BinBeat
 	 */
-	public float getBeatFrquency() {
-		return beatFrquency;
+	public float getBeatFrequency() {
+		return beatFrequency;
 	}
 
 	/**
-	 * Sets the difference-frequency of the BinBeat
+	 * Sets the difference-frequency of the BinBeat,
+	 * range: 0.5 - 30 Hz
 	 */
-	public void setBeatFrquency(float beatFrquency) {
-		this.beatFrquency = beatFrquency;
+	public void setBeatFrequency(float beatFrequency) {
+		this.beatFrequency = beatFrequency;
 	}
 
 	public float getCarrierVolume() {
