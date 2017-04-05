@@ -25,11 +25,14 @@ import net.miginfocom.swing.MigLayout;
 
 import main.java.binBeats.lib.BinBeat;
 import javax.swing.event.ChangeListener;
+import javax.swing.text.NumberFormatter;
 import javax.swing.event.ChangeEvent;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.awt.event.ActionListener;
 
 /**
@@ -40,6 +43,8 @@ import java.awt.event.ActionListener;
 public class BbUI {
 
 	private JFrame frmBinbeats;
+	private NumberFormat numberFormatEn;
+	private NumberFormatter numberFormatterEn;
 	
 	private BinBeat playerBinBeat;
 
@@ -74,6 +79,32 @@ public class BbUI {
 	public BbUI() {
 		initialize();
 	}
+	
+	/**
+	 * Checks the value of a text field against a regular expression and upper and lower bounds.
+	 * Corrects the value to its upper or lower bound if necessary.
+	 * 
+	 * @param typedValue the String to be checked and converted into a number
+	 * @param regex the regular expression to check if typedValue is a valid number
+	 * @param maxLength maximum length for the number to be valid
+	 * @param lowerBound lower bound to be checked against
+	 * @param upperBound upper bound to be checked against
+	 * @return the checked and corrected value or -1 if not a valid number
+	 */
+	private int checkValidity(String typedValue, String regex, int maxLength, int lowerBound, int upperBound){
+		// Check if typed value is a valid number
+		if (!typedValue.matches(regex) || typedValue.length() > maxLength) {
+			return -1;
+		}
+		int value = Integer.parseInt(typedValue);
+		// Check for correct specifications and change if necessary
+		if (value < lowerBound) {
+			value = lowerBound;
+		} else if (value > upperBound) {
+			value = upperBound;
+		}
+		return value;
+	}
 
 	/**
 	 * Initialize the contents of the frame.
@@ -81,6 +112,14 @@ public class BbUI {
 	private void initialize() {
 		// TODO: Demo BinBeat
 		playerBinBeat = new BinBeat(432, 7);
+		
+		/* Format numbers in text fields to display a dot as decimal separator
+		 * and to not use grouping separators for multiples of 1000.
+		 * e.g. instead of 1.333,37 use 1333.37 
+		 */
+		numberFormatEn = NumberFormat.getNumberInstance(Locale.ENGLISH);
+		numberFormatEn.setGroupingUsed(false);		
+		numberFormatterEn = new NumberFormatter(numberFormatEn);
 		
 		frmBinbeats = new JFrame();
 		frmBinbeats.setTitle("BinBeats");
@@ -122,27 +161,17 @@ public class BbUI {
 		JLabel lblPlayerCarrierFrequency = new JLabel("Carrier Frequency");
 		panelPlayer.add(lblPlayerCarrierFrequency, "cell 1 2,alignx trailing");
 		
-		JFormattedTextField formattedTextFieldPlayerCarrier = new JFormattedTextField();
+		JFormattedTextField formattedTextFieldPlayerCarrier = new JFormattedTextField(numberFormatterEn);
 		JSlider sliderPlayerCarrier = new JSlider();
 		
 		// Link carrier slider and text field
 		formattedTextFieldPlayerCarrier.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String typedCarrierFreq = formattedTextFieldPlayerCarrier.getText();
-				//sliderPlayerCarrier.setValue(20);
-				// Check if typed value is a valid number
-				if(!typedCarrierFreq.matches("\\d+") || typedCarrierFreq.length() > 4) {
-					return;
+				int value = checkValidity(formattedTextFieldPlayerCarrier.getText(), "\\d+", 4, 20, 1500);
+				if (value > -1) {
+					formattedTextFieldPlayerCarrier.setValue(value);
+					sliderPlayerCarrier.setValue(value);
 				}
-				int value = Integer.parseInt(typedCarrierFreq);
-				// Check for correct BinBeat specifications and change if necessary
-				if (value < 20) {
-					value = 20;
-				} else if (value > 1500) {
-					value = 1500;
-				}
-				formattedTextFieldPlayerCarrier.setValue(value);
-				sliderPlayerCarrier.setValue(value);
 			}
 		});
 		sliderPlayerCarrier.addChangeListener(new ChangeListener() {
@@ -174,7 +203,7 @@ public class BbUI {
 		JLabel lblPlayerBeatFrequency = new JLabel("Beat Frequency");
 		panelPlayer.add(lblPlayerBeatFrequency, "cell 1 4,alignx trailing");
 		
-		JFormattedTextField formattedTextFieldPlayerBeatFreq = new JFormattedTextField();
+		JFormattedTextField formattedTextFieldPlayerBeatFreq = new JFormattedTextField(numberFormatterEn);
 		formattedTextFieldPlayerBeatFreq.setColumns(4);
 		panelPlayer.add(formattedTextFieldPlayerBeatFreq, "flowx,cell 2 4,alignx left");
 		
@@ -239,6 +268,29 @@ public class BbUI {
 		formattedTextFieldPlayerBgVol.setColumns(4);
 		panelPlayerVolumeControl.add(formattedTextFieldPlayerBgVol, "flowx,cell 1 0,alignx left");
 		
+		JSlider sliderPlayerBgVol = new JSlider();
+		sliderPlayerBgVol.setMajorTickSpacing(10);
+		sliderPlayerBgVol.setMinorTickSpacing(1);
+		sliderPlayerBgVol.setMinimum(0);
+		sliderPlayerBgVol.setMaximum(100);
+		panelPlayerVolumeControl.add(sliderPlayerBgVol, "cell 0 1 2 1,growx");
+		
+		// Link background volume field with slider
+		formattedTextFieldPlayerBgVol.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {			
+				int value = checkValidity(formattedTextFieldPlayerBgVol.getText(), "\\d+", 3, 0, 100);
+				if (value > -1) {
+					formattedTextFieldPlayerBgVol.setValue(value);
+					sliderPlayerBgVol.setValue(value);
+				}
+			}
+		});
+		sliderPlayerBgVol.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				formattedTextFieldPlayerBgVol.setValue(sliderPlayerBgVol.getValue());
+			}
+		});
+		
 		JLabel labelPlayerBgvolPercent = new JLabel("%");
 		panelPlayerVolumeControl.add(labelPlayerBgvolPercent, "cell 1 0");
 		
@@ -252,13 +304,31 @@ public class BbUI {
 		JLabel labelPlayerBeatVolPercent = new JLabel("%");
 		panelPlayerVolumeControl.add(labelPlayerBeatVolPercent, "cell 4 0");
 		
-		JSlider sliderPlayerBgVol = new JSlider();
-		sliderPlayerBgVol.setMajorTickSpacing(10);
-		sliderPlayerBgVol.setMinorTickSpacing(1);
-		panelPlayerVolumeControl.add(sliderPlayerBgVol, "cell 0 1 2 1,growx");
-		
 		JSlider sliderPlayerBeatVol = new JSlider();
+		sliderPlayerBeatVol.setMajorTickSpacing(10);
+		sliderPlayerBeatVol.setMinorTickSpacing(1);
+		sliderPlayerBeatVol.setMinimum(0);
+		sliderPlayerBeatVol.setMaximum(100);
+		// TODO: initialize volume slider with volume stored in this.playerBinBeat
 		panelPlayerVolumeControl.add(sliderPlayerBeatVol, "cell 3 1 2 1,growx");
+		
+		// Link beat volume field with slider
+		formattedTextFieldPlayerBeatVol.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int value = checkValidity(formattedTextFieldPlayerBeatVol.getText(), "\\d+", 3, 0, 100);
+				if (value > -1) {
+					formattedTextFieldPlayerBeatVol.setValue(value);
+					sliderPlayerBeatVol.setValue(value);
+				}
+			}
+		});
+		sliderPlayerBeatVol.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				formattedTextFieldPlayerBeatVol.setValue(sliderPlayerBeatVol.getValue());
+			}
+		});
+		
+		
 		
 		
 		// _____________________ Session View _____________________
@@ -386,5 +456,4 @@ public class BbUI {
 		panelSessionDatapoints.add(lblSessionDurationS, "cell 5 0");
 				
 	}
-
 }
