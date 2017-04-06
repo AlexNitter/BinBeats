@@ -16,6 +16,7 @@ import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.JScrollPane;
@@ -121,6 +122,9 @@ public class BbUI {
 		numberFormatEn.setGroupingUsed(false);		
 		numberFormatterEn = new NumberFormatter(numberFormatEn);
 		
+		// Make tooltips stay open indefinitely
+		ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
+		
 		frmBinbeats = new JFrame();
 		frmBinbeats.setTitle("BinBeats");
 		frmBinbeats.setBounds(100, 100, 476, 307);
@@ -210,17 +214,17 @@ public class BbUI {
 		panelPlayer.add(lblPlayerBeatFrequency, "cell 1 4,alignx trailing");
 		
 		JFormattedTextField formattedTextFieldPlayerBeatFreq = new JFormattedTextField(numberFormatterEn);
-		// TODO: Detailed information not suitable for tooltip. Find other way to display in-app or reference readme. (Or leave out?)
-		formattedTextFieldPlayerBeatFreq.setToolTipText("<html>Define the frequency of the binaural beat"
-				+ "<!-- <ul>"
-				+ "<li><strong>0.5 - 4 Hz</strong> - Delta</li>"
-				+ "<li><strong>4 - 6.5 Hz</strong> - Low Theta</li>"
-				+ "<li><strong>6.5 - 8 Hz</strong> - High Theta</li>"
-				+ "<li><strong>8 - 13 Hz</strong> - Alpha</li>"
-				+ "<li><strong>13 - 15 Hz</strong> - Low Beta</li>"
-				+ "<li><strong>15 - 21 Hz</strong> - Medium Beta</li>"
-				+ "<li><strong>21 - 30 Hz</strong> - High Beta</li>"
-				+ "</ul>--></html>");
+		String beatFreqTooltip = "<html>Define the frequency of the binaural beat"
+				+ "<ul>"
+				+ "<li><strong>0.5 - 4</strong> - <em>Delta</em> - deep sleep, trance</li>"
+				+ "<li><strong>4 - 6.5</strong> - <em>Low Theta</em> - falling asleep</li>"
+				+ "<li><strong>6.5 - 8</strong> - <em>High Theta</em> - deep relaxation, meditation</li>"
+				+ "<li><strong>8 - 13</strong> - <em>Alpha</em> - light relaxation, super learning</li>"
+				+ "<li><strong>13 - 15</strong> - <em>Low Beta</em> - awareness</li>"
+				+ "<li><strong>15 - 21</strong> - <em>Medium Beta</em> - concentration</li>"
+				+ "<li><strong>21 - 30</strong> - <em>High Beta</em> - stress</li>"
+				+ "</ul></html>";
+		formattedTextFieldPlayerBeatFreq.setToolTipText(beatFreqTooltip);
 		formattedTextFieldPlayerBeatFreq.setColumns(4);
 		panelPlayer.add(formattedTextFieldPlayerBeatFreq, "flowx,cell 2 4,alignx left");
 		
@@ -231,7 +235,7 @@ public class BbUI {
 		panelPlayer.add(labelPlayerBeatFreq_05, "cell 0 5,alignx right");
 		
 		JSlider sliderPlayerBeatFreq = new JSlider();
-		sliderPlayerBeatFreq.setToolTipText("Define the frequency of the binaural beat");
+		sliderPlayerBeatFreq.setToolTipText(beatFreqTooltip);
 		panelPlayer.add(sliderPlayerBeatFreq, "cell 1 5 3 1,growx");
 		
 		JLabel labelPlayerBeatFreq_30 = new JLabel("30");
