@@ -142,12 +142,15 @@ public class BbUI {
 		
 		String[] mockupPlayerAtmosphereSelection = {"<new>", "Reasoning - Beta", "Relaxation - Alpha", "Meditation - Theta", "Deep Sleep - Delta"};
 		JComboBox comboBoxPlayerPresetSelection = new JComboBox(mockupPlayerAtmosphereSelection);
+		comboBoxPlayerPresetSelection.setToolTipText("Select binaural beat from preset or create a new one");
 		panelPlayer.add(comboBoxPlayerPresetSelection, "flowx,cell 2 0,growx");
 		
 		JButton btnPlayerSave = new JButton("Save");
+		btnPlayerSave.setToolTipText("Save preset");
 		panelPlayer.add(btnPlayerSave, "flowx,cell 3 0");
 		
 		JButton btnPlayerPlay = new JButton("Play");
+		btnPlayerPlay.setToolTipText("Play binaural beat as configured below");
 		panelPlayer.add(btnPlayerPlay, "cell 3 0");
 		
 		JLabel lblPlayerBackground = new JLabel("Background");
@@ -156,13 +159,16 @@ public class BbUI {
 		// TODO: Parse from Background Audio List
 		String[] bgSelectionMockup = {"(none)", "Pink Noise", "White Noise", "Stream", "Rain"};
 		JComboBox comboBoxPlayerBgSelection = new JComboBox(bgSelectionMockup);
+		comboBoxPlayerBgSelection.setToolTipText("Select background noise");
 		panelPlayer.add(comboBoxPlayerBgSelection, "cell 2 1,growx");
 		
 		JLabel lblPlayerCarrierFrequency = new JLabel("Carrier Frequency");
 		panelPlayer.add(lblPlayerCarrierFrequency, "cell 1 2,alignx trailing");
 		
 		JFormattedTextField formattedTextFieldPlayerCarrier = new JFormattedTextField(numberFormatterEn);
+		formattedTextFieldPlayerCarrier.setToolTipText("Define the pitch of the carrier tone");
 		JSlider sliderPlayerCarrier = new JSlider();
+		sliderPlayerCarrier.setToolTipText("Define the pitch of the carrier tone");
 		
 		// Link carrier slider and text field
 		formattedTextFieldPlayerCarrier.addActionListener(new ActionListener() {
@@ -204,6 +210,17 @@ public class BbUI {
 		panelPlayer.add(lblPlayerBeatFrequency, "cell 1 4,alignx trailing");
 		
 		JFormattedTextField formattedTextFieldPlayerBeatFreq = new JFormattedTextField(numberFormatterEn);
+		// TODO: Detailed information not suitable for tooltip. Find other way to display in-app or reference readme. (Or leave out?)
+		formattedTextFieldPlayerBeatFreq.setToolTipText("<html>Define the frequency of the binaural beat"
+				+ "<!-- <ul>"
+				+ "<li><strong>0.5 - 4 Hz</strong> - Delta</li>"
+				+ "<li><strong>4 - 6.5 Hz</strong> - Low Theta</li>"
+				+ "<li><strong>6.5 - 8 Hz</strong> - High Theta</li>"
+				+ "<li><strong>8 - 13 Hz</strong> - Alpha</li>"
+				+ "<li><strong>13 - 15 Hz</strong> - Low Beta</li>"
+				+ "<li><strong>15 - 21 Hz</strong> - Medium Beta</li>"
+				+ "<li><strong>21 - 30 Hz</strong> - High Beta</li>"
+				+ "</ul>--></html>");
 		formattedTextFieldPlayerBeatFreq.setColumns(4);
 		panelPlayer.add(formattedTextFieldPlayerBeatFreq, "flowx,cell 2 4,alignx left");
 		
@@ -214,6 +231,7 @@ public class BbUI {
 		panelPlayer.add(labelPlayerBeatFreq_05, "cell 0 5,alignx right");
 		
 		JSlider sliderPlayerBeatFreq = new JSlider();
+		sliderPlayerBeatFreq.setToolTipText("Define the frequency of the binaural beat");
 		panelPlayer.add(sliderPlayerBeatFreq, "cell 1 5 3 1,growx");
 		
 		JLabel labelPlayerBeatFreq_30 = new JLabel("30");
@@ -265,10 +283,12 @@ public class BbUI {
 		panelPlayerVolumeControl.add(lblPlayerBackgroundVolume, "cell 0 0,alignx trailing");
 		
 		JFormattedTextField formattedTextFieldPlayerBgVol = new JFormattedTextField();
+		formattedTextFieldPlayerBgVol.setToolTipText("Define background noise volume");
 		formattedTextFieldPlayerBgVol.setColumns(4);
 		panelPlayerVolumeControl.add(formattedTextFieldPlayerBgVol, "flowx,cell 1 0,alignx left");
 		
 		JSlider sliderPlayerBgVol = new JSlider();
+		sliderPlayerBgVol.setToolTipText("Define background noise volume");
 		sliderPlayerBgVol.setMajorTickSpacing(10);
 		sliderPlayerBgVol.setMinorTickSpacing(1);
 		sliderPlayerBgVol.setMinimum(0);
@@ -298,6 +318,7 @@ public class BbUI {
 		panelPlayerVolumeControl.add(lblPlayerBeatVolume, "cell 3 0,alignx trailing");
 		
 		JFormattedTextField formattedTextFieldPlayerBeatVol = new JFormattedTextField();
+		formattedTextFieldPlayerBeatVol.setToolTipText("Define binaural beat volume");
 		formattedTextFieldPlayerBeatVol.setColumns(4);
 		panelPlayerVolumeControl.add(formattedTextFieldPlayerBeatVol, "flowx,cell 4 0,alignx left");
 		
@@ -305,6 +326,7 @@ public class BbUI {
 		panelPlayerVolumeControl.add(labelPlayerBeatVolPercent, "cell 4 0");
 		
 		JSlider sliderPlayerBeatVol = new JSlider();
+		sliderPlayerBeatVol.setToolTipText("Define binaural beat volume");
 		sliderPlayerBeatVol.setMajorTickSpacing(10);
 		sliderPlayerBeatVol.setMinorTickSpacing(1);
 		sliderPlayerBeatVol.setMinimum(0);
