@@ -4,20 +4,26 @@ package main.java.binBeats.lib;
  * Represents a BinBeat
  */
 public class BinBeat {
-	private float carrierFrequency;
+	private int carrierFrequency;
 	private float beatFrequency;
+	private String beatName;
 	private float carrierVolume;
 	private float beatVolume;
 	
 	public BinBeat() {}
 
-	public BinBeat(float carrierFrequency, float beatFrequency){
-		this(carrierFrequency, beatFrequency, 127, 127);
+	public BinBeat(int carrierFrequency, float beatFrequency){
+		this(carrierFrequency, beatFrequency, "", 127, 127);
 	}
 	
-	public BinBeat(float carrierFrequency, float beatFrequency, float carrierVolume, float beatVolume) {
+	public BinBeat(int carrierFrequency, float beatFrequency, String beatName){
+		this(carrierFrequency, beatFrequency, beatName, 127,127);
+	}
+	
+	public BinBeat(int carrierFrequency, float beatFrequency, String beatName, float carrierVolume, float beatVolume) {
 		this.carrierFrequency = carrierFrequency;
 		this.beatFrequency = beatFrequency;
+		this.beatName = beatName;
 		this.carrierVolume = carrierVolume;
 		this.beatVolume = beatVolume;
 	}
@@ -33,7 +39,7 @@ public class BinBeat {
 	 * Sets the base-frequency of the BinBeat,
 	 * range: 20 - 1500 Hz
 	 */
-	public void setCarrierFrequency(float carrierFrequency) {
+	public void setCarrierFrequency(int carrierFrequency) {
 		this.carrierFrequency = carrierFrequency;
 	}
 
@@ -52,6 +58,22 @@ public class BinBeat {
 		this.beatFrequency = beatFrequency;
 	}
 
+	/**
+	 * Returns the name of a BinBeat
+	 * */	
+	public String getBeatName(){
+		return beatName;
+	}
+	
+	/**
+	 * Sets the name of the BinBeat
+	 * 
+	 * 
+	 * */
+	public void setBeatName(String beatName){
+		this.beatName = beatName;
+	}
+	
 	public float getCarrierVolume() {
 		return carrierVolume;
 	}
@@ -67,4 +89,9 @@ public class BinBeat {
 	public void setBeatVolume(float beatVolume) {
 		this.beatVolume = beatVolume;
 	}	
+
+	public String toString() {
+		return "UserSetting: [Carrier =" + this.carrierFrequency + ", Beat =" + this.beatFrequency + ", BeatName = " + this.beatName + "]";
+	}
+	
 }
