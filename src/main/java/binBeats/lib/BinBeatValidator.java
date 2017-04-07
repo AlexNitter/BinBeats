@@ -7,15 +7,12 @@ public class BinBeatValidator {
 	private final float CARRIER_FREQUENCY_MIN = 20f;
 	private final float CARRIER_FREQUENCY_MAX = 1500f;
 	
-	private final float CARRIER_VOLUME_MIN = -80f; 
-	private final float CARRIER_VOLUME_MAX = 6f;
+	private final float VOLUME_MIN = -80f; 
+	private final float VOLUME_MAX = 6f;
 	
 	private final float BEAT_FREQUENCY_MIN = 0.5f;
 	private final float BEAT_FREQUENCY_MAX = 30f;
-	
-	private final float BEAT_VOLUME_MIN = -80f; 
-	private final float BEAT_VOLUME_MAX = 6f;
-	
+		
 	
 	public BinBeatValidator() {}
 	
@@ -36,15 +33,15 @@ public class BinBeatValidator {
 	/**
 	 * Returns the allowed minimum base-frequency-volume
 	 */
-	public float getCarrierVolumeMin() {
-		return CARRIER_VOLUME_MIN;
+	public float getVolumeMin() {
+		return VOLUME_MIN;
 	}
 	
 	/**
 	 * Returns the allowed maximum base-frequency-volume
 	 */
-	public float getCarrierVolumeMax() {
-		return CARRIER_VOLUME_MAX;
+	public float getVolumeMax() {
+		return VOLUME_MAX;
 	}
 	
 	/**
@@ -62,20 +59,6 @@ public class BinBeatValidator {
 	}
 	
 	/**
-	 * Returns the allowed minimum difference-frequency-volume
-	 */
-	public float getBeatVolumeMin() {
-		return BEAT_VOLUME_MIN;
-	}
-	
-	/**
-	 * Returns the allowed maximum difference-frequency-volume
-	 */
-	public float getBeatVolumeMax() {
-		return BEAT_VOLUME_MAX;
-	}
-	
-	/**
 	 * Indicates whether the given BinBeat is valid or not
 	 */
 	public ValidationResult validate(BinBeat binBeat) {
@@ -88,11 +71,8 @@ public class BinBeatValidator {
 		else if(binBeat.getBeatFrequency() < BEAT_FREQUENCY_MIN || binBeat.getBeatFrequency() > BEAT_FREQUENCY_MAX) {
 			message = "The given BeatFrequency is not valid";
 		}
-		else if(binBeat.getCarrierVolume() < CARRIER_VOLUME_MIN || binBeat.getCarrierVolume() > CARRIER_VOLUME_MAX) {
+		else if(binBeat.getVolume() < VOLUME_MIN || binBeat.getVolume() > VOLUME_MAX) {
 			message = "The given CarrierFrequency volume is not valid";
-		}
-		else if(binBeat.getBeatVolume() < BEAT_VOLUME_MIN || binBeat.getBeatVolume() > BEAT_VOLUME_MAX) {
-			message = "The given BeatFrequency volume is not valid";
 		}
 		else {
 			isValid = true;

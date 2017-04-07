@@ -71,8 +71,7 @@ public class BinBeatValidatorTest {
 		
 		BinBeat binBeat = new BinBeat(validator.getCarrierFrequencyMin() + 10, 
 									  validator.getBeatFrequencyMin() + 10,
-									  validator.getCarrierVolumeMin() - 1,
-									  validator.getBeatVolumeMin() + 10);
+									  validator.getVolumeMin() - 1);
 		
 		ValidationResult result = validator.validate(binBeat);
 		
@@ -85,8 +84,7 @@ public class BinBeatValidatorTest {
 		
 		BinBeat binBeat = new BinBeat(validator.getCarrierFrequencyMin() + 10, 
 									  validator.getBeatFrequencyMin() + 10,
-									  validator.getCarrierVolumeMax() + 1,
-									  validator.getBeatVolumeMin() + 10);
+									  validator.getVolumeMax() + 1);
 		
 		ValidationResult result = validator.validate(binBeat);
 		
@@ -99,8 +97,7 @@ public class BinBeatValidatorTest {
 		
 		BinBeat binBeat = new BinBeat(validator.getCarrierFrequencyMin() + 10, 
 									  validator.getBeatFrequencyMin() + 10,
-									  validator.getCarrierVolumeMin() + 10,
-									  validator.getBeatVolumeMin() - 1);
+									  validator.getVolumeMin() - 1);
 		
 		ValidationResult result = validator.validate(binBeat);
 		
@@ -113,8 +110,7 @@ public class BinBeatValidatorTest {
 		
 		BinBeat binBeat = new BinBeat(validator.getCarrierFrequencyMin() + 10, 
 									  validator.getBeatFrequencyMin() + 10,
-									  validator.getCarrierVolumeMin() + 10,
-									  validator.getBeatVolumeMax() + 1);
+									  validator.getVolumeMax() + 1);
 		
 		ValidationResult result = validator.validate(binBeat);
 		

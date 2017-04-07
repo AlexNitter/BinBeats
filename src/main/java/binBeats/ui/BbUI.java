@@ -25,6 +25,8 @@ import javax.swing.JComboBox;
 import net.miginfocom.swing.MigLayout;
 
 import main.java.binBeats.lib.BinBeat;
+import main.java.binBeats.lib.BinBeatsPlayer;
+
 import javax.swing.event.ChangeListener;
 import javax.swing.text.NumberFormatter;
 import javax.swing.event.ChangeEvent;
@@ -48,6 +50,7 @@ public class BbUI {
 	private NumberFormatter numberFormatterEn;
 	
 	private BinBeat playerBinBeat;
+	private BinBeatsPlayer binBeatsPlayer;
 
 	/**
 	 * Launch the application.
@@ -111,12 +114,13 @@ public class BbUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		// binBeatsPlayer = new BinBeatsPlayer();
 		// TODO: Demo BinBeat
 		playerBinBeat = new BinBeat(432, 7);
 		
 		/* Format numbers in text fields to display a dot as decimal separator
 		 * and to not use grouping separators for multiples of 1000.
-		 * e.g. instead of 1.333,37 use 1333.37 
+		 * e.g. instead of 1.333,37 display 1333.37 
 		 */
 		numberFormatEn = NumberFormat.getNumberInstance(Locale.ENGLISH);
 		numberFormatEn.setGroupingUsed(false);		
@@ -154,6 +158,11 @@ public class BbUI {
 		panelPlayer.add(btnPlayerSave, "flowx,cell 3 0");
 		
 		JButton btnPlayerPlay = new JButton("Play");
+		btnPlayerPlay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		btnPlayerPlay.setToolTipText("Play binaural beat as configured below");
 		panelPlayer.add(btnPlayerPlay, "cell 3 0");
 		

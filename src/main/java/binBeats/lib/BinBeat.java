@@ -4,28 +4,45 @@ package main.java.binBeats.lib;
  * Represents a BinBeat
  */
 public class BinBeat {
-	private int carrierFrequency;
+	private float carrierFrequency;
 	private float beatFrequency;
 	private String beatName;
-	private float carrierVolume;
-	private float beatVolume;
+	private float volume;
 	
 	public BinBeat() {}
 
 	public BinBeat(int carrierFrequency, float beatFrequency){
-		this(carrierFrequency, beatFrequency, "", 127, 127);
+		this(carrierFrequency, beatFrequency, "", 127);
 	}
 	
 	public BinBeat(int carrierFrequency, float beatFrequency, String beatName){
-		this(carrierFrequency, beatFrequency, beatName, 127,127);
+		this(carrierFrequency, beatFrequency, beatName, 127);
 	}
 	
-	public BinBeat(int carrierFrequency, float beatFrequency, String beatName, float carrierVolume, float beatVolume) {
+	public BinBeat(int carrierFrequency, float beatFrequency, String beatName, float volume) {
+		this.carrierFrequency = (float)carrierFrequency;
+		this.beatFrequency = beatFrequency;
+		this.beatName = beatName;
+		this.setVolume(volume);
+	}
+	
+	public BinBeat(float carrierFrequency, float beatFrequency, String beatName, float volume){
 		this.carrierFrequency = carrierFrequency;
 		this.beatFrequency = beatFrequency;
 		this.beatName = beatName;
-		this.carrierVolume = carrierVolume;
-		this.beatVolume = beatVolume;
+		this.setVolume(volume);
+	}
+	
+	public BinBeat(float carrierFrequency, float beatFrequency){
+		this(carrierFrequency, beatFrequency, "", 127);
+	}
+	
+	public BinBeat(float carrierFrequency, float beatFrequency, String beatName){
+		this(carrierFrequency, beatFrequency, beatName, 127);
+	}
+	
+	public BinBeat(float carrierFrequency, float beatFrequency, float volume){
+		this(carrierFrequency, beatFrequency, "", volume);
 	}
 	
 	/**
@@ -59,39 +76,36 @@ public class BinBeat {
 	}
 
 	/**
-	 * Returns the name of a BinBeat
-	 * */	
+	 * Returns the name of the BinBeat
+	 */	
 	public String getBeatName(){
 		return beatName;
 	}
 	
 	/**
 	 * Sets the name of the BinBeat
-	 * 
-	 * 
-	 * */
+	 */
 	public void setBeatName(String beatName){
 		this.beatName = beatName;
-	}
-	
-	public float getCarrierVolume() {
-		return carrierVolume;
-	}
-
-	public void setCarrierVolume(float carrierVolume) {
-		this.carrierVolume = carrierVolume;
-	}
-
-	public float getBeatVolume() {
-		return beatVolume;
-	}
-
-	public void setBeatVolume(float beatVolume) {
-		this.beatVolume = beatVolume;
 	}	
 
 	public String toString() {
 		return "UserSetting: [Carrier =" + this.carrierFrequency + ", Beat =" + this.beatFrequency + ", BeatName = " + this.beatName + "]";
+	}
+
+	/**
+	 * @return the volume of the BinBeat
+	 */
+	public float getVolume() {
+		return volume;
+	}
+
+	/**
+	 * Sets the volume of the BinBeat.
+	 * @param volume volume of the BinBeat
+	 */
+	public void setVolume(float volume) {
+		this.volume = volume;
 	}
 	
 }
