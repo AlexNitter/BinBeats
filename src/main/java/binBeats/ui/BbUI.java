@@ -12,6 +12,7 @@ import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
+import javax.sound.sampled.LineUnavailableException;
 import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.JSlider;
@@ -114,7 +115,11 @@ public class BbUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		// binBeatsPlayer = new BinBeatsPlayer();
+		try {
+			binBeatsPlayer = new BinBeatsPlayer();
+		} catch (LineUnavailableException e1) {
+			e1.printStackTrace();
+		}
 		// TODO: Demo BinBeat
 		playerBinBeat = new BinBeat(432, 7);
 		
@@ -158,11 +163,6 @@ public class BbUI {
 		panelPlayer.add(btnPlayerSave, "flowx,cell 3 0");
 		
 		JButton btnPlayerPlay = new JButton("Play");
-		btnPlayerPlay.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
 		btnPlayerPlay.setToolTipText("Play binaural beat as configured below");
 		panelPlayer.add(btnPlayerPlay, "cell 3 0");
 		
@@ -182,23 +182,6 @@ public class BbUI {
 		formattedTextFieldPlayerCarrier.setToolTipText("Define the pitch of the carrier tone");
 		JSlider sliderPlayerCarrier = new JSlider();
 		sliderPlayerCarrier.setToolTipText("Define the pitch of the carrier tone");
-		
-		// Link carrier slider and text field
-		formattedTextFieldPlayerCarrier.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int value = checkValidity(formattedTextFieldPlayerCarrier.getText(), "\\d+", 4, 20, 1500);
-				if (value > -1) {
-					formattedTextFieldPlayerCarrier.setValue(value);
-					sliderPlayerCarrier.setValue(value);
-				}
-			}
-		});
-		sliderPlayerCarrier.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				formattedTextFieldPlayerCarrier.setValue(sliderPlayerCarrier.getValue());
-			}
-		});
 		
 		formattedTextFieldPlayerCarrier.setColumns(4);
 		panelPlayer.add(formattedTextFieldPlayerCarrier, "flowx,cell 2 2,alignx left");
@@ -250,7 +233,100 @@ public class BbUI {
 		JLabel labelPlayerBeatFreq_30 = new JLabel("30");
 		panelPlayer.add(labelPlayerBeatFreq_30, "cell 4 5,alignx left");
 		
-		/* Link beat slider and text field
+		sliderPlayerBeatFreq.setMajorTickSpacing(10);
+		sliderPlayerBeatFreq.setMinorTickSpacing(1);
+		sliderPlayerBeatFreq.setMaximum(300);
+		sliderPlayerBeatFreq.setMinimum(5);
+		sliderPlayerBeatFreq.setValue((int)this.playerBinBeat.getBeatFrequency()*10);
+		
+		JPanel panelPlayerVolumeControl = new JPanel();
+		panelPlayerVolumeControl.setBorder(null);
+		panelPlayer.add(panelPlayerVolumeControl, "cell 0 6 5 1,grow");
+		panelPlayerVolumeControl.setLayout(new MigLayout("", "[][grow][][][grow]", "[][]"));
+		
+		JLabel lblPlayerBackgroundVolume = new JLabel("Background Volume");
+		panelPlayerVolumeControl.add(lblPlayerBackgroundVolume, "cell 0 0,alignx trailing");
+		
+		JFormattedTextField formattedTextFieldPlayerBgVol = new JFormattedTextField();
+		formattedTextFieldPlayerBgVol.setToolTipText("Define background noise volume");
+		formattedTextFieldPlayerBgVol.setColumns(4);
+		panelPlayerVolumeControl.add(formattedTextFieldPlayerBgVol, "flowx,cell 1 0,alignx left");
+		
+		JSlider sliderPlayerBgVol = new JSlider();
+		sliderPlayerBgVol.setToolTipText("Define background noise volume");
+		sliderPlayerBgVol.setMajorTickSpacing(10);
+		sliderPlayerBgVol.setMinorTickSpacing(1);
+		sliderPlayerBgVol.setMinimum(0);
+		sliderPlayerBgVol.setMaximum(100);
+		panelPlayerVolumeControl.add(sliderPlayerBgVol, "cell 0 1 2 1,growx");
+		
+		JLabel labelPlayerBgvolPercent = new JLabel("%");
+		panelPlayerVolumeControl.add(labelPlayerBgvolPercent, "cell 1 0");
+		
+		JLabel lblPlayerBeatVolume = new JLabel("Beat Volume");
+		panelPlayerVolumeControl.add(lblPlayerBeatVolume, "cell 3 0,alignx trailing");
+		
+		JFormattedTextField formattedTextFieldPlayerBeatVol = new JFormattedTextField();
+		formattedTextFieldPlayerBeatVol.setToolTipText("Define binaural beat volume");
+		formattedTextFieldPlayerBeatVol.setColumns(4);
+		panelPlayerVolumeControl.add(formattedTextFieldPlayerBeatVol, "flowx,cell 4 0,alignx left");
+		
+		JLabel labelPlayerBeatVolPercent = new JLabel("%");
+		panelPlayerVolumeControl.add(labelPlayerBeatVolPercent, "cell 4 0");
+		
+		JSlider sliderPlayerBeatVol = new JSlider();
+		sliderPlayerBeatVol.setToolTipText("Define binaural beat volume");
+		sliderPlayerBeatVol.setMajorTickSpacing(10);
+		sliderPlayerBeatVol.setMinorTickSpacing(1);
+		sliderPlayerBeatVol.setMinimum(0);
+		sliderPlayerBeatVol.setMaximum(100);
+		// TODO: initialize volume slider with volume stored in this.playerBinBeat, translate to percent value
+		//sliderPlayerBeatVol.setValue((int)playerBinBeat.getVolume());
+		panelPlayerVolumeControl.add(sliderPlayerBeatVol, "cell 3 1 2 1,growx");
+		
+		
+		// _____________________ UI functionality for Player View _____________________
+		
+		// TODO: Move all functionality here
+		// after all elements are initialized
+		
+		// Play button actions
+		// TODO: Pressing the button again should make the sound stop
+		btnPlayerPlay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// collect data from UI in playerBinBeat
+				playerBinBeat.setCarrierFrequency((int)formattedTextFieldPlayerCarrier.getValue());
+				playerBinBeat.setBeatFrequency((float)formattedTextFieldPlayerBeatFreq.getValue());
+				// TODO: translate volume in percent to volume as it is used in BinBeatsPlayer
+				//playerBinBeat.setVolume((float)formattedTextFieldPlayerBeatVol.getValue());
+				playerBinBeat.setVolume(5f);
+				binBeatsPlayer.setBinBeat(playerBinBeat);
+				try {
+					binBeatsPlayer.play();
+				} catch (LineUnavailableException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		// Link carrier slider and text field
+		formattedTextFieldPlayerCarrier.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int value = checkValidity(formattedTextFieldPlayerCarrier.getText(), "\\d+", 4, 20, 1500);
+				if (value > -1) {
+					formattedTextFieldPlayerCarrier.setValue(value);
+					sliderPlayerCarrier.setValue(value);
+				}
+			}
+		});
+		sliderPlayerCarrier.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				formattedTextFieldPlayerCarrier.setValue(sliderPlayerCarrier.getValue());
+			}
+		});
+		
+		/* Link beat frequency slider and text field
 		 * Note: JSlider works with integers.
 		 * As we want to be able to change values by .1 we divide by 10.
 		 */
@@ -281,71 +357,6 @@ public class BbUI {
 			}
 		});
 		
-		sliderPlayerBeatFreq.setMajorTickSpacing(10);
-		sliderPlayerBeatFreq.setMinorTickSpacing(1);
-		sliderPlayerBeatFreq.setMaximum(300);
-		sliderPlayerBeatFreq.setMinimum(5);
-		sliderPlayerBeatFreq.setValue((int)this.playerBinBeat.getBeatFrequency()*10);
-		
-		JPanel panelPlayerVolumeControl = new JPanel();
-		panelPlayerVolumeControl.setBorder(null);
-		panelPlayer.add(panelPlayerVolumeControl, "cell 0 6 5 1,grow");
-		panelPlayerVolumeControl.setLayout(new MigLayout("", "[][grow][][][grow]", "[][]"));
-		
-		JLabel lblPlayerBackgroundVolume = new JLabel("Background Volume");
-		panelPlayerVolumeControl.add(lblPlayerBackgroundVolume, "cell 0 0,alignx trailing");
-		
-		JFormattedTextField formattedTextFieldPlayerBgVol = new JFormattedTextField();
-		formattedTextFieldPlayerBgVol.setToolTipText("Define background noise volume");
-		formattedTextFieldPlayerBgVol.setColumns(4);
-		panelPlayerVolumeControl.add(formattedTextFieldPlayerBgVol, "flowx,cell 1 0,alignx left");
-		
-		JSlider sliderPlayerBgVol = new JSlider();
-		sliderPlayerBgVol.setToolTipText("Define background noise volume");
-		sliderPlayerBgVol.setMajorTickSpacing(10);
-		sliderPlayerBgVol.setMinorTickSpacing(1);
-		sliderPlayerBgVol.setMinimum(0);
-		sliderPlayerBgVol.setMaximum(100);
-		panelPlayerVolumeControl.add(sliderPlayerBgVol, "cell 0 1 2 1,growx");
-		
-		// Link background volume field with slider
-		formattedTextFieldPlayerBgVol.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {			
-				int value = checkValidity(formattedTextFieldPlayerBgVol.getText(), "\\d+", 3, 0, 100);
-				if (value > -1) {
-					formattedTextFieldPlayerBgVol.setValue(value);
-					sliderPlayerBgVol.setValue(value);
-				}
-			}
-		});
-		sliderPlayerBgVol.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				formattedTextFieldPlayerBgVol.setValue(sliderPlayerBgVol.getValue());
-			}
-		});
-		
-		JLabel labelPlayerBgvolPercent = new JLabel("%");
-		panelPlayerVolumeControl.add(labelPlayerBgvolPercent, "cell 1 0");
-		
-		JLabel lblPlayerBeatVolume = new JLabel("Beat Volume");
-		panelPlayerVolumeControl.add(lblPlayerBeatVolume, "cell 3 0,alignx trailing");
-		
-		JFormattedTextField formattedTextFieldPlayerBeatVol = new JFormattedTextField();
-		formattedTextFieldPlayerBeatVol.setToolTipText("Define binaural beat volume");
-		formattedTextFieldPlayerBeatVol.setColumns(4);
-		panelPlayerVolumeControl.add(formattedTextFieldPlayerBeatVol, "flowx,cell 4 0,alignx left");
-		
-		JLabel labelPlayerBeatVolPercent = new JLabel("%");
-		panelPlayerVolumeControl.add(labelPlayerBeatVolPercent, "cell 4 0");
-		
-		JSlider sliderPlayerBeatVol = new JSlider();
-		sliderPlayerBeatVol.setToolTipText("Define binaural beat volume");
-		sliderPlayerBeatVol.setMajorTickSpacing(10);
-		sliderPlayerBeatVol.setMinorTickSpacing(1);
-		sliderPlayerBeatVol.setMinimum(0);
-		sliderPlayerBeatVol.setMaximum(100);
-		// TODO: initialize volume slider with volume stored in this.playerBinBeat
-		panelPlayerVolumeControl.add(sliderPlayerBeatVol, "cell 3 1 2 1,growx");
 		
 		// Link beat volume field with slider
 		formattedTextFieldPlayerBeatVol.addActionListener(new ActionListener() {
@@ -364,6 +375,21 @@ public class BbUI {
 		});
 		
 		
+		// Link background volume field with slider
+		formattedTextFieldPlayerBgVol.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {			
+				int value = checkValidity(formattedTextFieldPlayerBgVol.getText(), "\\d+", 3, 0, 100);
+				if (value > -1) {
+					formattedTextFieldPlayerBgVol.setValue(value);
+					sliderPlayerBgVol.setValue(value);
+				}
+			}
+		});
+		sliderPlayerBgVol.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				formattedTextFieldPlayerBgVol.setValue(sliderPlayerBgVol.getValue());
+			}
+		});
 		
 		
 		// _____________________ Session View _____________________
