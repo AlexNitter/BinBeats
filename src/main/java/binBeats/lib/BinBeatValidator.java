@@ -60,10 +60,17 @@ public class BinBeatValidator {
 	
 	/**
 	 * Indicates whether the given BinBeat is valid or not
+	 * @param binBeat The beat to validate
+	 * @param validateName Flag to decide if the name of the beat should be validated or not
+	 * @return ValidationResult which contains a Boolean-flag to indicate whether the beat is valid or not and a message
 	 */
-	public ValidationResult validate(BinBeat binBeat) {
+	public ValidationResult validate(BinBeat binBeat, Boolean validateName) {
 		Boolean isValid = false;
 		String message = "";
+		
+		if(validateName && binBeat.getBeatName() == ""){
+			message = "The BinBeat must contain a name;";
+		}
 		
 		if(binBeat.getCarrierFrequency() < CARRIER_FREQUENCY_MIN || binBeat.getCarrierFrequency() > CARRIER_FREQUENCY_MAX) {
 			message = "The given CarrierFrequency is not valid";
@@ -79,5 +86,14 @@ public class BinBeatValidator {
 		}
 		
 		return new ValidationResult(isValid, message);
+	}
+	
+	/**
+	 * Indicates whether the given BinBeat is valid or not (without validating the name)
+	 * @param binBeat The beat to validate
+	 * @return ValidationResult which contains a Boolean-flag to indicate whether the beat is valid or not and a message
+	 */
+	public ValidationResult validate(BinBeat binBeat) {
+		return validate(binBeat, false);
 	}
 }
