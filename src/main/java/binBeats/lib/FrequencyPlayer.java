@@ -127,7 +127,11 @@ public abstract class FrequencyPlayer {
 		if (sdl.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
 			FloatControl gain = (FloatControl) sdl.getControl(FloatControl.Type.MASTER_GAIN);
 
-			gain.setValue(volume);
+			/*
+			 * TODO
+			 * Map "usefriendly" range [+-0 to +100] to the support range [-80 to +6] and set it 
+			 */
+			gain.setValue(0);
 		}
 	}
 	
