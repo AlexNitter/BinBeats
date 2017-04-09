@@ -90,30 +90,4 @@ public class BinBeatValidatorTest {
 		
 		assertEquals(result.isValid(),false);
 	}
-	
-	@Test
-	public void BinBeatValidator_invalid_7_test() {
-		BinBeatValidator validator = new BinBeatValidator();
-		
-		BinBeat binBeat = new BinBeat(validator.getCarrierFrequencyMin() + 10, 
-									  validator.getBeatFrequencyMin() + 10,
-									  validator.getVolumeMin() - 1);
-		
-		ValidationResult result = validator.validate(binBeat);
-		
-		assertEquals(result.isValid(),false);
-	}
-	
-	@Test
-	public void BinBeatValidator_invalid_8_test() {
-		BinBeatValidator validator = new BinBeatValidator();
-		
-		BinBeat binBeat = new BinBeat(validator.getCarrierFrequencyMin() + 10, 
-									  validator.getBeatFrequencyMin() + 10,
-									  validator.getVolumeMax() + 1);
-		
-		ValidationResult result = validator.validate(binBeat);
-		
-		assertEquals(result.isValid(),false);
-	}
 }
