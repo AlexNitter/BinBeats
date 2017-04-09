@@ -42,7 +42,7 @@ public class BinBeat {
 	 * Sets the base-frequency of the BinBeat,
 	 * range: 20 - 1500 Hz
 	 */
-	public void setCarrierFrequency(int carrierFrequency) {
+	public void setCarrierFrequency(float carrierFrequency) {
 		this.carrierFrequency = carrierFrequency;
 	}
 
