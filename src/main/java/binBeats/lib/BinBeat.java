@@ -11,39 +11,25 @@ public class BinBeat {
 	
 	public BinBeat() {}
 
-	public BinBeat(int carrierFrequency, float beatFrequency){
-		this(carrierFrequency, beatFrequency, "", 127);
+	public BinBeat(float carrierFrequency, float beatFrequency) {
+		this(carrierFrequency, beatFrequency, "", 100);
 	}
 	
-	public BinBeat(int carrierFrequency, float beatFrequency, String beatName){
-		this(carrierFrequency, beatFrequency, beatName, 127);
+	public BinBeat(float carrierFrequency, float beatFrequency, String beatName) {
+		this(carrierFrequency, beatFrequency, beatName, 100);
 	}
 	
-	public BinBeat(int carrierFrequency, float beatFrequency, String beatName, float volume) {
-		this.carrierFrequency = (float)carrierFrequency;
-		this.beatFrequency = beatFrequency;
-		this.beatName = beatName;
-		this.setVolume(volume);
+	public BinBeat(float carrierFrequency, float beatFrequency, float volume) {
+		this(carrierFrequency, beatFrequency, "", volume);
 	}
 	
-	public BinBeat(float carrierFrequency, float beatFrequency, String beatName, float volume){
+	public BinBeat(float carrierFrequency, float beatFrequency, String beatName, float volume) {
 		this.carrierFrequency = carrierFrequency;
 		this.beatFrequency = beatFrequency;
 		this.beatName = beatName;
 		this.setVolume(volume);
 	}
 	
-	public BinBeat(float carrierFrequency, float beatFrequency){
-		this(carrierFrequency, beatFrequency, "", 127);
-	}
-	
-	public BinBeat(float carrierFrequency, float beatFrequency, String beatName){
-		this(carrierFrequency, beatFrequency, beatName, 127);
-	}
-	
-	public BinBeat(float carrierFrequency, float beatFrequency, float volume){
-		this(carrierFrequency, beatFrequency, "", volume);
-	}
 	
 	/**
 	 * Returns the base-frequency of the BinBeat
