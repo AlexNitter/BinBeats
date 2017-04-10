@@ -11,7 +11,7 @@ public class BinBeatsPlayerTest {
 
 	@Test
 	public void binBeatsPlayer_playStop_test() throws LineUnavailableException, InterruptedException {
-		BinBeat binBeat = new BinBeat(440, 20, 80);
+		BinBeat binBeat = new BinBeat(440, 20, 10);
 		
 		BinBeatsPlayer player = new BinBeatsPlayer();
 		player.setBinBeat(binBeat);

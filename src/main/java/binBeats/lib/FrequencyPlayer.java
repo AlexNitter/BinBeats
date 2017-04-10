@@ -38,7 +38,7 @@ public abstract class FrequencyPlayer {
 	}
 	
 	public void setVolume(float volume) {
-		this.volume = calc.calculateMasterGainVolume(volume);
+		this.volume =  volume;//calc.calculateMasterGainVolume(volume);
 	}
 		
 	/**
@@ -125,7 +125,7 @@ public abstract class FrequencyPlayer {
 		if (sdl.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
 			FloatControl gain = (FloatControl) sdl.getControl(FloatControl.Type.MASTER_GAIN);
 
-			gain.setValue(volume);
+			//gain.setValue(volume);
 		}
 	}
 	
@@ -141,7 +141,7 @@ public abstract class FrequencyPlayer {
 
 		for (int i = 0; i < output.length; i++) {
 			double winkelfrequenz = 2.0 * Math.PI * i / periode;
-			double wert = (Math.sin(winkelfrequenz) * 100f);
+			double wert = (Math.sin(winkelfrequenz) * volume);
 			output[i] = (byte) wert;
 		}
 
