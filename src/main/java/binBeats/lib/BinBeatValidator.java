@@ -7,7 +7,7 @@ public class BinBeatValidator {
 	private final float CARRIER_FREQUENCY_MIN = 20f;
 	private final float CARRIER_FREQUENCY_MAX = 1500f;
 	
-	private final float VOLUME_MIN = 1f; 
+	private final float VOLUME_MIN = 0f; 
 	private final float VOLUME_MAX = 100f;
 	
 	private final float BEAT_FREQUENCY_MIN = 0.5f;
