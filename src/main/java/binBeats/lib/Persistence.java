@@ -10,7 +10,6 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * This class is designed for storing BinBeats and archiving the graphs of BinBeats. 
  * It stores BinBeats in an ArrayList. A textual XML representation of the properties of JavaBean BinBeats can be 
@@ -22,28 +21,27 @@ import java.util.List;
 
 public class Persistence {
 
+	private final String FILENAME = "beatSettings.xml";
 	private List<BinBeat> beatList= new ArrayList<BinBeat>();
 	
 	public Persistence(){
-		
 	}
 	/**
 	 * returns preset and user defined BinBeat settings
 	 * @return an ArrayList of BinBeats 
-	 * 
 	 */
 	public List <BinBeat> getBinBeats(){
-		return beatList;		//TODO nur eine Kopie zurückgeben oder Methode löschen?
+		return beatList;		
 	}
 	public void setBinBeats(List<BinBeat>beats){ 
 		beatList=beats;		
 	}
-	private void initBeats(){		//TODO Hilfsmethode. Initialisiert das array, wenn kein xml-file gefunden wurde. 
+	private void initBeats(){		//Hilfsmethode. Initialisiert die Array-List, wenn kein xml-file gefunden wurde. 
 		
 		beatList.add(0, new BinBeat(220, 10.5f, "alpha"));		//TODO to be defined
 		beatList.add(1, new BinBeat(220, 18.0f, "beta"));
 		beatList.add(2, new BinBeat (220, 52.5f, "gamma"));
-		this.serializeBeatListToXML();
+		
 	}
 	
 	public String toString(){ //TODO löschen, nach erfolgreichen Tests
@@ -70,11 +68,12 @@ public class Persistence {
 	}
 	/** 
 	 * loads a BinBeat
-	 * @param bn name of the BinBeat to be loaded
+	 * @param beatName name of the BinBeat to be loaded
 	 * @return the BinBeat with the given name. If not BinBeat with the given name exists, the return value is null
 	 * */	
-	public BinBeat loadBinBeat(String bn){
-		int position=this.searchBeatName(bn);//TODO Was soll passieren, wenn kein passender String gefunden wird?
+	public BinBeat loadBinBeat(String beatName){
+		beatName=beatName.trim();
+		int position=this.searchBeatName(beatName);
 		if (position>=0){
 			return beatList.get(position);		
 		}
@@ -85,12 +84,18 @@ public class Persistence {
 	 * stores a BinBeat and saves an updated textual XML representation of all stored BinBeats to an XML-file
 	 * @param beat the BinBeat to be saved 
 	 * @return true, if the BinBeat could be saved - false, if another BinBeat with the same name already exists and the Beat could not be saved 
+	 * @throws FileNotFoundException if an XML-file does not exists and cannot be created or written into
 	 * */
-	public boolean saveBinBeat(BinBeat beat){ //TODO Worauf wurde der übergebene Beat bereits überprüft? 
-					//[Bedingungen für String: kein Leerstring; !null, nicht mit Whitespacezeichen beginnend]
+	public boolean saveBinBeat(BinBeat beat) throws FileNotFoundException {
+		BinBeatValidator beatvalidator= new BinBeatValidator();
+			//TODO soll der BeatName hier oder im UI geprüft werden?
+		ValidationResult result = beatvalidator.validate(beat,true);
+		if (! result.isValid() ){
+			//TODO throw InvalidArgument o.ä
+			return false; 
+		}
 		String beatName = beat.getBeatName();
-		//TODO validatePersistable BinBeat();
-		beatName.trim();
+		beatName=beatName.trim();
 		int position = this.searchBeatName(beatName);		 
 		if (position < 0){		//TODO Anzahl preset BinBeats müssen noch definiert werden
 			beatList.add(beat);
@@ -104,10 +109,12 @@ public class Persistence {
 	 * deletes a BinBeat  
 	 * @param beatName name of the BinBeat to be deleted
 	 * @return true, if the BinBeat could be deleted - false, if no user defined BinBeat with the given name exists 
+	 * @throws FileNotFoundException if an XML-file does not exists and cannot be created or written into
 	 */
-	public boolean deleteBinBeat(String beatName){ 	//TODO Anzahl preset BinBeats festlegen 
+	public boolean deleteBinBeat(String beatName) throws FileNotFoundException{ 	
+		beatName=beatName.trim();
 		int position=this.searchBeatName(beatName);
-		if (position >=3){
+		if (position >=3){				//TODO Anzahl preset BinBeats festlegen 
 			beatList.remove(position);
 			serializeBeatListToXML();
 			return true;
@@ -115,13 +122,13 @@ public class Persistence {
 		return false;
 	}
 	
-	private void serializeBeatListToXML(){ 
+	private void serializeBeatListToXML() throws FileNotFoundException{ 
 		
 		XMLEncoder encoder=null;
 		try{
-			encoder=new XMLEncoder(new BufferedOutputStream(new FileOutputStream("beatSettings.xml")));
+			encoder=new XMLEncoder(new BufferedOutputStream(new FileOutputStream(FILENAME)));
 		}catch(FileNotFoundException fileNotFound){
-			System.out.println("ERROR: While Creating or Opening the File beatSettings.xml");
+			throw new FileNotFoundException("file does not exists and cannot be created or written into");
 		}
 		encoder.writeObject(this);
 		encoder.close();
@@ -134,17 +141,16 @@ public class Persistence {
 	public void deserializeBeatListFromXML(){
 		XMLDecoder decoder=null;
 		try{
-			decoder=new XMLDecoder(new BufferedInputStream(new FileInputStream("beatSettings.xml")));
+			decoder=new XMLDecoder(new BufferedInputStream(new FileInputStream(FILENAME))); 
+			Persistence restoredBeatList = (Persistence)decoder.readObject();
+			decoder.close();
+			this.beatList = restoredBeatList.beatList;	
+			System.out.println("\nDeserialisierung: ");		//TODO: Später löschen
+			String check = restoredBeatList.toString();
+			System.out.print(check); 
 		}
 		catch(FileNotFoundException e){
-			System.out.println("Error: File beatSettings.xml not found");
-			initBeats(); 	//TODO:Klären, ob sinnvoll
+			initBeats(); 		
 		}
-		Persistence restoredBeatList = (Persistence)decoder.readObject();
-		beatList=restoredBeatList.getBinBeats();
-		/*System.out.println("\nDeserialisierung: ");
-		String check = restoredBeatList.toString();
-		System.out.print(check);*/
 	}
-	
 }

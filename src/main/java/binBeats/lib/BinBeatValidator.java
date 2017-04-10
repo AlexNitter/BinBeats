@@ -67,8 +67,8 @@ public class BinBeatValidator {
 	public ValidationResult validate(BinBeat binBeat, Boolean validateName) {
 		Boolean isValid = false;
 		String message = "";
-		
-		if(validateName && binBeat.getBeatName() == ""){
+		String beatName = binBeat.getBeatName();
+		if(validateName && beatName.trim() == ""){
 			message = "The BinBeat must contain a name;";
 		}
 		
