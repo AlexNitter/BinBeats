@@ -1,5 +1,9 @@
 package main.java.binBeats.lib;
 
+/**
+ * Mapper between the MASTER_GAIN-volume-range (-6 to +80) and the volume-range which is used in the
+ * BinBeats-application based on a percent-value (0 to +100) 
+ */
 public class VolumeCalculator {
 	private final float minMasterGainVolume = -80f;
 	private final float maxMasterGainVolume = 6f;
