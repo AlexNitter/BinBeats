@@ -57,6 +57,8 @@ public class BbUIBasic {
 	private BinBeat playerBinBeat;
 	private BinBeatsPlayer binBeatsPlayer;
 	private BinBeatValidator binBeatValidator;
+	
+	private boolean isPlaying = false;
 
 	/**
 	 * Launch the application.
@@ -139,11 +141,12 @@ public class BbUIBasic {
 		btnPlayerSave.setToolTipText("Save preset");
 		panelPlayer.add(btnPlayerSave, "flowx,cell 3 0");
 		
-		JButton btnPlayerPlay = new JButton("Play");
+		// initialize Play button with whitespaces to prevent component resizing during runtime
+		// TODO: find more elegant solution. If found, change in Action Listener too
+		JButton btnPlayerPlay = new JButton("  Play ");
 		btnPlayerPlay.setToolTipText("Play binaural beat as configured below");
 		panelPlayer.add(btnPlayerPlay, "cell 3 0");
-		
-		
+				
 		JLabel lblPlayerCarrierFrequency = new JLabel("Carrier Frequency");
 		panelPlayer.add(lblPlayerCarrierFrequency, "cell 1 1,alignx trailing");
 		
@@ -154,7 +157,7 @@ public class BbUIBasic {
 		JSlider sliderPlayerCarrier = new JSlider();
 		sliderPlayerCarrier.setToolTipText("Define the pitch of the carrier tone");
 		
-		formattedTextFieldPlayerCarrier.setColumns(7);
+		formattedTextFieldPlayerCarrier.setColumns(6);
 		panelPlayer.add(formattedTextFieldPlayerCarrier, "flowx,cell 2 1,alignx left");
 		
 		sliderPlayerCarrier.setMinimum(20);
@@ -190,7 +193,7 @@ public class BbUIBasic {
 				+ "<li><strong>21 - 30</strong> - <em>High Beta</em> - stress</li>"
 				+ "</ul></html>";
 		formattedTextFieldPlayerBeatFreq.setToolTipText(beatFreqTooltip);
-		formattedTextFieldPlayerBeatFreq.setColumns(7);
+		formattedTextFieldPlayerBeatFreq.setColumns(6);
 		panelPlayer.add(formattedTextFieldPlayerBeatFreq, "flowx,cell 2 3,alignx left");
 		
 		JLabel lblPlayerBeatFreqHz = new JLabel("Hz");
@@ -215,12 +218,12 @@ public class BbUIBasic {
 		JLabel lblPlayerBeatVolume = new JLabel("Beat Volume");
 		panelPlayer.add(lblPlayerBeatVolume, "cell 1 5,alignx trailing");
 		
-		JFormattedTextField formattedTextFieldPlayerBeatVol = new JFormattedTextField();
+		JFormattedTextField formattedTextFieldPlayerBeatVol = new JFormattedTextField(numberFormatterEn);
 		formattedTextFieldPlayerBeatVol.setHorizontalAlignment(SwingConstants.RIGHT);
 		formattedTextFieldPlayerBeatVol.setValue(playerBinBeat.getVolume());
 		panelPlayer.add(formattedTextFieldPlayerBeatVol, "flowx,cell 2 5");
 		formattedTextFieldPlayerBeatVol.setToolTipText("Define binaural beat volume");
-		formattedTextFieldPlayerBeatVol.setColumns(7);
+		formattedTextFieldPlayerBeatVol.setColumns(6);
 		
 		JLabel labelPlayerBeatVolume_0 = new JLabel("0");
 		panelPlayer.add(labelPlayerBeatVolume_0, "cell 0 6,alignx right");
@@ -234,7 +237,7 @@ public class BbUIBasic {
 		sliderPlayerBeatVol.setMinimum(0);
 		sliderPlayerBeatVol.setMaximum(100);
 		// TODO: maybe change playerBinBeat.getVolume() to int in BinBeat Class
-		sliderPlayerBeatVol.setValue((int)playerBinBeat.getVolume());
+		sliderPlayerBeatVol.setValue(Math.round(playerBinBeat.getVolume()));
 		
 		JLabel labelPlayerBeatVolPercent = new JLabel("%");
 		panelPlayer.add(labelPlayerBeatVolPercent, "cell 2 5");
@@ -251,17 +254,26 @@ public class BbUIBasic {
 		// TODO: Pressing the button again should make the sound stop
 		btnPlayerPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// collect data from UI in playerBinBeat
-				// cannot use the fields' value() function because moving a slider will fill the field with int
-				playerBinBeat.setCarrierFrequency(Float.parseFloat(formattedTextFieldPlayerCarrier.getText()));
-				playerBinBeat.setBeatFrequency(Float.parseFloat(formattedTextFieldPlayerBeatFreq.getText()));
-				playerBinBeat.setVolume(Float.parseFloat(formattedTextFieldPlayerBeatVol.getText()));
-				binBeatsPlayer.setBinBeat(playerBinBeat);
-				try {
-					binBeatsPlayer.play();
-				} catch (LineUnavailableException e1) {
-					// TODO: Popup
-					e1.printStackTrace();
+				if(!isPlaying) {
+					// collect data from UI in playerBinBeat
+					// cannot use the fields' value() function because moving a slider will fill the field with int
+					playerBinBeat.setCarrierFrequency(Float.parseFloat(formattedTextFieldPlayerCarrier.getText()));
+					playerBinBeat.setBeatFrequency(Float.parseFloat(formattedTextFieldPlayerBeatFreq.getText()));
+					playerBinBeat.setVolume(Float.parseFloat(formattedTextFieldPlayerBeatVol.getText()));
+					binBeatsPlayer.setBinBeat(playerBinBeat);
+					try {
+						btnPlayerPlay.setText("Pause");
+						binBeatsPlayer.play();
+						isPlaying = true;
+					} catch (LineUnavailableException e1) {
+						// TODO: Popup
+						e1.printStackTrace();
+					}
+				} else {
+					// if Beat is already playing
+					btnPlayerPlay.setText("  Play ");
+					binBeatsPlayer.stop();
+					isPlaying = false;
 				}
 			}
 		});
@@ -310,14 +322,18 @@ public class BbUIBasic {
 		// Link beat volume field with slider
 		formattedTextFieldPlayerBeatVol.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				float value = checkValidity(formattedTextFieldPlayerBeatVol.getText(), "\\d+", 3, binBeatValidator.getVolumeMin(), binBeatValidator.getVolumeMax());
+				// don't allow decimal fractions for volume percentage
+				// float value = checkValidity(formattedTextFieldPlayerBeatVol.getText(), "\\d+", 3, binBeatValidator.getVolumeMin(), binBeatValidator.getVolumeMax());
+				// allow decimal fractions for volume percentage
+				float value = checkValidity(formattedTextFieldPlayerBeatVol.getText(), "\\d+(\\.\\d*)?", 5, binBeatValidator.getVolumeMin(), binBeatValidator.getVolumeMax());
 				if (value > -1) {
+					sliderPlayerBeatVol.setValue(Math.round(value));
 					formattedTextFieldPlayerBeatVol.setValue(value);
-					sliderPlayerBeatVol.setValue((int)value);
 				}
 			}
 		});
 		sliderPlayerBeatVol.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(ChangeEvent e) {
 				formattedTextFieldPlayerBeatVol.setValue(sliderPlayerBeatVol.getValue());
 			}
@@ -325,6 +341,7 @@ public class BbUIBasic {
 		
 		// After every element is added, pack window to content size and center on screen
 		frmBinbeats.pack();
+		//TODO: remove btnPlayerPlay.setText("Play");
 		frmBinbeats.setLocationRelativeTo(null);
 		
 				
