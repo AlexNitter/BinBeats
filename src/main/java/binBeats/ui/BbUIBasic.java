@@ -273,6 +273,8 @@ public class BbUIBasic {
 				if (value > -1) {
 					sliderPlayerCarrier.setValue(Math.round(value));
 					formattedTextFieldPlayerCarrier.setValue(value);
+				} else {
+					// TODO: Popup
 				}
 			}
 		});
@@ -293,6 +295,8 @@ public class BbUIBasic {
 				if (value > -1){
 					sliderPlayerBeatFreq.setValue((int)(value*10));
 					formattedTextFieldPlayerBeatFreq.setValue(value);
+				} else {
+					// TODO: Popup
 				}
 			}
 		});
@@ -339,11 +343,18 @@ public class BbUIBasic {
 	 * @return the checked and corrected value or -1 if not a valid number
 	 */
 	private float checkValidity(String typedValue, String regex, int maxLength, float lowerBound, float upperBound){
+		float value = -1;
 		// Check if typed value is a valid number
-		if (!typedValue.matches(regex) || typedValue.length() > maxLength) {
-			return -1;
+		if (!typedValue.matches(regex)) {
+			System.out.println(typedValue + " is not a valid number.");
+			return value;
 		}
-		float value = Float.parseFloat(typedValue);
+		try {
+			value = Float.parseFloat(typedValue);
+		} catch (NumberFormatException e){
+			System.out.println(typedValue + " is not a parsable float.");
+			return value;
+		}
 		// Check for correct specifications and change if necessary
 		if (value < lowerBound) {
 			value = lowerBound;
