@@ -24,9 +24,11 @@ public abstract class FrequencyPlayer {
 	
 	protected AudioFormat audioFormat;
 	protected SourceDataLine sdl;
+	protected VolumeCalculator calc = new VolumeCalculator();	
 	
 	protected boolean isPlaying = false;
 
+	
 	public void setFrequency(float frequency) {
 		this.frequency = frequency;
 	}
@@ -36,13 +38,9 @@ public abstract class FrequencyPlayer {
 	}
 	
 	public void setVolume(float volume) {
-		this.volume = volume;
+		this.volume = calc.calculateMasterGainVolume(volume);
 	}
-	
-	public float getVolume() {
-		return this.volume;
-	}
-	
+		
 	/**
 	 * Creates a new thread and starts to play the frquency until the stop-method gets called
 	 * @throws LineUnavailableException
@@ -127,11 +125,7 @@ public abstract class FrequencyPlayer {
 		if (sdl.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
 			FloatControl gain = (FloatControl) sdl.getControl(FloatControl.Type.MASTER_GAIN);
 
-			/*
-			 * TODO
-			 * Map "usefriendly" range [+-0 to +100] to the support range [-80 to +6] and set it 
-			 */
-			gain.setValue(0);
+			gain.setValue(volume);
 		}
 	}
 	
