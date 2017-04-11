@@ -288,7 +288,8 @@ public class BbUIBasic {
 		// Delete button
 		btnPlayerDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Remove currently selected item
+				// TODO: Remove actual BinBeat
+				// TODO: protect against null pointer exceptions when list is empty
 				comboBoxPlayerPresetSelection.removeItemAt(comboBoxPlayerPresetSelection.getSelectedIndex());
 			}
 		});
@@ -297,7 +298,8 @@ public class BbUIBasic {
 		btnPlayerSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO: Actually save a BinBeat with persistence class
-				comboBoxPlayerPresetSelection.addItem((String)comboBoxPlayerPresetSelection.getSelectedItem());
+				String beatName = String.valueOf(comboBoxPlayerPresetSelection.getSelectedItem());
+				comboBoxPlayerPresetSelection.addItem(beatName);
 			}
 		});
 		
