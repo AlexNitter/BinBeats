@@ -1,13 +1,24 @@
 # BinBeats
 Software zur Erzeugung binauraler Beats
 
+##Systemvoraussetzungen
+Um die BinBeats-Software nutzen zu können ist ein Standard-PC mit Maus, Tastatur und Steroekopfhörern, sowie ein gängiges Betriebssystem erforderlich.
+
 ## Installation
 Lade die ausführbare .jar-Datei herunter. Es sind keine weiteren Installationsschritte nötig, die Datei kann direkt ausgeführt werden.
 
+## Sicherheitshinweis
+Personen mit Hirnerkrankungen wie Epilepsie, Schlafanfall-Patienten oder Personen mit Herz-Rythmus-Störungen sollten auf die binauralen Beats verzichten oder die Nutzung mit ihrem Arzt besprechen, da die Beats die Hirnströme beeinflussen und dementsprechend Auswirkungen auf Vorerkrankte haben können. 
+
 ## Benutzung
+
+Mit der "Carrier Frequency" lässt sich die Trägerfrequenz einstellen. Diese Frequenz bestimmt die Tonlage, mit welcher die Sinustöne wahrgenommen werden. Die "Beat Frequency" bestimmt den Abstand zwischen den beiden Sinustönen. Dieser Abstand ist es, durch welchem der eigentliche binauralen Beat entsteht.
+
 1. Stelle den zu erzeugenden binauralen Beat über die Felder und Schieberegler ein oder wähle ein Preset aus der Liste aus.
 2. Spiele den aktuell eingestellten Beat durch einen Klick auf den "Play"-Button.
 3. Speichere den aktuell eingestellten Beat durch einen Klick auf den "Save"-Button.
+
+Erhalte mit einem Mouseover über entsprechende Elemente weitere Hinweise zur Funktion und Benutzung.
 
 ## Funktionsweise
 Binaurale Beats sind ein auditives Phänomen, durch das bei der Wahrnehmung von leicht unterschiedlichen Frequenzen auf dem linken und auf dem rechten Ohr die Differenzfrequenz als pulsierender Ton durch das Hörzentrum erzeugt wird.
