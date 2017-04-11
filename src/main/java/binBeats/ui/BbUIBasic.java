@@ -42,6 +42,7 @@ import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 
 /**
  * Displays the UI for BinBeat Player only
@@ -137,13 +138,16 @@ public class BbUIBasic {
 		comboBoxPlayerPresetSelection.setToolTipText("Select binaural beat from preset or create a new one");
 		panelPlayer.add(comboBoxPlayerPresetSelection, "flowx,cell 2 0,growx");
 		
-		JButton btnPlayerSave = new JButton("Save");
+		//JButton btnPlayerSave = new JButton("Save");
+		JButton btnPlayerSave = new JButton();
+		btnPlayerSave.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/save.png")));
 		btnPlayerSave.setToolTipText("Save preset");
 		panelPlayer.add(btnPlayerSave, "flowx,cell 3 0");
 		
 		// initialize Play button with whitespaces to prevent component resizing during runtime
 		// TODO: find more elegant solution. If found, change in Action Listener too
-		JButton btnPlayerPlay = new JButton("  Play ");
+		JButton btnPlayerPlay = new JButton("");
+		btnPlayerPlay.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/play.png")));
 		btnPlayerPlay.setToolTipText("Play binaural beat as configured below");
 		panelPlayer.add(btnPlayerPlay, "cell 3 0");
 				
@@ -251,7 +255,6 @@ public class BbUIBasic {
 		// after all elements are initialized
 		
 		// Play button actions
-		// TODO: Pressing the button again should make the sound stop
 		btnPlayerPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!isPlaying) {
@@ -262,7 +265,8 @@ public class BbUIBasic {
 					playerBinBeat.setVolume(Float.parseFloat(formattedTextFieldPlayerBeatVol.getText()));
 					binBeatsPlayer.setBinBeat(playerBinBeat);
 					try {
-						btnPlayerPlay.setText("Pause");
+						btnPlayerPlay.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/stop.png")));
+						btnPlayerPlay.setToolTipText("Stop playback");
 						binBeatsPlayer.play();
 						isPlaying = true;
 					} catch (LineUnavailableException e1) {
@@ -271,7 +275,8 @@ public class BbUIBasic {
 					}
 				} else {
 					// if Beat is already playing
-					btnPlayerPlay.setText("  Play ");
+					btnPlayerPlay.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/play.png")));
+					btnPlayerPlay.setToolTipText("Play binaural beat as configured below");
 					binBeatsPlayer.stop();
 					isPlaying = false;
 				}
