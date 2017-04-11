@@ -1,6 +1,16 @@
 # BinBeats
 Software zur Erzeugung binauraler Beats
 
+### Table of Contents 
+
+- [BinBeats](#binbeats)
+	- [Sicherheitshinweis](#sicherheitshinweis)
+	- [Systemvoraussetzungen](#systemvoraussetzungen)
+	- [Installation](#installation)
+	- [Benutzung](#benutzung)
+	- [Funktionsweise](#funktionsweise)
+	- [Inhalte von Drittanbietern](#inhalte-von-drittanbietern)
+
 ## Sicherheitshinweis
 Personen mit Hirnerkrankungen wie Epilepsie, Schlafanfall-Patienten oder Personen mit Herz-Rythmus-Störungen sollten auf die binauralen Beats verzichten oder die Nutzung mit ihrem Arzt besprechen, da die Beats die Hirnströme beeinflussen und dementsprechend Auswirkungen auf Vorerkrankte haben können.
 
