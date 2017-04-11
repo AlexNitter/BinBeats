@@ -138,15 +138,17 @@ public class BbUIBasic {
 		comboBoxPlayerPresetSelection.setToolTipText("Select binaural beat from preset or create a new one");
 		panelPlayer.add(comboBoxPlayerPresetSelection, "flowx,cell 2 0,growx");
 		
-		//JButton btnPlayerSave = new JButton("Save");
 		JButton btnPlayerSave = new JButton();
 		btnPlayerSave.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/save.png")));
 		btnPlayerSave.setToolTipText("Save preset");
 		panelPlayer.add(btnPlayerSave, "flowx,cell 3 0");
 		
-		// initialize Play button with whitespaces to prevent component resizing during runtime
-		// TODO: find more elegant solution. If found, change in Action Listener too
-		JButton btnPlayerPlay = new JButton("");
+		JButton btnPlayerDelete = new JButton();
+		btnPlayerDelete.setToolTipText("Delete currently selected preset");
+		btnPlayerDelete.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/garbage.png")));
+		panelPlayer.add(btnPlayerDelete, "cell 3 0");
+		
+		JButton btnPlayerPlay = new JButton();
 		btnPlayerPlay.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/play.png")));
 		btnPlayerPlay.setToolTipText("Play binaural beat as configured below");
 		panelPlayer.add(btnPlayerPlay, "cell 3 0");
@@ -283,6 +285,22 @@ public class BbUIBasic {
 			}
 		});
 		
+		// Delete button
+		btnPlayerDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Remove currently selected item
+				comboBoxPlayerPresetSelection.removeItemAt(comboBoxPlayerPresetSelection.getSelectedIndex());
+			}
+		});
+		
+		// Save button
+		btnPlayerSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO: Actually save a BinBeat with persistence class
+				comboBoxPlayerPresetSelection.addItem((String)comboBoxPlayerPresetSelection.getSelectedItem());
+			}
+		});
+		
 		// Link carrier slider and text field
 		formattedTextFieldPlayerCarrier.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -346,7 +364,6 @@ public class BbUIBasic {
 		
 		// After every element is added, pack window to content size and center on screen
 		frmBinbeats.pack();
-		//TODO: remove btnPlayerPlay.setText("Play");
 		frmBinbeats.setLocationRelativeTo(null);
 		
 				
