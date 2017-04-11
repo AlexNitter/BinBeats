@@ -38,10 +38,12 @@ public class Persistence {
 	}
 	private void initBeats(){		//Hilfsmethode. Initialisiert die Array-List, wenn kein xml-file gefunden wurde. 
 		
-		beatList.add(0, new BinBeat(220, 10.5f, "alpha"));		//TODO to be defined
-		beatList.add(1, new BinBeat(220, 18.0f, "beta"));
-		beatList.add(2, new BinBeat (220, 52.5f, "gamma"));
-		
+		beatList.add(0, new BinBeat(432f, 2f, "Falling Asleep"));		//TODO to be defined
+		beatList.add(1, new BinBeat(432f, 4f, "Trance"));
+		beatList.add(2, new BinBeat (432f, 5f, "Deep Medition"));
+		beatList.add(3, new BinBeat (432f, 6f, "Creativity"));
+		beatList.add(4, new BinBeat (432f, 8f,"Concenrated Learning"));
+		beatList.add(5, new BinBeat(432f, 21f, "Problem Solving"));
 	}
 	
 	public String toString(){ //TODO löschen, nach erfolgreichen Tests
@@ -114,7 +116,7 @@ public class Persistence {
 	public boolean deleteBinBeat(String beatName) throws FileNotFoundException{ 	
 		beatName=beatName.trim();
 		int position=this.searchBeatName(beatName);
-		if (position >=3){				//TODO Anzahl preset BinBeats festlegen 
+		if (position >=6){				//TODO Anzahl preset BinBeats festlegen 
 			beatList.remove(position);
 			serializeBeatListToXML();
 			return true;
