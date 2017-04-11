@@ -29,5 +29,5 @@ Binauralen Beats wird eine Wechselwirkung mit Gehirnwellen zugeschrieben. Erzeug
 Eine übersichtliche Tabelle, die zeigt, mit welcher Beatfrequenz welcher Zustand herbeigeführt werden kann, findet sich auf [Wikipedia](https://de.wikipedia.org/wiki/Elektroenzephalografie#Beeinflussung_der_Gehirnwellen).
 
 ## Inhalte von Drittanbietern
-* Die Benutzeroberfläche benutzt den **MiG Java Layout Manager** unter der [3-Clause BSD Lizenz](https://opensource.org/licenses/BSD-3-Clause)
+* Die Benutzeroberfläche benutzt den [MiG Java Layout Manager](http://miglayout.com/) unter der [3-Clause BSD Lizenz](https://opensource.org/licenses/BSD-3-Clause)
 * Die verwendeten Icons wurden von [Madebyoliver](http://www.flaticon.com/authors/madebyoliver) für [Flaticon](http://www.flaticon.com/packs/essential-collection) designed
