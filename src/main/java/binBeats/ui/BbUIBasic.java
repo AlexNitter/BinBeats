@@ -12,6 +12,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -97,16 +98,7 @@ public class BbUIBasic {
 	 * Initialize the contents of the frame and add functionality.
 	 */
 	private void initialize() {
-		try {
-			binBeatsPlayer = new BinBeatsPlayer();
-		} catch (LineUnavailableException e1) {
-			// TODO: Popup
-			e1.printStackTrace();
-		}
-		binBeatValidator = new BinBeatValidator();
-		// TODO: Demo BinBeat
-		playerBinBeat = new BinBeat(432, 7);
-		
+
 		/* Format numbers in text fields to display a dot as decimal separator
 		 * and to not use grouping separators for multiples of 1000.
 		 * e.g. instead of 1.333,37 display 1333.37 
@@ -121,6 +113,16 @@ public class BbUIBasic {
 		frmBinbeats = new JFrame();
 		frmBinbeats.setTitle("BinBeats");
 		frmBinbeats.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		try {
+			binBeatsPlayer = new BinBeatsPlayer();
+		} catch (LineUnavailableException e1) {
+			JOptionPane.showMessageDialog(frmBinbeats, "Error accessing audio system.", "Error", JOptionPane.ERROR_MESSAGE);
+			e1.printStackTrace();
+		}
+		binBeatValidator = new BinBeatValidator();
+		// TODO: Demo BinBeat
+		playerBinBeat = new BinBeat(432, 7);
 		
 		
 		// _____________________ Player View _____________________
@@ -405,3 +407,34 @@ public class BbUIBasic {
 		return value;
 	}
 }
+
+/* Attribution of third party content
+ * -------------------------------------------------------------------------------------------------------------------------------------------------
+ * 
+ * MiG Layout used under 3-Clause BSD License
+ * 
+ * Copyright 2011 MiG InfoCom AB
+ * 
+ * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * 
+ * 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this
+ * software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+ * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * -------------------------------------------------------------------------------------------------------------------------------------------------
+ * 
+ * UI Icons designed by Madebyoliver from Flaticon
+ * http://www.flaticon.com/packs/essential-collection
+ */
+

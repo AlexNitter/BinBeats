@@ -16,3 +16,7 @@ Hört man beispielsweise auf dem rechten Ohr einen Ton der Frequenz 200 Hz und au
 Binauralen Beats wird eine Wechselwirkung mit Gehirnwellen zugeschrieben. Erzeugt man binaurale Beats in einer Frequenz, die mit der Gehirnwellenfrequenz eines bestimmten Zustands übereinstimmt, kann man diesen Zustand künstlich herbeiführen und sich verschiedene mögliche Effekte zunutze machen. Die Existenz dieser Effekte ist umstritten und wissenschaftlich nicht erwiesen.
 
 Eine übersichtliche Tabelle, die zeigt, mit welcher Beatfrequenz welcher Zustand herbeigeführt werden kann, findet sich auf [Wikipedia](https://de.wikipedia.org/wiki/Elektroenzephalografie#Beeinflussung_der_Gehirnwellen).
+
+## Inhalte von Drittanbietern
+* Die Benutzeroberfläche benutzt den **MiG Java Layout Manager** unter der [3-Clause BSD Lizenz](https://opensource.org/licenses/BSD-3-Clause)
+* Die verwendeten Icons wurden von [Madebyoliver](http://www.flaticon.com/authors/madebyoliver) für [Flaticon](http://www.flaticon.com/packs/essential-collection) designed
