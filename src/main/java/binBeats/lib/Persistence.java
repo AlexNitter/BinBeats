@@ -22,27 +22,34 @@ import java.util.List;
 public class Persistence {
 
 	private final String FILENAME = "beatSettings.xml";
+	private final int NUMBER_OF_PRESETS=6;
 	private List<BinBeat> beatList= new ArrayList<BinBeat>();
 	
 	public Persistence(){
 	}
 	/**
 	 * returns preset and user defined BinBeat settings
-	 * @return an ArrayList of BinBeats 
+	 * @return a copy of the ArrayList of BinBeats 
 	 */
 	public List <BinBeat> getBinBeats(){
-		return beatList;		
+		List<BinBeat> beatListCopy = this.beatList;
+		return beatListCopy;		
 	}
+	
+	/**sets user defined BinBeats and adds them to the system defined list of presets
+	 * @param beats anArrayList of user defined BinBeats
+	 * */
 	public void setBinBeats(List<BinBeat>beats){ 
-		beatList=beats;		
+		this.initBeats();
+		beatList.addAll(NUMBER_OF_PRESETS, beats);		
 	}
-	private void initBeats(){		//Hilfsmethode. Initialisiert die Array-List, wenn kein xml-file gefunden wurde. 
+	private void initBeats(){		//initializes the ArrayList, if no XML-file is found. 
 		
-		beatList.add(0, new BinBeat(432f, 2f, "Falling Asleep"));		//TODO to be defined
+		beatList.add(0, new BinBeat(432f, 2f, "Falling Asleep"));
 		beatList.add(1, new BinBeat(432f, 4f, "Trance"));
 		beatList.add(2, new BinBeat (432f, 5f, "Deep Medition"));
 		beatList.add(3, new BinBeat (432f, 6f, "Creativity"));
-		beatList.add(4, new BinBeat (432f, 8f,"Concenrated Learning"));
+		beatList.add(4, new BinBeat (432f, 8f,"Concentrated Learning"));
 		beatList.add(5, new BinBeat(432f, 21f, "Problem Solving"));
 	}
 	
@@ -88,22 +95,20 @@ public class Persistence {
 	 * @return true, if the BinBeat could be saved - false, if another BinBeat with the same name already exists and the Beat could not be saved 
 	 * @throws FileNotFoundException if an XML-file does not exists and cannot be created or written into
 	 * */
-	public boolean saveBinBeat(BinBeat beat) throws FileNotFoundException {
+	public boolean saveBinBeat(BinBeat beat) throws FileNotFoundException, IllegalArgumentException {
 		BinBeatValidator beatvalidator= new BinBeatValidator();
-			//TODO soll der BeatName hier oder im UI geprüft werden?
 		ValidationResult result = beatvalidator.validate(beat,true);
 		if (! result.isValid() ){
-			//TODO throw InvalidArgument o.ä
-			return false; 
+			throw new IllegalArgumentException("Invalid BinBeat");
 		}
 		String beatName = beat.getBeatName();
 		beatName=beatName.trim();
 		int position = this.searchBeatName(beatName);		 
-		if (position < 0){		//TODO Anzahl preset BinBeats müssen noch definiert werden
+		if (position < 0){					//if no BinBeat with the same name is found
 			beatList.add(beat);
-			serializeBeatListToXML();
+			serializeBeatListToXML();		//throws FileNotFoundException
 			return true;
-		}
+		} 
 		return false;
 	}
 	
@@ -116,7 +121,7 @@ public class Persistence {
 	public boolean deleteBinBeat(String beatName) throws FileNotFoundException{ 	
 		beatName=beatName.trim();
 		int position=this.searchBeatName(beatName);
-		if (position >=6){				//TODO Anzahl preset BinBeats festlegen 
+		if (position >=NUMBER_OF_PRESETS){	 
 			beatList.remove(position);
 			serializeBeatListToXML();
 			return true;
