@@ -19,6 +19,8 @@ import javax.swing.JFormattedTextField;
 import javax.sound.sampled.LineUnavailableException;
 import javax.swing.Action;
 import javax.swing.Box;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.ToolTipManager;
@@ -32,6 +34,7 @@ import net.miginfocom.swing.MigLayout;
 import main.java.binBeats.lib.BinBeat;
 import main.java.binBeats.lib.BinBeatValidator;
 import main.java.binBeats.lib.BinBeatsPlayer;
+import main.java.binBeats.lib.Persistence;
 
 import javax.swing.event.ChangeListener;
 import javax.swing.text.NumberFormatter;
@@ -41,6 +44,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
@@ -59,6 +63,8 @@ public class BbUIBasic {
 	private BinBeat playerBinBeat;
 	private BinBeatsPlayer binBeatsPlayer;
 	private BinBeatValidator binBeatValidator;
+	private Persistence persistence;
+	private List<BinBeat> beatList;
 	
 	private boolean isPlaying = false;
 
@@ -97,6 +103,7 @@ public class BbUIBasic {
 	/**
 	 * Initialize the contents of the frame and add functionality.
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initialize() {
 
 		/* Format numbers in text fields to display a dot as decimal separator
@@ -134,8 +141,28 @@ public class BbUIBasic {
 		JLabel lblPlayerPreset = new JLabel("Preset");
 		panelPlayer.add(lblPlayerPreset, "cell 1 0,alignx trailing");
 		
-		String[] mockupPlayerAtmosphereSelection = {"<new>", "Reasoning - Beta", "Relaxation - Alpha", "Meditation - Theta", "Deep Sleep - Delta"};
-		JComboBox comboBoxPlayerPresetSelection = new JComboBox(mockupPlayerAtmosphereSelection);
+		// TODO: get list from persistence class
+		
+		//String[] mockupPlayerAtmosphereSelection = {"<new>", "Reasoning - Beta", "Relaxation - Alpha", "Meditation - Theta", "Deep Sleep - Delta"};
+		//JComboBox comboBoxPlayerPresetSelection = new JComboBox(mockupPlayerAtmosphereSelection);
+		
+		//JComboBox<BinBeat> comboBoxPlayerPresetSelection = new JComboBox<BinBeat>((BinBeat[]) beatList.toArray());
+		
+		JComboBox comboBoxPlayerPresetSelection = new JComboBox();
+		// Populate dropdown list from persistence
+		try {
+			beatList = persistence.getBinBeats();
+			comboBoxPlayerPresetSelection.setModel(new DefaultComboBoxModel(beatList.toArray()));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(frmBinbeats,
+				    "An error occurred while loading the beat list.\n"
+				    + "You can currently play binaural beats but you cannot save them.",
+				    "Error",
+				    JOptionPane.ERROR_MESSAGE);
+			System.err.println("Could not load presets.");
+			e.printStackTrace();
+		}
+		
 		comboBoxPlayerPresetSelection.setEditable(true);
 		comboBoxPlayerPresetSelection.setToolTipText("Select binaural beat from preset or create a new one");
 		panelPlayer.add(comboBoxPlayerPresetSelection, "flowx,cell 2 0,growx");
@@ -326,7 +353,7 @@ public class BbUIBasic {
 			public void actionPerformed(ActionEvent e) {
 				// TODO: Actually save a BinBeat with persistence class
 				String beatName = String.valueOf(comboBoxPlayerPresetSelection.getSelectedItem());
-				comboBoxPlayerPresetSelection.addItem(beatName);
+				//comboBoxPlayerPresetSelection.addItem(beatName);
 			}
 		});
 		
