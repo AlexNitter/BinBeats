@@ -141,17 +141,32 @@ public class BbUIBasic {
 		panelPlayer.add(comboBoxPlayerPresetSelection, "flowx,cell 2 0,growx");
 		
 		JButton btnPlayerSave = new JButton();
-		btnPlayerSave.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/save.png")));
+		try {
+			btnPlayerSave.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/save.png")));
+		} catch(Exception e) {
+			btnPlayerSave.setText("Save");
+			e.printStackTrace();
+		}
 		btnPlayerSave.setToolTipText("Save preset");
 		panelPlayer.add(btnPlayerSave, "flowx,cell 3 0");
 		
 		JButton btnPlayerDelete = new JButton();
 		btnPlayerDelete.setToolTipText("Delete currently selected preset");
-		btnPlayerDelete.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/garbage.png")));
+		try {
+			btnPlayerDelete.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/garbage.png")));
+		} catch (Exception e) {
+			btnPlayerDelete.setText("Delete");
+			e.printStackTrace();
+		}
 		panelPlayer.add(btnPlayerDelete, "cell 3 0");
 		
 		JButton btnPlayerPlay = new JButton();
-		btnPlayerPlay.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/play.png")));
+		try {
+			btnPlayerPlay.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/play.png")));
+		} catch (Exception e) {
+			btnPlayerPlay.setText("  Play ");
+			e.printStackTrace();
+		}
 		btnPlayerPlay.setToolTipText("Play binaural beat as configured below");
 		panelPlayer.add(btnPlayerPlay, "cell 3 0");
 				
@@ -244,7 +259,6 @@ public class BbUIBasic {
 		sliderPlayerBeatVol.setMinorTickSpacing(1);
 		sliderPlayerBeatVol.setMinimum(0);
 		sliderPlayerBeatVol.setMaximum(100);
-		// TODO: maybe change playerBinBeat.getVolume() to int in BinBeat Class
 		sliderPlayerBeatVol.setValue(Math.round(playerBinBeat.getVolume()));
 		
 		JLabel labelPlayerBeatVolPercent = new JLabel("%");
@@ -274,12 +288,20 @@ public class BbUIBasic {
 						binBeatsPlayer.play();
 						isPlaying = true;
 					} catch (LineUnavailableException e1) {
-						// TODO: Popup
+						JOptionPane.showMessageDialog(frmBinbeats, "Error accessing audio system.", "Error", JOptionPane.ERROR_MESSAGE);
 						e1.printStackTrace();
+					} catch (NullPointerException e2) {
+						btnPlayerPlay.setText("Stop");
+						e2.printStackTrace();
 					}
 				} else {
 					// if Beat is already playing
-					btnPlayerPlay.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/play.png")));
+					try {
+						btnPlayerPlay.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/play.png")));
+					} catch (Exception e3) {
+						btnPlayerPlay.setText("  Play ");
+						e3.printStackTrace();
+					}					
 					btnPlayerPlay.setToolTipText("Play binaural beat as configured below");
 					binBeatsPlayer.stop();
 					isPlaying = false;
@@ -290,9 +312,12 @@ public class BbUIBasic {
 		// Delete button
 		btnPlayerDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Remove actual BinBeat
-				// TODO: protect against null pointer exceptions when list is empty
-				comboBoxPlayerPresetSelection.removeItemAt(comboBoxPlayerPresetSelection.getSelectedIndex());
+				try {
+					// TODO: Remove actual BinBeat
+					comboBoxPlayerPresetSelection.removeItemAt(comboBoxPlayerPresetSelection.getSelectedIndex());
+				} catch (Exception e1){
+					// if there is nothing to delete do nothing
+				}
 			}
 		});
 		
@@ -313,7 +338,11 @@ public class BbUIBasic {
 					sliderPlayerCarrier.setValue(Math.round(value));
 					formattedTextFieldPlayerCarrier.setValue(value);
 				} else {
-					// TODO: Popup
+					JOptionPane.showMessageDialog(
+							frmBinbeats,
+							"Please enter a valid frequency between " + binBeatValidator.getCarrierFrequencyMin() + " and " + binBeatValidator.getCarrierFrequencyMax() + " Hz.",
+							"Invalid frequency",
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -335,7 +364,11 @@ public class BbUIBasic {
 					sliderPlayerBeatFreq.setValue((int)(value*10));
 					formattedTextFieldPlayerBeatFreq.setValue(value);
 				} else {
-					// TODO: Popup
+					JOptionPane.showMessageDialog(
+							frmBinbeats,
+							"Please enter a valid frequency between " + binBeatValidator.getBeatFrequencyMin() + " and " + binBeatValidator.getBeatFrequencyMax() + " Hz.",
+							"Invalid frequency",
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
@@ -356,6 +389,12 @@ public class BbUIBasic {
 				if (value > -1) {
 					sliderPlayerBeatVol.setValue(Math.round(value));
 					formattedTextFieldPlayerBeatVol.setValue(value);
+				} else {
+					JOptionPane.showMessageDialog(
+							frmBinbeats,
+							"Please enter a valid volume between " + sliderPlayerBeatVol.getMaximum() + " and " + sliderPlayerBeatVol.getMinimum() + " %.",
+							"Invalid volume",
+							JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
