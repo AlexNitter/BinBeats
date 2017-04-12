@@ -16,10 +16,10 @@ Software zur Erzeugung binauraler Beats
 Personen mit Hirnerkrankungen wie Epilepsie, Schlafanfall-Patienten oder Personen mit Herz-Rythmus-Störungen sollten auf die binauralen Beats verzichten oder die Nutzung mit ihrem Arzt besprechen, da die Beats die Hirnströme beeinflussen und dementsprechend Auswirkungen auf Vorerkrankte haben können.
 
 ## Systemvoraussetzungen
-Um die BinBeats-Software nutzen zu können ist ein Standard-PC mit Maus, Tastatur und Steroekopfhörern, sowie ein gängiges Betriebssystem erforderlich.
+Um die BinBeats-Software nutzen zu können ist ein Standard-PC mit Maus, Tastatur und Steroekopfhörern, sowie ein gängiges Betriebssystem erforderlich. Außerdem muss eine aktuelle Java-Runtime (JRE) installiert sein.
 
 ## Installation
-Lade die ausföhrbare .jar-Datei [hier](https://github.com/AlexNitter/BinBeats/blob/master/build/BinBeats.jar) herunter. Es sind keine weiteren Installationsschritte nötig, die Datei kann direkt ausgeführt werden.
+Lade die ausführbare .jar-Datei [hier](https://github.com/AlexNitter/BinBeats/raw/master/build/BinBeats.jar) herunter. Es sind keine weiteren Installationsschritte nötig, die Datei kann direkt durch einen Doppelklick ausgeführt werden.
 
 ## Benutzung
 
