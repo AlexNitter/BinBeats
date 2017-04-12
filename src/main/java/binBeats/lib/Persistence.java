@@ -23,6 +23,8 @@ public class Persistence {
 
 	private final String FILENAME = "beatSettings.xml";
 	private final int NUMBER_OF_PRESETS=6;
+	private final String [] NAME_OF_PRESETS = {"Falling Asleep","Trance","Deep Medition","Creativity","Concentrated Learning","Problem Solving"};
+	
 	private List<BinBeat> beatList= new ArrayList<BinBeat>();
 	
 	public Persistence(){
@@ -36,21 +38,22 @@ public class Persistence {
 		return beatListCopy;		
 	}
 	
-	/**sets user defined BinBeats and adds them to the system defined list of presets
-	 * @param beats anArrayList of user defined BinBeats
+	/**Empty methode. This methode is needed for internal encoding and decoding to and from XML-files.  
+	 * @param beats anArrayList of BinBeats
 	 * */
-	public void setBinBeats(List<BinBeat>beats){ 
-		this.initBeats();
-		beatList.addAll(NUMBER_OF_PRESETS, beats);		
+	public void setBinBeats(List<BinBeat>beats){ 	
 	}
-	private void initBeats(){		//initializes the ArrayList, if no XML-file is found. 
+	public String []getNameOfPresets(){		
+		return this.NAME_OF_PRESETS;
+	}
+	private void initBeats(){		//initializes the ArrayList, if no XML-file is found.
 		
-		beatList.add(0, new BinBeat(432f, 2f, "Falling Asleep"));
-		beatList.add(1, new BinBeat(432f, 4f, "Trance"));
-		beatList.add(2, new BinBeat (432f, 5f, "Deep Medition"));
-		beatList.add(3, new BinBeat (432f, 6f, "Creativity"));
-		beatList.add(4, new BinBeat (432f, 8f,"Concentrated Learning"));
-		beatList.add(5, new BinBeat(432f, 21f, "Problem Solving"));
+		beatList.add(0, new BinBeat( 432f, 2f, NAME_OF_PRESETS[0] ) );		
+		beatList.add(1, new BinBeat( 432f, 4f, NAME_OF_PRESETS[1] ) );
+		beatList.add(2, new BinBeat( 432f, 5f, NAME_OF_PRESETS[2] ) );
+		beatList.add(3, new BinBeat( 432f, 6f, NAME_OF_PRESETS[3] ) );
+		beatList.add(4, new BinBeat( 432f, 8f, NAME_OF_PRESETS[4] ) );
+		beatList.add(5, new BinBeat( 432f,21f, NAME_OF_PRESETS[5] ) );
 	}
 	
 	public String toString(){ //TODO löschen, nach erfolgreichen Tests
@@ -61,13 +64,13 @@ public class Persistence {
 		return beats;
 	}
 	
-	private int searchBeatName(String bn){ 
+	private int searchBeatName(String searchedBeatName){ 
 		int position = -1;
 		int length=beatList.size();
 		for(int i=0; i<length; i++){
 			BinBeat bb= beatList.get(i);
 			String beatName=bb.getBeatName();
-			if(beatName.equals(bn)){ 
+			if(beatName.equals(searchedBeatName)){ 
 				position=i;			 
 				return position;
 			}
@@ -94,6 +97,7 @@ public class Persistence {
 	 * @param beat the BinBeat to be saved 
 	 * @return true, if the BinBeat could be saved - false, if another BinBeat with the same name already exists and the Beat could not be saved 
 	 * @throws FileNotFoundException if an XML-file does not exists and cannot be created or written into
+	 * @throws IllegalArgumentException if the given BinBeat is not valid	
 	 * */
 	public boolean saveBinBeat(BinBeat beat) throws FileNotFoundException, IllegalArgumentException {
 		BinBeatValidator beatvalidator= new BinBeatValidator();
