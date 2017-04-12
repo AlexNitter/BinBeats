@@ -1,5 +1,6 @@
 package main.java.binBeats.ui;
 
+// TODO: remove unused imports
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.Color;
@@ -64,7 +65,7 @@ public class BbUIBasic {
 	private BinBeatsPlayer binBeatsPlayer;
 	private BinBeatValidator binBeatValidator;
 	private Persistence persistence;
-	private List<BinBeat> beatList;
+	private DefaultComboBoxModel<BinBeat> beatListCombo;
 	
 	private boolean isPlaying = false;
 
@@ -103,7 +104,6 @@ public class BbUIBasic {
 	/**
 	 * Initialize the contents of the frame and add functionality.
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initialize() {
 
 		/* Format numbers in text fields to display a dot as decimal separator
@@ -128,7 +128,9 @@ public class BbUIBasic {
 			e1.printStackTrace();
 		}
 		binBeatValidator = new BinBeatValidator();
-		// TODO: Demo BinBeat
+		persistence = new Persistence();
+		
+		// Failsafe Demo BinBeat
 		playerBinBeat = new BinBeat(432, 7);
 		
 		
@@ -141,18 +143,20 @@ public class BbUIBasic {
 		JLabel lblPlayerPreset = new JLabel("Preset");
 		panelPlayer.add(lblPlayerPreset, "cell 1 0,alignx trailing");
 		
-		// TODO: get list from persistence class
-		
-		//String[] mockupPlayerAtmosphereSelection = {"<new>", "Reasoning - Beta", "Relaxation - Alpha", "Meditation - Theta", "Deep Sleep - Delta"};
-		//JComboBox comboBoxPlayerPresetSelection = new JComboBox(mockupPlayerAtmosphereSelection);
-		
-		//JComboBox<BinBeat> comboBoxPlayerPresetSelection = new JComboBox<BinBeat>((BinBeat[]) beatList.toArray());
-		
-		JComboBox comboBoxPlayerPresetSelection = new JComboBox();
-		// Populate dropdown list from persistence
+		JComboBox<BinBeat> comboBoxPlayerPresetSelection = new JComboBox<BinBeat>();
 		try {
-			beatList = persistence.getBinBeats();
-			comboBoxPlayerPresetSelection.setModel(new DefaultComboBoxModel(beatList.toArray()));
+			// Populate dropdown list from persistence
+			persistence.deserializeBeatListFromXML();
+			List<BinBeat> beatList = persistence.getBinBeats();
+			
+			// TODO: check correct typing
+			//code below doesn't work. beatList.toArray() cannot be cast to BinBeat[] - why?
+			//BinBeat[] beatArray = (BinBeat[]) beatList.toArray();
+
+			beatListCombo = new DefaultComboBoxModel(beatList.toArray());
+			comboBoxPlayerPresetSelection.setModel(beatListCombo);
+			
+			playerBinBeat = (BinBeat) comboBoxPlayerPresetSelection.getSelectedItem();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(frmBinbeats,
 				    "An error occurred while loading the beat list.\n"
@@ -318,6 +322,7 @@ public class BbUIBasic {
 						JOptionPane.showMessageDialog(frmBinbeats, "Error accessing audio system.", "Error", JOptionPane.ERROR_MESSAGE);
 						e1.printStackTrace();
 					} catch (NullPointerException e2) {
+						// Button Icon not found
 						btnPlayerPlay.setText("Stop");
 						e2.printStackTrace();
 					}

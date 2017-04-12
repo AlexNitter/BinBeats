@@ -76,7 +76,10 @@ public class BinBeat {
 	}	
 
 	public String toString() {
-		return "UserSetting: [Carrier =" + this.carrierFrequency + ", Beat =" + this.beatFrequency + ", BeatName = " + this.beatName + "]";
+		// displayed in dropdown menu
+		return beatName;
+		// old method below
+		// return "UserSetting: [Carrier =" + this.carrierFrequency + ", Beat =" + this.beatFrequency + ", BeatName = " + this.beatName + "]";
 	}
 
 	/**
