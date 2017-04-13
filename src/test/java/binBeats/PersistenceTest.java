@@ -16,10 +16,12 @@ public class PersistenceTest {
 	public void loadBeatTest() {
 		Persistence persistableBeats = new Persistence();
 		persistableBeats.deserializeBeatListFromXML();
-		BinBeat result = persistableBeats.loadBinBeat("Falling Asleep");
-		
-		assertEquals(result , new BinBeat(432f, 2f, "Falling Asleep") );
+		BinBeat binbeat = persistableBeats.loadBinBeat("Falling Asleep");
+		String result = binbeat.getBeatName();
+		assertEquals(result, "Falling Asleep");
 	}
+	
+
 	@Test
 	public void saveBeatTest()	
 	{	
@@ -34,7 +36,7 @@ public class PersistenceTest {
 		assertEquals(result, false);
 	}
 	@Test
-	public void deleteBeatTest() {
+	public void deleteBeatTest1() {
 		
 		Persistence persistableBeats = new Persistence();
 		persistableBeats.deserializeBeatListFromXML();
@@ -46,10 +48,17 @@ public class PersistenceTest {
 	
 		assertEquals(result, false);
 	}
-	//TODO to de defined
-	/*@Test    
-	public void test4() {
-		fail("Not yet implemented");
+	@Test
+	public void deleteBeatTest2() {
+		
+		Persistence persistableBeats = new Persistence();
+		persistableBeats.deserializeBeatListFromXML();
+		boolean result=true;
+		try {
+			result = persistableBeats.deleteBinBeat("grumblfx");
+		} catch (FileNotFoundException e) {	
+		}
+	
+		assertEquals(result, false);
 	}
-*/
 }

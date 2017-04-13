@@ -179,9 +179,6 @@ public class Persistence {
 			Persistence restoredBeatList = (Persistence)decoder.readObject();
 			decoder.close();
 			this.beatList = restoredBeatList.beatList;	
-			System.out.println("\nDeserialisierung: ");		//TODO: Sp�ter l�schen
-			String check = restoredBeatList.toString();
-			System.out.println(check); 
 		}
 		catch(FileNotFoundException e){
 			initBeats(); 		
