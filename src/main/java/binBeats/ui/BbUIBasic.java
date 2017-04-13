@@ -145,17 +145,17 @@ public class BbUIBasic {
 		
 		JComboBox<BinBeat> comboBoxPlayerPresetSelection = new JComboBox<BinBeat>();
 		try {
-			// Populate dropdown list from persistence
+			// Try to read existing presets XML file
 			persistence.deserializeBeatListFromXML();
-			List<BinBeat> beatList = persistence.getBinBeats();
-			
-			// TODO: check correct typing
-			//code below doesn't work. beatList.toArray() cannot be cast to BinBeat[] - why?
-			//BinBeat[] beatArray = (BinBeat[]) beatList.toArray();
-
-			beatListCombo = new DefaultComboBoxModel(beatList.toArray());
+			// Get the list of BinBeats and transform it to an array
+			// TODO: maybe do this in Persistence Class
+			List<BinBeat> beatList = persistence.getBinBeats();			
+			BinBeat[] beatArray = new BinBeat[beatList.size()];
+			beatArray = beatList.toArray(beatArray);
+			// Populate the dropdown field with our BinBeat array
+			beatListCombo = new DefaultComboBoxModel<BinBeat>(beatArray);
 			comboBoxPlayerPresetSelection.setModel(beatListCombo);
-			
+			// Set the BinBeat on top of the list as the current BinBeat
 			playerBinBeat = (BinBeat) comboBoxPlayerPresetSelection.getSelectedItem();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(frmBinbeats,
