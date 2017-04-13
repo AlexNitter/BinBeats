@@ -11,23 +11,55 @@ public class BinBeat {
 	
 	public BinBeat() {}
 
+	/**
+	 * Creates a new BinBeat
+	 * @param carrierFrequency the frequency of the carrier tone
+	 * @param beatFrequency the frequency of the actual binaural beat
+	 */
 	public BinBeat(float carrierFrequency, float beatFrequency) {
 		this(carrierFrequency, beatFrequency, "", 100);
 	}
 	
+	/**
+	 * Creates a new BinBeat
+	 * @param carrierFrequency the frequency of the carrier tone
+	 * @param beatFrequency the frequency of the actual binaural beat
+	 * @param beatName a name that is used to save the beat
+	 */
 	public BinBeat(float carrierFrequency, float beatFrequency, String beatName) {
 		this(carrierFrequency, beatFrequency, beatName, 100);
 	}
 	
+	/**
+	 * Creates a new BinBeat
+	 * @param carrierFrequency the frequency of the carrier tone
+	 * @param beatFrequency the frequency of the actual binaural beat
+	 * @param volume volume value between 0 and 100
+	 */
 	public BinBeat(float carrierFrequency, float beatFrequency, float volume) {
 		this(carrierFrequency, beatFrequency, "", volume);
 	}
 	
+	/**
+	 * Creates a new BinBeat
+	 * @param carrierFrequency the frequency of the carrier tone
+	 * @param beatFrequency the frequency of the actual binaural beat
+	 * @param beatName a name that is used to save the beat
+	 * @param volume volume value between 0 and 100
+	 */
 	public BinBeat(float carrierFrequency, float beatFrequency, String beatName, float volume) {
 		this.carrierFrequency = carrierFrequency;
 		this.beatFrequency = beatFrequency;
 		this.beatName = beatName;
 		this.setVolume(volume);
+	}
+	
+	/**
+	 * Creates a defensive copy of a BinBeat 
+	 * @param b the BinBeat to be copied
+	 */
+	public BinBeat(BinBeat b){
+		this(b.getCarrierFrequency(), b.getBeatFrequency(), b.getBeatName(), b.getVolume());
 	}
 	
 	
