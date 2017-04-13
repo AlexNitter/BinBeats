@@ -165,8 +165,6 @@ public class BbUIBasic {
 			System.err.println("Could not load presets.");
 			e.printStackTrace();
 		}
-		
-		comboBoxPlayerPresetSelection.setEditable(true);
 		comboBoxPlayerPresetSelection.setToolTipText("Select binaural beat from preset or create a new one");
 		panelPlayer.add(comboBoxPlayerPresetSelection, "flowx,cell 2 0,growx");
 		
@@ -307,7 +305,7 @@ public class BbUIBasic {
 			public void actionPerformed(ActionEvent e) {
 				if(!isPlaying) {
 					// collect data from UI in playerBinBeat
-					// TODO: shouldn't be necessary as event handlers now update the playerBinBeat values on change
+					// shouldn't be necessary as event handlers now update the playerBinBeat values on change
 					/*
 					playerBinBeat.setCarrierFrequency(Float.parseFloat(formattedTextFieldPlayerCarrier.getText()));
 					playerBinBeat.setBeatFrequency(Float.parseFloat(formattedTextFieldPlayerBeatFreq.getText()));
@@ -347,7 +345,10 @@ public class BbUIBasic {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					// TODO: Remove BinBeat from persistence
-					comboBoxPlayerPresetSelection.removeItemAt(comboBoxPlayerPresetSelection.getSelectedIndex());
+					// comboBoxPlayerPresetSelection.removeItemAt(comboBoxPlayerPresetSelection.getSelectedIndex());
+					persistence.deleteBinBeat(playerBinBeat.getBeatName());
+					// -> nothing happens
+					beatListCombo = new DefaultComboBoxModel<BinBeat>(persistence.getBinBeatsArray());
 				} catch (Exception e1){
 					// if there is nothing to delete do nothing
 				}
@@ -359,7 +360,7 @@ public class BbUIBasic {
 			public void actionPerformed(ActionEvent e) {
 				
 				// Collect Data from UI
-				// TODO: shouldn't be necessary as event handlers now update the playerBinBeat values on change
+				// Shouldn't be necessary as event handlers now update the playerBinBeat values on change
 				/*
 				//String beatName = String.valueOf(comboBoxPlayerPresetSelection.getSelectedItem());
 				String beatName = String.valueOf(comboBoxPlayerPresetSelection.getEditor().getItem());
@@ -370,14 +371,16 @@ public class BbUIBasic {
 				*/
 				
 				try {
-					beatListCombo.addElement(playerBinBeat);
+					String beatName = "";
+					beatName = JOptionPane.showInputDialog(frmBinbeats, "Please enter a unique name for your binaural Beat.");
+					playerBinBeat.setBeatName(beatName);
+
 					persistence.saveBinBeat(playerBinBeat);
 					// TODO: check if new beat gets added to list and can be selected
 					// Possible alternatives: - add the binbeat to beatListCombo
 					// 						  - completely reload the beatListCombo from persistence
-					// Code below necessary?
-					// beatListCombo.addElement(playerBinBeat);
-					// comboBoxPlayerPresetSelection.addItem(beatName);
+					//                        - beatListCombo updates itself automatically
+
 				} catch (IllegalArgumentException e1) {
 					JOptionPane.showMessageDialog(frmBinbeats,
 						    "The binaural Beat could not be saved. Please check your configuration.",
@@ -392,8 +395,7 @@ public class BbUIBasic {
 					e2.printStackTrace();
 				}
 				
-				// TODO: Remove diagnostics
-				System.out.println("Current contents of Combo Box Model: " + beatListCombo.toString());
+				// TODO: Remove diagnostics when done
 				System.out.println("Current contents of Persistence: " + persistence.toString());
 			}
 		});
@@ -402,33 +404,34 @@ public class BbUIBasic {
 		comboBoxPlayerPresetSelection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(arg0.getActionCommand().equals("comboBoxEdited")) {
-					// TODO: Combo box edited -> create new BinBeat
-					
-					// beatListCombo.addElement(anObject);
-					
-				}
-				// Check if current item is BinBeat or String
-				if (comboBoxPlayerPresetSelection.getSelectedItem() instanceof BinBeat) {
-					try {
-						// Get BinBeat from list, set to playerBinBeat, update UI
-						playerBinBeat = (BinBeat) comboBoxPlayerPresetSelection.getSelectedItem();
-						formattedTextFieldPlayerCarrier.setValue(playerBinBeat.getCarrierFrequency());
-						formattedTextFieldPlayerBeatFreq.setValue(playerBinBeat.getBeatFrequency());
-						formattedTextFieldPlayerBeatVol.setValue(playerBinBeat.getVolume());
-						// TODO: sliders not implicitly updated trough event handlers
-					} catch (Exception e) {
-						JOptionPane.showMessageDialog(frmBinbeats,
-							    "An error occured while selecting the binaural beat.",
-							    "Error",
-							    JOptionPane.ERROR_MESSAGE);
-						e.printStackTrace();
-					}
-				} else {
-					// Must be String
+					// Doesn't happen in current state of implementation as combobox is not editable anymore
 					playerBinBeat.setBeatName(String.valueOf(comboBoxPlayerPresetSelection.getSelectedItem()));
-					// TODO: enable new beats to be created without overwriting old ones
+					
+				} else{
+					if (comboBoxPlayerPresetSelection.getSelectedItem() instanceof BinBeat) {
+						// Check if current item is BinBeat or String
+						try {
+							
+							// Get BinBeat from list, set to playerBinBeat, update UI
+							playerBinBeat = (BinBeat) comboBoxPlayerPresetSelection.getSelectedItem();
+							
+							sliderPlayerCarrier.setValue(Math.round(playerBinBeat.getCarrierFrequency()));
+							sliderPlayerBeatFreq.setValue((int)(playerBinBeat.getBeatFrequency()*10));
+							sliderPlayerBeatVol.setValue(Math.round(playerBinBeat.getVolume()));
+							
+							formattedTextFieldPlayerCarrier.setValue(playerBinBeat.getCarrierFrequency());
+							formattedTextFieldPlayerBeatFreq.setValue(playerBinBeat.getBeatFrequency());
+							formattedTextFieldPlayerBeatVol.setValue(playerBinBeat.getVolume());
+							
+						} catch (Exception e) {
+							JOptionPane.showMessageDialog(frmBinbeats,
+								    "An error occured while selecting the binaural beat.",
+								    "Error",
+								    JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
+						}
+					}
 				}
-				
 			}
 		});
 		
