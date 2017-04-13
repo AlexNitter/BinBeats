@@ -44,15 +44,15 @@ Erhalte mit einem Mouseover über entsprechende Elemente weitere Hinweise zur Fu
 
 ## Nutzungsszenarien
 
-- Auswählen und Abspielen von Voreinstellungen
+### Auswählen und Abspielen von Voreinstellungen
  
 Mit einem Maus-Klick auf das schwarze Dreieck im Feld "Preset" öffnet sich das Dropdown-Menü, welches verschiedene Voreinstellungen enthält. Ein Klick auf eine Voreinstellung wählt diese aus. Nach der Auswahl kann der aktuell eingestellte Beat durch einen Klick auf das "Play"-Symbol abgespielt werden. Durch einen Klick auf das "Stop"-Symbol kann der Ton gestoppt werden.
  
-- Einstellen und Abspielen von Träger- und Differenzfrequenz mit Schiebereglern
+### Einstellen und Abspielen von Träger- und Differenzfrequenz mit Schiebereglern
 
 Die Schieberegler für Frequenzen und Lautstärke lassen sich per drag and drop verstellen. Bringe die Regler in eine von dir gewünschte Position. Den von dir eingestellen binauralen Beat, kannst du nun durch einen Klick auf das "Play-Symbol" abspielen. Durch einen Klick auf das "Stop"-Symbol kann der Ton gestoppt werden.
 
-- Einstellen von Träger- und Differenzfrequenz per Eingabefeld
+### Einstellen von Träger- und Differenzfrequenz per Eingabefeld
 
 Gewünschte Frequenzen und die Lautstärke eines BinBeats lassen sich auch über die Eingabefelder eingeben. Klicke in das gewüschte editierbare Feld . Gebe die von dir gewünschten Frequenzen und die gewünschte Lautstärke ein und bestätige deine Eingaben jeweils mit der Entertaste. Den von dir eingestellen binauralen Beat, kannst du nun durch einen Klick auf das "Play-Symbol" abspielen. Durch einen Klick auf das "Stop"-Symbol kann der Ton gestoppt werden.
 
@@ -60,7 +60,7 @@ Die Carrier Frequency-Werte müssen zwischen 20 und 1500 liegen.
 Die Beat Frequency-Wert müssen zwischen 0.5 und 30 liegen.
 Die Werte für die Lautstärke müssen zwischen 0 und 100 liegen. 
 
-- Speichern der aktuellen Einstellungen von Träger- und Differenzfrequenz
+### Speichern der aktuellen Einstellungen von Träger- und Differenzfrequenz
 
 Eigene Einstellungen können unter einem eigenen Namen gespeichert werden. Stelle zunächst den Beat so ein, wie er gespeichert werden soll. Mit einem Klick in das editierbare Feld "Preset" und der Eingabe eines selbst gewählten Namens erhält der Beat den Namen unter dem er gespeichert und wieder abgerufen wird. Durch einen Klick auf das "Speichern"-Symbol wird die Einstellung gespeichert.
  
