@@ -1,33 +1,22 @@
 package main.java.binBeats.ui;
 
-// TODO: remove unused imports
 import java.awt.EventQueue;
-import java.awt.Toolkit;
-import java.awt.Color;
+
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
+
 
 import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.sound.sampled.LineUnavailableException;
-import javax.swing.Action;
-import javax.swing.Box;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
-import javax.swing.border.TitledBorder;
-import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 
 import net.miginfocom.swing.MigLayout;
@@ -42,16 +31,11 @@ import javax.swing.text.NumberFormatter;
 import javax.swing.event.ChangeEvent;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.FileNotFoundException;
 import java.text.NumberFormat;
-import java.util.List;
 import java.util.Locale;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 
 /**
  * Displays the UI for BinBeat Player only
