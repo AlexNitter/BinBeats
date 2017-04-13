@@ -181,7 +181,7 @@ public class Persistence {
 			this.beatList = restoredBeatList.beatList;	
 			System.out.println("\nDeserialisierung: ");		//TODO: Sp�ter l�schen
 			String check = restoredBeatList.toString();
-			System.out.print(check); 
+			System.out.println(check); 
 		}
 		catch(FileNotFoundException e){
 			initBeats(); 		

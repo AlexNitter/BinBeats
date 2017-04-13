@@ -155,7 +155,7 @@ public class BbUIBasic {
 			beatListCombo = new DefaultComboBoxModel<BinBeat>(persistence.getBinBeatsArray());
 			comboBoxPlayerPresetSelection.setModel(beatListCombo);
 			// Set the BinBeat on top of the list as the current BinBeat
-			playerBinBeat = (BinBeat) comboBoxPlayerPresetSelection.getSelectedItem();
+			playerBinBeat = new BinBeat((BinBeat) comboBoxPlayerPresetSelection.getSelectedItem());
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(frmBinbeats,
 				    "An error occurred while loading the beat list.\n"
@@ -344,14 +344,13 @@ public class BbUIBasic {
 		btnPlayerDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					// TODO: Remove BinBeat from persistence
-					// comboBoxPlayerPresetSelection.removeItemAt(comboBoxPlayerPresetSelection.getSelectedIndex());
 					persistence.deleteBinBeat(playerBinBeat.getBeatName());
-					// -> nothing happens
-					beatListCombo = new DefaultComboBoxModel<BinBeat>(persistence.getBinBeatsArray());
+					beatListCombo.removeElement(beatListCombo.getSelectedItem());
 				} catch (Exception e1){
 					// if there is nothing to delete do nothing
 				}
+				// TODO: remove diagnostics
+				System.out.println("Current contents of Persistence: " + persistence.toString());
 			}
 		});
 		
@@ -376,6 +375,7 @@ public class BbUIBasic {
 					playerBinBeat.setBeatName(beatName);
 
 					persistence.saveBinBeat(playerBinBeat);
+					beatListCombo.addElement(playerBinBeat);
 					// TODO: check if new beat gets added to list and can be selected
 					// Possible alternatives: - add the binbeat to beatListCombo
 					// 						  - completely reload the beatListCombo from persistence
@@ -413,7 +413,7 @@ public class BbUIBasic {
 						try {
 							
 							// Get BinBeat from list, set to playerBinBeat, update UI
-							playerBinBeat = (BinBeat) comboBoxPlayerPresetSelection.getSelectedItem();
+							playerBinBeat = new BinBeat((BinBeat) comboBoxPlayerPresetSelection.getSelectedItem());
 							
 							sliderPlayerCarrier.setValue(Math.round(playerBinBeat.getCarrierFrequency()));
 							sliderPlayerBeatFreq.setValue((int)(playerBinBeat.getBeatFrequency()*10));
