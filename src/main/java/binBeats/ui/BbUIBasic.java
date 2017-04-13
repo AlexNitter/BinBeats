@@ -44,11 +44,14 @@ import javax.swing.event.ChangeEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 /**
  * Displays the UI for BinBeat Player only
@@ -144,10 +147,11 @@ public class BbUIBasic {
 		panelPlayer.add(lblPlayerPreset, "cell 1 0,alignx trailing");
 		
 		JComboBox<BinBeat> comboBoxPlayerPresetSelection = new JComboBox<BinBeat>();
+		
 		try {
 			// Try to read existing presets XML file
 			persistence.deserializeBeatListFromXML();
-			// Populate the dropdown field with our BinBeat array
+			// Populate the dropdown field with BinBeat array
 			beatListCombo = new DefaultComboBoxModel<BinBeat>(persistence.getBinBeatsArray());
 			comboBoxPlayerPresetSelection.setModel(beatListCombo);
 			// Set the BinBeat on top of the list as the current BinBeat
@@ -303,10 +307,12 @@ public class BbUIBasic {
 			public void actionPerformed(ActionEvent e) {
 				if(!isPlaying) {
 					// collect data from UI in playerBinBeat
-					// cannot use the fields' value() function because moving a slider will fill the field with int
+					// TODO: shouldn't be necessary as event handlers now update the playerBinBeat values on change
+					/*
 					playerBinBeat.setCarrierFrequency(Float.parseFloat(formattedTextFieldPlayerCarrier.getText()));
 					playerBinBeat.setBeatFrequency(Float.parseFloat(formattedTextFieldPlayerBeatFreq.getText()));
 					playerBinBeat.setVolume(Float.parseFloat(formattedTextFieldPlayerBeatVol.getText()));
+					*/
 					binBeatsPlayer.setBinBeat(playerBinBeat);
 					try {
 						btnPlayerPlay.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/stop.png")));
@@ -340,7 +346,7 @@ public class BbUIBasic {
 		btnPlayerDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					// TODO: Remove actual BinBeat
+					// TODO: Remove BinBeat from persistence
 					comboBoxPlayerPresetSelection.removeItemAt(comboBoxPlayerPresetSelection.getSelectedIndex());
 				} catch (Exception e1){
 					// if there is nothing to delete do nothing
@@ -351,19 +357,91 @@ public class BbUIBasic {
 		// Save button
 		btnPlayerSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: Actually save a BinBeat with persistence class
-				String beatName = String.valueOf(comboBoxPlayerPresetSelection.getSelectedItem());
-				//comboBoxPlayerPresetSelection.addItem(beatName);
+				
+				// Collect Data from UI
+				// TODO: shouldn't be necessary as event handlers now update the playerBinBeat values on change
+				/*
+				//String beatName = String.valueOf(comboBoxPlayerPresetSelection.getSelectedItem());
+				String beatName = String.valueOf(comboBoxPlayerPresetSelection.getEditor().getItem());
+				playerBinBeat.setBeatName(beatName);
+				playerBinBeat.setCarrierFrequency(Float.parseFloat(formattedTextFieldPlayerCarrier.getText()));
+				playerBinBeat.setBeatFrequency(Float.parseFloat(formattedTextFieldPlayerBeatFreq.getText()));
+				playerBinBeat.setVolume(Float.parseFloat(formattedTextFieldPlayerBeatVol.getText()));
+				*/
+				
+				try {
+					beatListCombo.addElement(playerBinBeat);
+					persistence.saveBinBeat(playerBinBeat);
+					// TODO: check if new beat gets added to list and can be selected
+					// Possible alternatives: - add the binbeat to beatListCombo
+					// 						  - completely reload the beatListCombo from persistence
+					// Code below necessary?
+					// beatListCombo.addElement(playerBinBeat);
+					// comboBoxPlayerPresetSelection.addItem(beatName);
+				} catch (IllegalArgumentException e1) {
+					JOptionPane.showMessageDialog(frmBinbeats,
+						    "The binaural Beat could not be saved. Please check your configuration.",
+						    "Invalid BinBeat",
+						    JOptionPane.WARNING_MESSAGE);
+					e1.printStackTrace();
+				} catch (FileNotFoundException e2) {
+					JOptionPane.showMessageDialog(frmBinbeats,
+						    "The binaural Beat could not be saved. Please check if 'beatSettings.xml' exists in your working directory.",
+						    "File Not Found",
+						    JOptionPane.ERROR_MESSAGE);
+					e2.printStackTrace();
+				}
+				
+				// TODO: Remove diagnostics
+				System.out.println("Current contents of Combo Box Model: " + beatListCombo.toString());
+				System.out.println("Current contents of Persistence: " + persistence.toString());
+			}
+		});
+		
+		// Dropdown field behavior
+		comboBoxPlayerPresetSelection.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(arg0.getActionCommand().equals("comboBoxEdited")) {
+					// TODO: Combo box edited -> create new BinBeat
+					
+					// beatListCombo.addElement(anObject);
+					
+				}
+				// Check if current item is BinBeat or String
+				if (comboBoxPlayerPresetSelection.getSelectedItem() instanceof BinBeat) {
+					try {
+						// Get BinBeat from list, set to playerBinBeat, update UI
+						playerBinBeat = (BinBeat) comboBoxPlayerPresetSelection.getSelectedItem();
+						formattedTextFieldPlayerCarrier.setValue(playerBinBeat.getCarrierFrequency());
+						formattedTextFieldPlayerBeatFreq.setValue(playerBinBeat.getBeatFrequency());
+						formattedTextFieldPlayerBeatVol.setValue(playerBinBeat.getVolume());
+						// TODO: sliders not implicitly updated trough event handlers
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(frmBinbeats,
+							    "An error occured while selecting the binaural beat.",
+							    "Error",
+							    JOptionPane.ERROR_MESSAGE);
+						e.printStackTrace();
+					}
+				} else {
+					// Must be String
+					playerBinBeat.setBeatName(String.valueOf(comboBoxPlayerPresetSelection.getSelectedItem()));
+					// TODO: enable new beats to be created without overwriting old ones
+				}
+				
 			}
 		});
 		
 		// Link carrier slider and text field
 		formattedTextFieldPlayerCarrier.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				float value = checkValidity(formattedTextFieldPlayerCarrier.getText(), "\\d+(\\.\\d*)?", 7, binBeatValidator.getCarrierFrequencyMin(), binBeatValidator.getCarrierFrequencyMax());
 				if (value > -1) {
 					sliderPlayerCarrier.setValue(Math.round(value));
 					formattedTextFieldPlayerCarrier.setValue(value);
+					// Update current binBeat
+					playerBinBeat.setCarrierFrequency(value);
 				} else {
 					JOptionPane.showMessageDialog(
 							frmBinbeats,
@@ -376,7 +454,10 @@ public class BbUIBasic {
 		sliderPlayerCarrier.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				formattedTextFieldPlayerCarrier.setValue(sliderPlayerCarrier.getValue());
+				float value = sliderPlayerCarrier.getValue();
+				formattedTextFieldPlayerCarrier.setValue(value);
+				// Update current binBeat
+				playerBinBeat.setCarrierFrequency(value);
 			}
 		});
 		
@@ -385,11 +466,14 @@ public class BbUIBasic {
 		 * As we want to be able to change values by .1 we multiply by 10.
 		 */
 		formattedTextFieldPlayerBeatFreq.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {				
+			public void actionPerformed(ActionEvent arg0) {
+				
 				float value = checkValidity(formattedTextFieldPlayerBeatFreq.getText(), "\\d+(\\.\\d*)?", 5, binBeatValidator.getBeatFrequencyMin(), binBeatValidator.getBeatFrequencyMax());
 				if (value > -1){
 					sliderPlayerBeatFreq.setValue((int)(value*10));
 					formattedTextFieldPlayerBeatFreq.setValue(value);
+					// Update current binBeat
+					playerBinBeat.setBeatFrequency(value);
 				} else {
 					JOptionPane.showMessageDialog(
 							frmBinbeats,
@@ -402,7 +486,10 @@ public class BbUIBasic {
 		sliderPlayerBeatFreq.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				formattedTextFieldPlayerBeatFreq.setValue((float)sliderPlayerBeatFreq.getValue()/10);
+				float value = (float)sliderPlayerBeatFreq.getValue()/10;
+				formattedTextFieldPlayerBeatFreq.setValue(value);
+				// Update current binBeat
+				playerBinBeat.setBeatFrequency(value);
 			}
 		});
 		
@@ -416,6 +503,8 @@ public class BbUIBasic {
 				if (value > -1) {
 					sliderPlayerBeatVol.setValue(Math.round(value));
 					formattedTextFieldPlayerBeatVol.setValue(value);
+					// Update current binBeat
+					playerBinBeat.setVolume(value);
 				} else {
 					JOptionPane.showMessageDialog(
 							frmBinbeats,
@@ -428,15 +517,16 @@ public class BbUIBasic {
 		sliderPlayerBeatVol.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				formattedTextFieldPlayerBeatVol.setValue(sliderPlayerBeatVol.getValue());
+				float value = sliderPlayerBeatVol.getValue();
+				formattedTextFieldPlayerBeatVol.setValue(value);
+				// Update current binBeat
+				playerBinBeat.setVolume(value);
 			}
 		});
 		
 		// After every element is added, pack window to content size and center on screen
 		frmBinbeats.pack();
-		frmBinbeats.setLocationRelativeTo(null);
-		
-				
+		frmBinbeats.setLocationRelativeTo(null);				
 	}
 	
 
