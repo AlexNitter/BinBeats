@@ -1,83 +1,54 @@
 # BinBeats
-Software zur Erzeugung binauraler Beats
+Software for creation of binaural beats
 Version 1 - 15.04.2017 
 
 
-### Inhaltsverzeichnis
+### Table Of Contents
 
-- [Sicherheitshinweis](#sicherheitshinweis)
-- [Systemvoraussetzungen](#systemvoraussetzungen)
+- [Safety Notice](#safety-notice)
+- [System Requirements](#system-requirements)
 - [Installation](#installation)
-- [Funktionsweise](#funktionsweise)
-- [Benutzung](#benutzung)
-- [Nutzungsszenarien](#nutzungsszenarien)
+- [How It Works](#how-it-works)
+- [Usage](#usage)
 - [Known issues](#known-issues)
-- [Mitarbeit am Projekt](#mitarbeit-am-projekt)
-- [Inhalte von Drittanbietern](#inhalte-von-drittanbietern)
+- [Collaborating On This Project](#collaborating-on-this-project)
+- [Third Party Content](#third-party-content)
 
-## Sicherheitshinweis
-Personen mit Hirnerkrankungen wie Epilepsie, Schlafanfall-Patienten oder Personen mit Herz-Rythmus-Störungen sollten auf die binauralen Beats verzichten oder die Nutzung mit ihrem Arzt besprechen, da die Beats die Hirnströme beeinflussen und dementsprechend Auswirkungen auf Vorerkrankte haben können.
+## Safety Notice
+People with brain diseases like epilepsy, stroke patients or people with heart rhythm disorder should not use binaural beats or should at least seek medical advice before usage. Binaural beats influence brain waves and can thereby have undesirable effects on people with medical history.
 
-## Systemvoraussetzungen
-Um die BinBeats-Software nutzen zu können ist ein Standard-PC mit Maus, Tastatur und Steroekopfhörern, sowie ein gängiges Betriebssystem erforderlich. Außerdem muss eine aktuelle Java-Runtime (JRE) installiert sein.
+## System Requirements
+Thanks to the application being written in Java it is mostly platform independent. You only need mouse, keyboard, stereo headphones and the current Java runtime environment (JRE).
 
 ## Installation
-Lade die ausführbare .jar-Datei [hier](https://github.com/AlexNitter/BinBeats/raw/master/build/BinBeats.jar) herunter. Es sind keine weiteren Installationsschritte nötig, die Datei kann direkt durch einen Doppelklick ausgeführt werden.
+Get the executable .jar file [here](https://github.com/AlexNitter/BinBeats/raw/master/build/BinBeats.jar). No further installation steps are necessary. Just execute the application by double-clicking the .jar file.
 
-## Funktionsweise
-Binaurale Beats sind ein auditives Phänomen, durch das bei der Wahrnehmung von leicht unterschiedlichen Frequenzen auf dem linken und auf dem rechten Ohr die Differenzfrequenz als pulsierender Ton durch das Hörzentrum erzeugt wird.
-Hört man beispielsweise auf dem rechten Ohr einen Ton der Frequenz 200 Hz und auf dem linken Ohr 210 Hz, generiert der Wahrnehmungsapparat einen Ton der mittleren Frequenz von 205 Hz, der mit 10 Hz pulsiert.
+## How It Works
+Binaural beats are an auditive phenomenon where slightly different frequencies played for the left and the right ear produce the mean tone that pulsates with the difference frequency.
+If you play a tone of 200 Hz on your left ear and 210 Hz on your right ear your brain's auditive system will perceive a tone of 205 Hz that pulsates with 10 Hz. 
 
-Binauralen Beats wird eine Wechselwirkung mit Gehirnwellen zugeschrieben. Erzeugt man binaurale Beats in einer Frequenz, die mit der Gehirnwellenfrequenz eines bestimmten Zustands übereinstimmt, kann man diesen Zustand künstlich herbeiführen und sich verschiedene mögliche Effekte zunutze machen. Die Existenz dieser Effekte ist umstritten und wissenschaftlich nicht erwiesen.
+Binaural Beats are often accredited with a distinct effect on brain wave patterns. Certain mental states are associated with specific brain wave patterns. Playing a binaural beat that correlates with that pattern can produce the associated mental state and allows the user to utilize various beneficial effects. The existence of said effects is debatable and not scientifically proven.
 
-Eine übersichtliche Tabelle, die zeigt, mit welcher Beatfrequenz welcher Zustand herbeigeführt werden kann, findet sich auf [Wikipedia](https://de.wikipedia.org/wiki/Elektroenzephalografie#Beeinflussung_der_Gehirnwellen).
+A table that clearly presents the mental states and their associated effects can be found on [Wikipedia](https://en.wikipedia.org/wiki/Electroencephalography#Normal_activity).
 
-## Benutzung
+## Usage
+- "Carrier Frequency" is the base pitch of the sine tones to be played.
+- "Beat Frequency" describes the difference between the two tones and the frequency with which the binaural beat will pulsate. 
 
-Mit der "Carrier Frequency" lässt sich die Trägerfrequenz einstellen. Diese Frequenz bestimmt die Tonlage, mit welcher die Sinustöne wahrgenommen werden. Die "Beat Frequency" bestimmt den Abstand zwischen den beiden Sinustönen. Dieser Abstand ist es, durch welchen der eigentliche binaurale Beat entsteht.
+1. Set up the binaural beat through the text fields and sliders or select a preset from the dropdown field.
+2. Play the currently configured binaural beat by clicking on the "Play" symbol.
+3. Save the currently configured binaural beat by clicking on the "Save" symbol.
 
-1. Stelle den zu erzeugenden binauralen Beat über die Felder und Schieberegler ein oder wähle ein Preset aus der Liste aus.
-2. Spiele den aktuell eingestellten Beat durch einen Klick auf das "Play"-Symbol.
-3. Speichere den aktuell eingestellten Beat durch einen Klick auf das "Save"-Symbol.
+Move the mouse cursor over UI elements to display explanatory tooltips.
 
-Erhalte mit einem Mouseover über entsprechende Elemente weitere Hinweise zur Funktion und Benutzung.
-
-## Nutzungsszenarien
-
-### Auswählen und Abspielen von Voreinstellungen
- 
-Mit einem Maus-Klick auf das schwarze Dreieck im Feld "Preset" öffnet sich das Dropdown-Menü, welches verschiedene Voreinstellungen enthält. Ein Klick auf eine Voreinstellung wählt diese aus. Nach der Auswahl kann der aktuell eingestellte Beat durch einen Klick auf das "Play"-Symbol abgespielt werden. Durch einen Klick auf das "Stop"-Symbol kann der Ton gestoppt werden.
- 
-### Einstellen und Abspielen von Träger- und Differenzfrequenz mit Schiebereglern
-
-Die Schieberegler für Frequenzen und Lautstärke lassen sich per drag and drop verstellen. Bringe die Regler in eine von dir gewünschte Position. Den von dir eingestellen binauralen Beat, kannst du nun durch einen Klick auf das "Play-Symbol" abspielen. Durch einen Klick auf das "Stop"-Symbol kann der Ton gestoppt werden.
-
-### Einstellen von Träger- und Differenzfrequenz per Eingabefeld
-
-Gewünschte Frequenzen und die Lautstärke eines BinBeats lassen sich auch über die Eingabefelder eingeben. Klicke in das gewüschte editierbare Feld . Gebe die von dir gewünschten Frequenzen und die gewünschte Lautstärke ein und bestätige deine Eingaben jeweils mit der Entertaste. Den von dir eingestellen binauralen Beat, kannst du nun durch einen Klick auf das "Play-Symbol" abspielen. Durch einen Klick auf das "Stop"-Symbol kann der Ton gestoppt werden.
-
-Die Carrier Frequency-Werte müssen zwischen 20 und 1500 liegen. 
-Die Beat Frequency-Wert müssen zwischen 0.5 und 30 liegen.
-Die Werte für die Lautstärke müssen zwischen 0 und 100 liegen. 
-
-### Speichern der aktuellen Einstellungen von Träger- und Differenzfrequenz
-
-Eigene Einstellungen können unter einem eigenen Namen gespeichert werden. Stelle zunächst den Beat so ein, wie er gespeichert werden soll. Mit einem Klick in das editierbare Feld "Preset" und der Eingabe eines selbst gewählten Namens erhält der Beat den Namen unter dem er gespeichert und wieder abgerufen wird. Durch einen Klick auf das "Speichern"-Symbol wird die Einstellung gespeichert.
- 
-Eine selbst erstellte Einstellung kann wieder gelöscht werden, indem die Voreinstellung im Dropdown-Menü des Preset-Feldes mit einem Klick ausgewählt wird. Durch einen Klick auf das "Löschen"-Symbol wird die Einstellung gelöscht. 
-
-Der Name, unter dem die Einstellung eines binaulen Beats gespeichert wird, muss sich von den Namen der vorhandenen Voreinstellungen unterscheiden. 
-
-Die vom System zur Verfügung gestellten Voreinstellungen (Falling Asleep, Trance,Deep Meditation, Creativity, Concentrated Learning, Problem Solving) können nicht gelöscht werden.
-
-## Known issues
-- Der Ton spielt noch etwa eine Sekunde weiter, nachdem der stop-Button geklickt wurde
-- Bei abnehmender Lautstärke verändert sich der Klang des Tons und wird "kratziger"
+## Known Issues
+- The beat will keep on playing for a second after the stop button is clicked
+- Decreasing the volume will make the tone less "sine-y", e.g. it will sound more like a square wave
 - ... to be continued
 
-## Mitarbeit am Projekt
-Du bist Entwickler und hast Interesse an dem Thema? Dann bist du herzlich eingeladen, das Projekt zu forken und weiter daran zu arbeiten. Im Moment ist das Repository nicht in der aktiven Entwicklung, deshalb schicke uns bitte keine pull requests. https://github.com/AlexNitter/BinBeats 
+## Collaborating On This Project
+If you are a developer and are interested in this project you are invited to fork it and develop it further. We are currently not actively developing this project so please don't send pull requests.
 
-## Inhalte von Drittanbietern
-* Die Benutzeroberfläche benutzt den [MiG Java Layout Manager](http://miglayout.com/) unter der [3-Clause BSD Lizenz](https://opensource.org/licenses/BSD-3-Clause)
-* Die verwendeten Icons wurden von [Madebyoliver](http://www.flaticon.com/authors/madebyoliver) für [Flaticon](http://www.flaticon.com/packs/essential-collection) designed
+## Third Party Content
+* The UI uses [MiG Java Layout Manager](http://miglayout.com/) under [3-Clause BSD License](https://opensource.org/licenses/BSD-3-Clause).
+* The button icons were designed by [Madebyoliver](http://www.flaticon.com/authors/madebyoliver) from [Flaticon](http://www.flaticon.com/packs/essential-collection).
