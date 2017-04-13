@@ -147,13 +147,8 @@ public class BbUIBasic {
 		try {
 			// Try to read existing presets XML file
 			persistence.deserializeBeatListFromXML();
-			// Get the list of BinBeats and transform it to an array
-			// TODO: maybe do this in Persistence Class
-			List<BinBeat> beatList = persistence.getBinBeats();			
-			BinBeat[] beatArray = new BinBeat[beatList.size()];
-			beatArray = beatList.toArray(beatArray);
 			// Populate the dropdown field with our BinBeat array
-			beatListCombo = new DefaultComboBoxModel<BinBeat>(beatArray);
+			beatListCombo = new DefaultComboBoxModel<BinBeat>(persistence.getBinBeatsArray());
 			comboBoxPlayerPresetSelection.setModel(beatListCombo);
 			// Set the BinBeat on top of the list as the current BinBeat
 			playerBinBeat = (BinBeat) comboBoxPlayerPresetSelection.getSelectedItem();

@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,12 +24,13 @@ public class Persistence {
 
 	private final String FILENAME = "beatSettings.xml";
 	private final int NUMBER_OF_PRESETS=6;
-	private final String [] NAME_OF_PRESETS = {"Falling Asleep","Trance","Deep Medition","Creativity","Concentrated Learning","Problem Solving"};
+	private final String [] NAME_OF_PRESETS = {"Falling Asleep","Trance","Deep Meditation","Creativity","Concentrated Learning","Problem Solving"};
 	
 	private List<BinBeat> beatList= new ArrayList<BinBeat>();
 	
 	public Persistence(){
 	}
+	
 	/**
 	 * returns preset and user defined BinBeat settings
 	 * @return a copy of the ArrayList of BinBeats 
@@ -38,11 +40,32 @@ public class Persistence {
 		return beatListCopy;		
 	}
 	
-	/**Empty methode. This methode is needed for internal encoding and decoding to and from XML-files.  
-	 * @param beats anArrayList of BinBeats
-	 * */
-	public void setBinBeats(List<BinBeat>beats){ 	
+	/**
+	 * Converts the beat list to an array.
+	 * @return the beat list as array
+	 */
+	public BinBeat[] getBinBeatsArray() {
+		BinBeat[] beatArray = new BinBeat[this.beatList.size()];
+		beatArray = beatList.toArray(beatArray);
+		return beatArray;
 	}
+	
+	/**
+	 * Sets the beat list and replaces all previously existing items.
+	 * @param beatList an ArrayList of BinBeats
+	 * */
+	public void setBinBeats(List<BinBeat> beatList){
+		this.beatList = beatList;
+	}
+	
+	/**
+	 * Sets the beat list and replaces all previously existing items.
+	 * @param beatArray an Array of BinBeats
+	 */
+	public void setBinBeats(BinBeat[] beatArray) {
+		this.beatList = new ArrayList<BinBeat>(Arrays.asList(beatArray));
+	}
+	
 	public String []getNameOfPresets(){		
 		return this.NAME_OF_PRESETS;
 	}
@@ -56,7 +79,7 @@ public class Persistence {
 		beatList.add(5, new BinBeat( 432f,21f, NAME_OF_PRESETS[5] ) );
 	}
 	
-	public String toString(){ //TODO löschen, nach erfolgreichen Tests
+	public String toString(){
 		String beats="";
 		for(BinBeat beat:getBinBeats()){
 			beats += beat.getBeatName() + ", ";
@@ -156,7 +179,7 @@ public class Persistence {
 			Persistence restoredBeatList = (Persistence)decoder.readObject();
 			decoder.close();
 			this.beatList = restoredBeatList.beatList;	
-			System.out.println("\nDeserialisierung: ");		//TODO: Später löschen
+			System.out.println("\nDeserialisierung: ");		//TODO: Spï¿½ter lï¿½schen
 			String check = restoredBeatList.toString();
 			System.out.print(check); 
 		}
