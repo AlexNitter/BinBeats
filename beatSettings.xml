@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_91" class="java.beans.XMLDecoder">
+ <object class="main.java.binBeats.lib.Persistence" id="Persistence0">
+  <void property="binBeats">
+   <void method="add">
+    <object class="main.java.binBeats.lib.BinBeat">
+     <void property="beatFrequency">
+      <float>2.0</float>
+     </void>
+     <void property="beatName">
+      <string>Falling Asleep</string>
+     </void>
+     <void property="carrierFrequency">
+      <float>432.0</float>
+     </void>
+     <void property="volume">
+      <float>100.0</float>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="main.java.binBeats.lib.BinBeat">
+     <void property="beatFrequency">
+      <float>4.0</float>
+     </void>
+     <void property="beatName">
+      <string>Trance</string>
+     </void>
+     <void property="carrierFrequency">
+      <float>432.0</float>
+     </void>
+     <void property="volume">
+      <float>100.0</float>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="main.java.binBeats.lib.BinBeat">
+     <void property="beatFrequency">
+      <float>5.0</float>
+     </void>
+     <void property="beatName">
+      <string>Deep Meditation</string>
+     </void>
+     <void property="carrierFrequency">
+      <float>432.0</float>
+     </void>
+     <void property="volume">
+      <float>100.0</float>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="main.java.binBeats.lib.BinBeat">
+     <void property="beatFrequency">
+      <float>6.0</float>
+     </void>
+     <void property="beatName">
+      <string>Creativity</string>
+     </void>
+     <void property="carrierFrequency">
+      <float>432.0</float>
+     </void>
+     <void property="volume">
+      <float>100.0</float>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="main.java.binBeats.lib.BinBeat">
+     <void property="beatFrequency">
+      <float>8.0</float>
+     </void>
+     <void property="beatName">
+      <string>Concentrated Learning</string>
+     </void>
+     <void property="carrierFrequency">
+      <float>432.0</float>
+     </void>
+     <void property="volume">
+      <float>100.0</float>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="main.java.binBeats.lib.BinBeat">
+     <void property="beatFrequency">
+      <float>21.0</float>
+     </void>
+     <void property="beatName">
+      <string>Problem Solving</string>
+     </void>
+     <void property="carrierFrequency">
+      <float>432.0</float>
+     </void>
+     <void property="volume">
+      <float>100.0</float>
+     </void>
+    </object>
+   </void>
+  </void>
+ </object>
+</java>
