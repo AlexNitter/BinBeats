@@ -147,6 +147,7 @@ public class BbUIBasic {
 		panelPlayer.add(lblPlayerPreset, "cell 1 0,alignx trailing");
 		
 		JComboBox<BinBeat> comboBoxPlayerPresetSelection = new JComboBox<BinBeat>();
+		comboBoxPlayerPresetSelection.setEditable(true);
 		
 		try {
 			// Try to read existing presets XML file
@@ -344,8 +345,9 @@ public class BbUIBasic {
 		btnPlayerDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					persistence.deleteBinBeat(playerBinBeat.getBeatName());
-					beatListCombo.removeElement(beatListCombo.getSelectedItem());
+					if(persistence.deleteBinBeat(playerBinBeat.getBeatName())){
+						beatListCombo.removeElement(beatListCombo.getSelectedItem());
+					}					
 				} catch (Exception e1){
 					// if there is nothing to delete do nothing
 				}
@@ -358,28 +360,15 @@ public class BbUIBasic {
 		btnPlayerSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				// Collect Data from UI
-				// Shouldn't be necessary as event handlers now update the playerBinBeat values on change
-				/*
-				//String beatName = String.valueOf(comboBoxPlayerPresetSelection.getSelectedItem());
-				String beatName = String.valueOf(comboBoxPlayerPresetSelection.getEditor().getItem());
-				playerBinBeat.setBeatName(beatName);
-				playerBinBeat.setCarrierFrequency(Float.parseFloat(formattedTextFieldPlayerCarrier.getText()));
-				playerBinBeat.setBeatFrequency(Float.parseFloat(formattedTextFieldPlayerBeatFreq.getText()));
-				playerBinBeat.setVolume(Float.parseFloat(formattedTextFieldPlayerBeatVol.getText()));
-				*/
-				
 				try {
+					/* beatName automatically set by comboBox event handler
 					String beatName = "";
 					beatName = JOptionPane.showInputDialog(frmBinbeats, "Please enter a unique name for your binaural Beat.");
 					playerBinBeat.setBeatName(beatName);
-
-					persistence.saveBinBeat(playerBinBeat);
-					beatListCombo.addElement(playerBinBeat);
-					// TODO: check if new beat gets added to list and can be selected
-					// Possible alternatives: - add the binbeat to beatListCombo
-					// 						  - completely reload the beatListCombo from persistence
-					//                        - beatListCombo updates itself automatically
+					*/
+					if(persistence.saveBinBeat(playerBinBeat)) {
+						beatListCombo.addElement(playerBinBeat);
+					}
 
 				} catch (IllegalArgumentException e1) {
 					JOptionPane.showMessageDialog(frmBinbeats,
@@ -403,11 +392,12 @@ public class BbUIBasic {
 		// Dropdown field behavior
 		comboBoxPlayerPresetSelection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				// Check if combo Box was edited or if user made a selection
 				if(arg0.getActionCommand().equals("comboBoxEdited")) {
-					// Doesn't happen in current state of implementation as combobox is not editable anymore
 					playerBinBeat.setBeatName(String.valueOf(comboBoxPlayerPresetSelection.getSelectedItem()));
 					
-				} else{
+				} else {
+					// User selected from presets
 					if (comboBoxPlayerPresetSelection.getSelectedItem() instanceof BinBeat) {
 						// Check if current item is BinBeat or String
 						try {
