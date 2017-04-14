@@ -36,6 +36,8 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 /**
  * Displays the UI for BinBeat Player only
@@ -289,13 +291,6 @@ public class BbUIBasic {
 		btnPlayerPlay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!isPlaying) {
-					// collect data from UI in playerBinBeat
-					// shouldn't be necessary as event handlers now update the playerBinBeat values on change
-					/*
-					playerBinBeat.setCarrierFrequency(Float.parseFloat(formattedTextFieldPlayerCarrier.getText()));
-					playerBinBeat.setBeatFrequency(Float.parseFloat(formattedTextFieldPlayerBeatFreq.getText()));
-					playerBinBeat.setVolume(Float.parseFloat(formattedTextFieldPlayerBeatVol.getText()));
-					*/
 					binBeatsPlayer.setBinBeat(playerBinBeat);
 					try {
 						btnPlayerPlay.setIcon(new ImageIcon(BbUIBasic.class.getResource("/main/java/binBeats/ui/stop.png")));
@@ -335,8 +330,7 @@ public class BbUIBasic {
 				} catch (Exception e1){
 					// if there is nothing to delete do nothing
 				}
-				// TODO: remove diagnostics
-				System.out.println("Current contents of Persistence: " + persistence.toString());
+				// System.out.println("Current contents of Persistence: " + persistence.toString());
 			}
 		});
 		
@@ -367,9 +361,7 @@ public class BbUIBasic {
 						    JOptionPane.ERROR_MESSAGE);
 					e2.printStackTrace();
 				}
-				
-				// TODO: Remove diagnostics when done
-				System.out.println("Current contents of Persistence: " + persistence.toString());
+				// System.out.println("Current contents of Persistence: " + persistence.toString());
 			}
 		});
 		
@@ -428,6 +420,24 @@ public class BbUIBasic {
 				}
 			}
 		});
+		formattedTextFieldPlayerCarrier.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				float value = checkValidity(formattedTextFieldPlayerCarrier.getText(), "\\d+(\\.\\d*)?", 7, binBeatValidator.getCarrierFrequencyMin(), binBeatValidator.getCarrierFrequencyMax());
+				if (value > -1) {
+					sliderPlayerCarrier.setValue(Math.round(value));
+					formattedTextFieldPlayerCarrier.setValue(value);
+					// Update current binBeat
+					playerBinBeat.setCarrierFrequency(value);
+				} else {
+					JOptionPane.showMessageDialog(
+							frmBinbeats,
+							"Please enter a valid frequency between " + binBeatValidator.getCarrierFrequencyMin() + " and " + binBeatValidator.getCarrierFrequencyMax() + " Hz.",
+							"Invalid frequency",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
 		sliderPlayerCarrier.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
@@ -445,6 +455,25 @@ public class BbUIBasic {
 		formattedTextFieldPlayerBeatFreq.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				float value = checkValidity(formattedTextFieldPlayerBeatFreq.getText(), "\\d+(\\.\\d*)?", 5, binBeatValidator.getBeatFrequencyMin(), binBeatValidator.getBeatFrequencyMax());
+				if (value > -1){
+					sliderPlayerBeatFreq.setValue((int)(value*10));
+					formattedTextFieldPlayerBeatFreq.setValue(value);
+					// Update current binBeat
+					playerBinBeat.setBeatFrequency(value);
+				} else {
+					JOptionPane.showMessageDialog(
+							frmBinbeats,
+							"Please enter a valid frequency between " + binBeatValidator.getBeatFrequencyMin() + " and " + binBeatValidator.getBeatFrequencyMax() + " Hz.",
+							"Invalid frequency",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		formattedTextFieldPlayerBeatFreq.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+
 				float value = checkValidity(formattedTextFieldPlayerBeatFreq.getText(), "\\d+(\\.\\d*)?", 5, binBeatValidator.getBeatFrequencyMin(), binBeatValidator.getBeatFrequencyMax());
 				if (value > -1){
 					sliderPlayerBeatFreq.setValue((int)(value*10));
@@ -491,6 +520,24 @@ public class BbUIBasic {
 				}
 			}
 		});
+		formattedTextFieldPlayerBeatVol.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				float value = checkValidity(formattedTextFieldPlayerBeatVol.getText(), "\\d+(\\.\\d*)?", 5, binBeatValidator.getVolumeMin(), binBeatValidator.getVolumeMax());
+				if (value > -1) {
+					sliderPlayerBeatVol.setValue(Math.round(value));
+					formattedTextFieldPlayerBeatVol.setValue(value);
+					// Update current binBeat
+					playerBinBeat.setVolume(value);
+				} else {
+					JOptionPane.showMessageDialog(
+							frmBinbeats,
+							"Please enter a valid volume between " + sliderPlayerBeatVol.getMaximum() + " and " + sliderPlayerBeatVol.getMinimum() + " %.",
+							"Invalid volume",
+							JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
 		sliderPlayerBeatVol.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -522,13 +569,13 @@ public class BbUIBasic {
 		float value = -1;
 		// Check if typed value is a valid number
 		if (!typedValue.matches(regex)) {
-			System.out.println(typedValue + " is not a valid number.");
+			// System.out.println(typedValue + " is not a valid number.");
 			return value;
 		}
 		try {
 			value = Float.parseFloat(typedValue);
 		} catch (NumberFormatException e){
-			System.out.println(typedValue + " is not a parsable float.");
+			// System.out.println(typedValue + " is not a parsable float.");
 			return value;
 		}
 		// Check for correct specifications and change if necessary
