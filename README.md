@@ -11,7 +11,7 @@ Version 1 - 15.04.2017
 - [How It Works](#how-it-works)
 - [Usage](#usage)
 - [Usage Scenarios](#usage-scenarios)
-- [Known issues](#known-issues)
+- [Known Issues](#known-issues)
 - [Collaborating On This Project](#collaborating-on-this-project)
 - [Third Party Content](#third-party-content)
 
@@ -48,11 +48,11 @@ Move the mouse cursor over UI elements to display explanatory tooltips.
  
 You open the drop-down menu of presets with a click on the black triangle in the field "Preset". Choose a preset by clicking on it. After this step you can play your current configuration of the binaural beat by clicking the "play" symbol. By clicking the "stop" symbol, the tone can be stopped. 
 
-### Regulate and play binaural beats by using sliders
+### Regulate And Play Binaural Beats By Using Sliders
 
 The sliders for frequencies and volume regulation can be adjusted by dragging and dropping the slider. Bring the sliders in the wanted position and play your current configuration of the binaural beat by clicking the "play" symbol. By clicking the "stop" symbol, the tone can be stopped. 
 
-### Regulate and play binaural beats by using input fields
+### Regulate And Play Binaural Beats By Using Input Fields
 
 Frequencies and volume can also be configured via input fields. Click in the editable field and enter your values for frequencies and volume. Confirm your configuration with the enter key. Play your current configuration of the binaural beat by clicking the "play" symbol. By clicking the "stop" symbol, the tone can be stopped. 
 
@@ -62,7 +62,7 @@ The ranges of values for the input fields are restricted as follows:
 - value range for Beat Frequency: 0.5 - 30
 - value range for Volume: 0 - 100
  
-### save current beat settings
+### Save Current Beat Settings
 
 You can choose a name for your binaural beats and save them. Initially configure the beat as you want to save it. With a click on the editable field "Preset" you can enter a name for your beat, which can be used to find it again after saving it. Save your current configuration of the binaural beat by clicking the "save" symbol. 
  
