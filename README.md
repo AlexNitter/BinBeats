@@ -22,7 +22,7 @@ People with brain diseases like epilepsy, stroke patients or people with heart r
 Thanks to the application being written in Java it is mostly platform independent. You only need mouse, keyboard, stereo headphones and the current Java runtime environment (JRE).
 
 ## Installation
-Get the executable .jar file [here](https://github.com/AlexNitter/BinBeats/raw/master/build/BinBeats.jar). No further installation steps are necessary. Just execute the application by double-clicking the .jar file.
+Get the executable .jar file [here](https://github.com/AlexNitter/BinBeats/raw/master/build/BinBeats.jar). No further installation steps are necessary. Just execute the application by double-clicking the .jar file. On a Linux-System you may have to run the command "java -jar BinBeats.jar" in the console.
 
 ## How It Works
 Binaural beats are an auditive phenomenon where slightly different frequencies played for the left and the right ear produce the mean tone that pulsates with the difference frequency.
@@ -73,9 +73,11 @@ The name under which the configuration of a binaural beat is saved needs to be u
 The presets given by the system ("Falling Asleep", "Trance", "Deep Meditation", "Creativity", "Concentrated Learning", "Problem Solving") cannot be deleted.
 
 ## Known Issues
-- The beat will keep on playing for a second after the stop button is clicked
+- Sometimes you may hear an unobtrusive "click" while playing a beat
+- changes of the setting may change after restart the playing (you need to play "stop" and "start" again)
 - Decreasing the volume will make the tone less "sine-y", e.g. it will sound more like a square wave
-- ... to be continued
+- The beat will keep on playing for a second after the stop button is clicked
+
 
 ## Collaborating On This Project
 If you are a developer and are interested in this project you are invited to fork it and develop it further. We are currently not actively developing this project so please don't send pull requests.
