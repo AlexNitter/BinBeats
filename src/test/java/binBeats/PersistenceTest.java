@@ -13,7 +13,7 @@ import main.java.binBeats.lib.BinBeat;
 public class PersistenceTest {
 
 	@Test
-	public void loadBeatTest() {
+	public void persistence_loadBeat_test() {
 		Persistence persistableBeats = new Persistence();
 		persistableBeats.deserializeBeatListFromXML();
 		BinBeat binbeat = persistableBeats.loadBinBeat("Falling Asleep");
@@ -23,7 +23,7 @@ public class PersistenceTest {
 	
 
 	@Test
-	public void saveBeatTest()	
+	public void persistence_saveBeat_test()	
 	{	
 		Persistence persistableBeats = new Persistence();
 		persistableBeats.deserializeBeatListFromXML();
@@ -36,7 +36,7 @@ public class PersistenceTest {
 		assertEquals(result, false);
 	}
 	@Test
-	public void deleteBeatTest1() {
+	public void persistence_deleteBeat_1_test() {
 		
 		Persistence persistableBeats = new Persistence();
 		persistableBeats.deserializeBeatListFromXML();
@@ -49,7 +49,7 @@ public class PersistenceTest {
 		assertEquals(result, false);
 	}
 	@Test
-	public void deleteBeatTest2() {
+	public void persistence_deleteBeat_2_Test() {
 		
 		Persistence persistableBeats = new Persistence();
 		persistableBeats.deserializeBeatListFromXML();

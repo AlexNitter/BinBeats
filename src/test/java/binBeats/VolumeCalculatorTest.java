@@ -9,7 +9,7 @@ import main.java.binBeats.lib.VolumeCalculator;
 public class VolumeCalculatorTest {
 
 	@Test
-	public void calculateMasterGainVolume() {
+	public void volumeCalculator_calculateMasterGainVolume_test() {
 		VolumeCalculator calc = new VolumeCalculator();
 		
 		assertTrue(calc.calculateMasterGainVolume(0f) == -80f);
