@@ -22,7 +22,7 @@ Personen mit Hirnerkrankungen wie Epilepsie, Schlafanfall-Patienten oder Persone
 Um die BinBeats-Software nutzen zu können ist ein Standard-PC mit Maus, Tastatur und Steroekopfhörern, sowie ein gängiges Betriebssystem erforderlich. Außerdem muss eine aktuelle Java-Runtime (JRE) installiert sein.
 
 ## Installation
-Lade die ausführbare .jar-Datei [hier](https://github.com/AlexNitter/BinBeats/raw/master/build/BinBeats.jar) herunter. Es sind keine weiteren Installationsschritte nötig, die Datei kann direkt durch einen Doppelklick ausgeführt werden.
+Lade die ausführbare .jar-Datei [hier](https://github.com/AlexNitter/BinBeats/raw/master/build/BinBeats.jar) herunter. Es sind keine weiteren Installationsschritte nötig, die Datei kann direkt durch einen Doppelklick ausgeführt werden. Auf einem Linux-System ist die Anwendung ggf. mit dem Konsolenbefehl "java -jar BinBeats.jar" zu starten.
 
 ## Funktionsweise
 Binaurale Beats sind ein auditives Phänomen, durch das bei der Wahrnehmung von leicht unterschiedlichen Frequenzen auf dem linken und auf dem rechten Ohr die Differenzfrequenz als pulsierender Ton durch das Hörzentrum erzeugt wird.
@@ -71,9 +71,11 @@ Der Name, unter dem die Einstellung eines binaulen Beats gespeichert wird, muss 
 Die vom System zur Verfügung gestellten Voreinstellungen (Falling Asleep, Trance,Deep Meditation, Creativity, Concentrated Learning, Problem Solving) können nicht gelöscht werden.
 
 ## Known issues
-- Der Ton spielt noch etwa eine Sekunde weiter, nachdem der stop-Button geklickt wurde
+- Manchmal ist ein kurzes "Knacken" zu hören während ein Beat abgespielt wird
+- Eine Änderung der Einstellungen tritt erst nach dem Stoppen und neu Starten ein
 - Bei abnehmender Lautstärke verändert sich der Klang des Tons und wird "kratziger"
-- ... to be continued
+- Der Ton spielt noch etwa eine Sekunde weiter, nachdem der stop-Button geklickt wurde
+
 
 ## Mitarbeit am Projekt
 Du bist Entwickler und hast Interesse an dem Thema? Dann bist du herzlich eingeladen, das Projekt zu forken und weiter daran zu arbeiten. Im Moment ist das Repository nicht in der aktiven Entwicklung, deshalb schicke uns bitte keine pull requests. https://github.com/AlexNitter/BinBeats 
