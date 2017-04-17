@@ -1,6 +1,6 @@
 # BinBeats
 Software for creation of binaural beats
-Version 1 - 15.04.2017 
+Version 1.1 - 17.04.2017 
 
 
 ### Table Of Contents
@@ -74,10 +74,8 @@ The presets given by the system ("Falling Asleep", "Trance", "Deep Meditation", 
 
 ## Known Issues
 - Sometimes you may hear an unobtrusive "click" while playing a beat
-- changes of the setting may change after restart the playing (you need to play "stop" and "start" again)
+- Short audio glitches when changing the beat during playback.
 - Decreasing the volume will make the tone less "sine-y", e.g. it will sound more like a square wave
-- The beat will keep on playing for a second after the stop button is clicked
-
 
 ## Collaborating On This Project
 If you are a developer and are interested in this project you are invited to fork it and develop it further. We are currently not actively developing this project so please don't send pull requests.
