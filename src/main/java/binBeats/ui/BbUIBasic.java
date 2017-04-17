@@ -365,7 +365,7 @@ public class BbUIBasic {
 			}
 		});
 		
-		// Dropdown field behavior
+		// Preset dropdown field behavior
 		comboBoxPlayerPresetSelection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				// Check if combo Box was edited or if user made a selection
@@ -411,6 +411,19 @@ public class BbUIBasic {
 					formattedTextFieldPlayerCarrier.setValue(value);
 					// Update current binBeat
 					playerBinBeat.setCarrierFrequency(value);
+					// Make beat editable during playback
+					if(isPlaying) {
+						binBeatsPlayer.stop();
+						binBeatsPlayer.setBinBeat(playerBinBeat);
+						try {
+							binBeatsPlayer.play();
+						} catch (LineUnavailableException e1) {
+							JOptionPane.showMessageDialog(frmBinbeats, "Error accessing audio system.", "Error", JOptionPane.ERROR_MESSAGE);
+							e1.printStackTrace();
+						} catch (NullPointerException e2) {
+							e2.printStackTrace();
+						}
+					}
 				} else {
 					JOptionPane.showMessageDialog(
 							frmBinbeats,
@@ -429,6 +442,19 @@ public class BbUIBasic {
 					formattedTextFieldPlayerCarrier.setValue(value);
 					// Update current binBeat
 					playerBinBeat.setCarrierFrequency(value);
+					// Make beat editable during playback
+					if(isPlaying) {
+						binBeatsPlayer.stop();
+						binBeatsPlayer.setBinBeat(playerBinBeat);
+						try {
+							binBeatsPlayer.play();
+						} catch (LineUnavailableException e1) {
+							JOptionPane.showMessageDialog(frmBinbeats, "Error accessing audio system.", "Error", JOptionPane.ERROR_MESSAGE);
+							e1.printStackTrace();
+						} catch (NullPointerException e2) {
+							e2.printStackTrace();
+						}
+					}
 				} else {
 					JOptionPane.showMessageDialog(
 							frmBinbeats,
@@ -445,6 +471,19 @@ public class BbUIBasic {
 				formattedTextFieldPlayerCarrier.setValue(value);
 				// Update current binBeat
 				playerBinBeat.setCarrierFrequency(value);
+				// Make beat editable during playback
+				if(isPlaying) {
+					binBeatsPlayer.stop();
+					binBeatsPlayer.setBinBeat(playerBinBeat);
+					try {
+						binBeatsPlayer.play();
+					} catch (LineUnavailableException e1) {
+						JOptionPane.showMessageDialog(frmBinbeats, "Error accessing audio system.", "Error", JOptionPane.ERROR_MESSAGE);
+						e1.printStackTrace();
+					} catch (NullPointerException e2) {
+						e2.printStackTrace();
+					}
+				}
 			}
 		});
 		
@@ -461,6 +500,20 @@ public class BbUIBasic {
 					formattedTextFieldPlayerBeatFreq.setValue(value);
 					// Update current binBeat
 					playerBinBeat.setBeatFrequency(value);
+					// Make beat editable during playback
+					if(isPlaying) {
+						binBeatsPlayer.stop();
+						binBeatsPlayer.setBinBeat(playerBinBeat);
+						try {
+							binBeatsPlayer.play();
+						} catch (LineUnavailableException e1) {
+							JOptionPane.showMessageDialog(frmBinbeats, "Error accessing audio system.", "Error", JOptionPane.ERROR_MESSAGE);
+							e1.printStackTrace();
+						} catch (NullPointerException e2) {
+							e2.printStackTrace();
+						}
+					}
+					
 				} else {
 					JOptionPane.showMessageDialog(
 							frmBinbeats,
@@ -480,6 +533,19 @@ public class BbUIBasic {
 					formattedTextFieldPlayerBeatFreq.setValue(value);
 					// Update current binBeat
 					playerBinBeat.setBeatFrequency(value);
+					// Make beat editable during playback
+					if(isPlaying) {
+						binBeatsPlayer.stop();
+						binBeatsPlayer.setBinBeat(playerBinBeat);
+						try {
+							binBeatsPlayer.play();
+						} catch (LineUnavailableException e1) {
+							JOptionPane.showMessageDialog(frmBinbeats, "Error accessing audio system.", "Error", JOptionPane.ERROR_MESSAGE);
+							e1.printStackTrace();
+						} catch (NullPointerException e2) {
+							e2.printStackTrace();
+						}
+					}
 				} else {
 					JOptionPane.showMessageDialog(
 							frmBinbeats,
@@ -496,6 +562,19 @@ public class BbUIBasic {
 				formattedTextFieldPlayerBeatFreq.setValue(value);
 				// Update current binBeat
 				playerBinBeat.setBeatFrequency(value);
+				// Make beat editable during playback
+				if(isPlaying) {
+					binBeatsPlayer.stop();
+					binBeatsPlayer.setBinBeat(playerBinBeat);
+					try {
+						binBeatsPlayer.play();
+					} catch (LineUnavailableException e1) {
+						JOptionPane.showMessageDialog(frmBinbeats, "Error accessing audio system.", "Error", JOptionPane.ERROR_MESSAGE);
+						e1.printStackTrace();
+					} catch (NullPointerException e2) {
+						e2.printStackTrace();
+					}
+				}
 			}
 		});
 		
@@ -511,6 +590,19 @@ public class BbUIBasic {
 					formattedTextFieldPlayerBeatVol.setValue(value);
 					// Update current binBeat
 					playerBinBeat.setVolume(value);
+					// Make beat editable during playback
+					if(isPlaying) {
+						binBeatsPlayer.stop();
+						binBeatsPlayer.setBinBeat(playerBinBeat);
+						try {
+							binBeatsPlayer.play();
+						} catch (LineUnavailableException e1) {
+							JOptionPane.showMessageDialog(frmBinbeats, "Error accessing audio system.", "Error", JOptionPane.ERROR_MESSAGE);
+							e1.printStackTrace();
+						} catch (NullPointerException e2) {
+							e2.printStackTrace();
+						}
+					}
 				} else {
 					JOptionPane.showMessageDialog(
 							frmBinbeats,
@@ -529,6 +621,19 @@ public class BbUIBasic {
 					formattedTextFieldPlayerBeatVol.setValue(value);
 					// Update current binBeat
 					playerBinBeat.setVolume(value);
+					// Make beat editable during playback
+					if(isPlaying) {
+						binBeatsPlayer.stop();
+						binBeatsPlayer.setBinBeat(playerBinBeat);
+						try {
+							binBeatsPlayer.play();
+						} catch (LineUnavailableException e1) {
+							JOptionPane.showMessageDialog(frmBinbeats, "Error accessing audio system.", "Error", JOptionPane.ERROR_MESSAGE);
+							e1.printStackTrace();
+						} catch (NullPointerException e2) {
+							e2.printStackTrace();
+						}
+					}
 				} else {
 					JOptionPane.showMessageDialog(
 							frmBinbeats,
@@ -545,6 +650,19 @@ public class BbUIBasic {
 				formattedTextFieldPlayerBeatVol.setValue(value);
 				// Update current binBeat
 				playerBinBeat.setVolume(value);
+				// Make beat editable during playback
+				if(isPlaying) {
+					binBeatsPlayer.stop();
+					binBeatsPlayer.setBinBeat(playerBinBeat);
+					try {
+						binBeatsPlayer.play();
+					} catch (LineUnavailableException e1) {
+						JOptionPane.showMessageDialog(frmBinbeats, "Error accessing audio system.", "Error", JOptionPane.ERROR_MESSAGE);
+						e1.printStackTrace();
+					} catch (NullPointerException e2) {
+						e2.printStackTrace();
+					}
+				}
 			}
 		});
 		
