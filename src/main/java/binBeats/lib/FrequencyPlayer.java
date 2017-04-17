@@ -80,7 +80,8 @@ public abstract class FrequencyPlayer {
 		isPlaying = false;
 
 		if (sdl.isOpen()) {
-			sdl.drain();
+			//sdl.drain();
+			sdl.flush();
 			sdl.close();
 		}
 	}
